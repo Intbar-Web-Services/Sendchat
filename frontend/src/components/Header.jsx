@@ -41,7 +41,7 @@ const Header = () => {
 	  }, [handleKeyPress]);
 
 	return (
-		<Flex justifyContent={"center"} mt={6} mb='9' gap={6}>
+		<Flex justifyContent={"center"} mt={6} mb='9' gap={8}>
 			{user && (
 				<Link as={RouterLink} to='/'>
 					<Image
@@ -62,7 +62,7 @@ const Header = () => {
 			
 
 			{user && (
-				<Flex alignItems={"center"} gap={6}>
+				<Flex alignItems={"center"} gap={8}>
 					<Link as={RouterLink} to={`/user/${user.username}`}>
 						<RxAvatar size={37} />
 					</Link>
