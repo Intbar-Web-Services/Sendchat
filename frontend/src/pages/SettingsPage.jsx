@@ -1,11 +1,18 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, Text, position } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
 import useLogout from "../hooks/useLogout";
+import { useNavigate, Link } from "react-router-dom";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 export const SettingsPage = () => {
 	const showToast = useShowToast();
 	const logout = useLogout();
-
+	const navigate = useNavigate();
+	var currentColorMode = ""
+	const { colorMode, toggleColorMode } = useColorMode();
+	if (colorMode === "light") { currentColorMode = "dark" }
+	if (colorMode === "dark") { currentColorMode = "light" }
 	const freezeAccount = async () => {
 		if (!window.confirm("Are you sure you want to freeze your IWS account? This will disable access to ALL IWS services.")) return;
 
@@ -31,12 +38,35 @@ export const SettingsPage = () => {
 	return (
 		<>
 			<Text my={1} fontWeight={"bold"}>
+				Theme
+			</Text>
+			<Button size={"sm"} colorScheme='yellow' onClick={toggleColorMode}>
+				Switch to {currentColorMode} mode
+			</Button>
+			<Text my={1} fontWeight={"bold"}>
+				Log Out
+			</Text>
+			<Text my={1}>Logging out of your account will cause you to return to the login screen. You can log back in at any time.</Text>
+			<Button size={"sm"} colorScheme='red' onClick={logout}>
+				Log Out
+			</Button>
+			<Text my={1} fontWeight={"bold"}>
 				Freeze Your Account
 			</Text>
 			<Text my={1}>Freezing your IWS account pauses incoming Sendchat messages. You can unfreeze your IWS account anytime by logging back in.</Text>
 			<Button size={"sm"} colorScheme='red' onClick={freezeAccount}>
 				Freeze
 			</Button>
+
+			<Flex _hover={{
+				cursor: "pointer",
+				bg: useColorModeValue("gray.9000", "gray.dark"),
+				color: "white",
+			}}>
+				<Link to={"/shortcuts"}>
+					<Text my={1}>Use Sendchat faster with Keyboard Shortcuts!</Text>
+				</Link>
+			</Flex>
 		</>
 	);
 };

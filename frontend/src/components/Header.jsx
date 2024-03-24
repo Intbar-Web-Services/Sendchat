@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Link, useColorMode } from "@chakra-ui/react";
+import { Button, Center, Flex, Image, Link, useColorMode } from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
@@ -41,10 +41,16 @@ const Header = () => {
 	  }, [handleKeyPress]);
 
 	return (
-		<Flex justifyContent={"space-between"} mt={6} mb='12'>
+		<Flex justifyContent={"center"} mt={6} mb='9' gap={6}>
 			{user && (
 				<Link as={RouterLink} to='/'>
-					<AiFillHome size={24} />
+					<Image
+				cursor={"pointer"}
+				alt='logo'
+				w={16}
+				h={16}
+				src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
+			/>
 				</Link>
 			)}
 			{!user && (
@@ -53,28 +59,19 @@ const Header = () => {
 				</Link>
 			)}
 
-			<Image
-				cursor={"pointer"}
-				alt='logo'
-				w={6}
-				src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
-				onClick={toggleColorMode}
-			/>
+			
 
 			{user && (
-				<Flex alignItems={"center"} gap={4}>
+				<Flex alignItems={"center"} gap={6}>
 					<Link as={RouterLink} to={`/user/${user.username}`}>
-						<RxAvatar size={24} />
+						<RxAvatar size={37} />
 					</Link>
 					<Link as={RouterLink} to={`/chat`}>
-						<BsFillChatQuoteFill size={20} />
+						<BsFillChatQuoteFill size={32} />
 					</Link>
 					<Link as={RouterLink} to={`/settings`}>
-						<MdOutlineSettings size={20} />
+						<MdOutlineSettings size={32} />
 					</Link>
-					<Button size={"xs"} onClick={logout}>
-						<FiLogOut size={20} />
-					</Button>
 				</Flex>
 			)}
 

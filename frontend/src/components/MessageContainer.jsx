@@ -118,7 +118,7 @@ const MessageContainer = () => {
 			<Link to={`/user/${selectedConversation.username}`}>
 			<Flex w={"full"} h={12} alignItems={"center"} gap={2} _hover={{
 				cursor: "pointer",
-				bg: useColorModeValue("gray.9000", "gray.dark"),
+				bg: useColorModeValue("gray.9000", "black.dark"),
 				color: "white",
 			}}>
 				<Avatar src={selectedConversation.userProfilePic} size={"sm"}
