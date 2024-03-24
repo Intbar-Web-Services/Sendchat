@@ -91,9 +91,10 @@ export default function UpdateProfilePage() {
 						<Input
 							placeholder='John Doe'
 							value={inputs.name}
-							onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+							onChange={(e) => setInputs({ ...inputs, name: e.target.value.replace(/[^a-zA-Z0-9_. ]/g, "") })}
 							_placeholder={{ color: "gray.500" }}
 							type='text'
+							maxLength={30}
 						/>
 					</FormControl>
 					<FormControl>
@@ -101,19 +102,20 @@ export default function UpdateProfilePage() {
 						<Input
 							placeholder='johndoe12'
 							value={inputs.username}
-							onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-							_placeholder={{ color: "gray.500" }}
+							onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
 							type='text'
+							maxLength={25}
 						/>
 					</FormControl>
 					<FormControl>
 						<FormLabel>Email address</FormLabel>
 						<Input
-							placeholder='youremail@iws.com'
+							placeholder='youremail@example.com'
 							value={inputs.email}
-							onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+							onChange={(e) => setInputs({ ...inputs, email: e.target.value.toLowerCase() })}
 							_placeholder={{ color: "gray.500" }}
 							type='email'
+							maxLength={120}
 						/>
 					</FormControl>
 					<FormControl>
@@ -134,6 +136,8 @@ export default function UpdateProfilePage() {
 							onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='password'
+							maxLength={195}
+							minLength={7}
 						/>
 					</FormControl>
 					<Stack spacing={6} direction={["column", "row"]}>

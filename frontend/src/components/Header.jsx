@@ -4,6 +4,8 @@ import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
 import { Link as RouterLink } from "react-router-dom";
+import {useEffect, useCallback} from 'react'
+import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
@@ -15,6 +17,28 @@ const Header = () => {
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
+	const navigate = useNavigate()
+	const handleKeyPress = useCallback((event) => {
+		if (event.altKey && event.key === 'l') {
+			logout()
+		  }
+		  if (event.altKey && event.key === 'u') {
+			navigate(`/user/${user.username}`)
+		  }
+		  if (event.altKey && event.key === "m") {
+			toggleColorMode();
+		  }
+	  }, []);
+
+	  useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
+	
+		// remove the event listener
+		return () => {
+		  document.removeEventListener('keydown', handleKeyPress);
+		};
+	  }, [handleKeyPress]);
 
 	return (
 		<Flex justifyContent={"space-between"} mt={6} mb='12'>
@@ -39,7 +63,7 @@ const Header = () => {
 
 			{user && (
 				<Flex alignItems={"center"} gap={4}>
-					<Link as={RouterLink} to={`/${user.username}`}>
+					<Link as={RouterLink} to={`/user/${user.username}`}>
 						<RxAvatar size={24} />
 					</Link>
 					<Link as={RouterLink} to={`/chat`}>

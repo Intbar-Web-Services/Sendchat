@@ -73,8 +73,9 @@ export default function SignupCard() {
 									<FormLabel>Display Name</FormLabel>
 									<Input
 										type='text'
-										onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+										onChange={(e) => setInputs({ ...inputs, name: e.target.value.replace(/[^a-zA-Z0-9_. ]/g, "") })}
 										value={inputs.name}
+										maxLength={30}
 									/>
 								</FormControl>
 							</Box>
@@ -83,8 +84,9 @@ export default function SignupCard() {
 									<FormLabel>Username</FormLabel>
 									<Input
 										type='text'
-										onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+										onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
 										value={inputs.username}
+										maxLength={25}
 									/>
 								</FormControl>
 							</Box>
@@ -93,8 +95,9 @@ export default function SignupCard() {
 							<FormLabel>Email address</FormLabel>
 							<Input
 								type='email'
-								onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+								onChange={(e) => setInputs({ ...inputs, email: e.target.value.toLowerCase() })}
 								value={inputs.email}
+								maxLength={120}
 							/>
 						</FormControl>
 						<FormControl isRequired>
@@ -104,6 +107,8 @@ export default function SignupCard() {
 									type={showPassword ? "text" : "password"}
 									onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
 									value={inputs.password}
+									maxLength={195}
+									minLength={7}
 								/>
 								<InputRightElement h={"full"}>
 									<Button

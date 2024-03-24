@@ -78,7 +78,8 @@ export default function LoginCard() {
 							<Input
 								type='text'
 								value={inputs.username}
-								onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value }))}
+								onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") }))}
+								maxLength={25}
 							/>
 						</FormControl>
 						<FormControl isRequired>
@@ -88,6 +89,8 @@ export default function LoginCard() {
 									type={showPassword ? "text" : "password"}
 									value={inputs.password}
 									onChange={(e) => setInputs((inputs) => ({ ...inputs, password: e.target.value }))}
+									maxLength={195}
+									minLength={7}
 								/>
 								<InputRightElement h={"full"}>
 									<Button

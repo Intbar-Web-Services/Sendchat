@@ -5,13 +5,44 @@ import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
+import {useEffect, useCallback} from 'react'
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
+import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 function App() {
+	const navigate = useNavigate()
+	const handleKeyPress = useCallback((event) => {
+		if (event.altKey && event.key === 'c') {
+			navigate("/chat")
+		  }
+		if (event.altKey && event.key === 'h') {
+			navigate("/");
+		}
+		if (event.altKey && event.key === 's') {
+			navigate("/settings");
+		}
+		if (event.ctrlKey && event.key === ',') {
+			navigate("/update");
+		}
+		if (event.ctrlKey && event.key === '/') {
+			navigate("/shortcuts")
+		}
+	  }, []);
+	
+	  useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
+	
+		// remove the event listener
+		return () => {
+		  document.removeEventListener('keydown', handleKeyPress);
+		};
+	  }, [handleKeyPress]);
 	const user = useRecoilValue(userAtom);
 	const { pathname } = useLocation();
 	return (
@@ -24,7 +55,7 @@ function App() {
 					<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
 
 					<Route
-						path='/:username'
+						path='/user/:username'
 						element={
 							user ? (
 								<>
@@ -38,6 +69,7 @@ function App() {
 					/>
 					<Route path='/:username/post/:pid' element={<PostPage />} />
 					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
+					<Route path='/shortcuts' element={<Shortcuts />} />
 					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
 				</Routes>
 			</Container>

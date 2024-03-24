@@ -2,6 +2,7 @@ import { Avatar, Divider, Flex, Image, Skeleton, SkeletonCircle, Text, useColorM
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import useShowToast from "../hooks/useShowToast";
 import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -17,6 +18,7 @@ const MessageContainer = () => {
 	const { socket } = useSocket();
 	const setConversations = useSetRecoilState(conversationsAtom);
 	const messageEndRef = useRef(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		socket.on("newMessage", (message) => {
@@ -113,12 +115,28 @@ const MessageContainer = () => {
 			flexDirection={"column"}
 		>
 			{/* Message header */}
-			<Flex w={"full"} h={12} alignItems={"center"} gap={2}>
-				<Avatar src={selectedConversation.userProfilePic} size={"sm"} />
-				<Text display={"flex"} alignItems={"center"}>
+			<Link to={`/user/${selectedConversation.username}`}>
+			<Flex w={"full"} h={12} alignItems={"center"} gap={2} _hover={{
+				cursor: "pointer",
+				bg: useColorModeValue("gray.9000", "gray.dark"),
+				color: "white",
+			}}>
+				<Avatar src={selectedConversation.userProfilePic} size={"sm"}
+				onClick={(e) => {
+					e.preventDefault();
+					navigate(`/user/${selectedConversation.username}`);
+				}} 
+				/>
+				<Text display={"flex"} alignItems={"center"}
+				onClick={(e) => {
+					e.preventDefault();
+					navigate(`/user/${selectedConversation.username}`);
+				}}
+				>
 					{selectedConversation.username} <Image src='/verified.png' w={4} h={4} ml={1} />
 				</Text>
 			</Flex>
+			</Link>
 
 			<Divider />
 
