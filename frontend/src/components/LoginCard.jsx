@@ -59,7 +59,7 @@ export default function LoginCard() {
 			<Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
 				<Stack align={"center"}>
 					<Heading fontSize={"4xl"} textAlign={"center"}>
-						Login
+						Login to Sendchat
 					</Heading>
 				</Stack>
 				<Box
@@ -116,9 +116,9 @@ export default function LoginCard() {
 						</Stack>
 						<Stack pt={6}>
 							<Text align={"center"}>
-								Don&apos;t have an account?{" "}
+								Don&apos;t have an account yet?{" "}
 								<Link color={"blue.400"} onClick={() => setAuthScreen("signup")}>
-									Sign up
+									Sign up with IWS
 								</Link>
 							</Text>
 						</Stack>

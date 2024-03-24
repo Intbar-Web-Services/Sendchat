@@ -62,7 +62,7 @@ export default function SignupCard() {
 			<Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
 				<Stack align={"center"}>
 					<Heading fontSize={"4xl"} textAlign={"center"}>
-						Sign up
+						Sign up with IWS
 					</Heading>
 				</Stack>
 				<Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
@@ -70,7 +70,7 @@ export default function SignupCard() {
 						<HStack>
 							<Box>
 								<FormControl isRequired>
-									<FormLabel>Full name</FormLabel>
+									<FormLabel>Display Name</FormLabel>
 									<Input
 										type='text'
 										onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
@@ -131,9 +131,9 @@ export default function SignupCard() {
 						</Stack>
 						<Stack pt={6}>
 							<Text align={"center"}>
-								Already a user?{" "}
+								Already have an IWS account?{" "}
 								<Link color={"blue.400"} onClick={() => setAuthScreen("login")}>
-									Login
+									Login with IWS
 								</Link>
 							</Text>
 						</Stack>
