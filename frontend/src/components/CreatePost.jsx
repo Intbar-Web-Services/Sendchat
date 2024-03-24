@@ -25,7 +25,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MAX_CHAR = 500;
 
@@ -37,6 +37,7 @@ const CreatePost = () => {
 	const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
 	const user = useRecoilValue(userAtom);
 	const showToast = useShowToast();
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const { username } = useParams();
@@ -77,6 +78,7 @@ const CreatePost = () => {
 			onClose();
 			setPostText("");
 			setImgUrl("");
+			navigate(0);
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {

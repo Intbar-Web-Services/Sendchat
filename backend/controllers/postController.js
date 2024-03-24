@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
 		let { img } = req.body;
 
 		if (!postedBy || !text) {
-			return res.status(400).json({ error: "Postedby and text fields are required" });
+			return res.status(400).json({ error: "You cannot post something without text!" });
 		}
 
 		const user = await User.findById(postedBy);
@@ -17,7 +17,7 @@ const createPost = async (req, res) => {
 		}
 
 		if (user._id.toString() !== req.user._id.toString()) {
-			return res.status(401).json({ error: "Unauthorized to create post" });
+			return res.status(401).json({ error: "You aren't authorized to create a post" });
 		}
 
 		const maxLength = 500;
@@ -62,7 +62,7 @@ const deletePost = async (req, res) => {
 		}
 
 		if (post.postedBy.toString() !== req.user._id.toString()) {
-			return res.status(401).json({ error: "Unauthorized to delete post" });
+			return res.status(401).json({ error: "You are not authorized to delete this post" });
 		}
 
 		if (post.img) {
@@ -94,12 +94,12 @@ const likeUnlikePost = async (req, res) => {
 		if (userLikedPost) {
 			// Unlike post
 			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
-			res.status(200).json({ message: "Post unliked successfully" });
+			res.status(200).json({ message: "You unliked this post" });
 		} else {
 			// Like post
 			post.likes.push(userId);
 			await post.save();
-			res.status(200).json({ message: "Post liked successfully" });
+			res.status(200).json({ message: "You liked this post" });
 		}
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -115,7 +115,7 @@ const replyToPost = async (req, res) => {
 		const username = req.user.username;
 
 		if (!text) {
-			return res.status(400).json({ error: "Text field is required" });
+			return res.status(400).json({ error: "Write a reply!" });
 		}
 
 		const post = await Post.findById(postId);
@@ -144,7 +144,12 @@ const getFeedPosts = async (req, res) => {
 
 		const following = user.following;
 
-		const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({ createdAt: -1 });
+		const feedPosts = await Post.find({
+			$or: [
+			  { postedBy: userId }, // Posts by the user
+			  { postedBy: { $in: following } }, // Posts by the user's followings
+			],
+		  }).sort({ createdAt: -1 });
 
 		res.status(200).json(feedPosts);
 	} catch (err) {

@@ -52,7 +52,7 @@ const PostPage = () => {
 				return;
 			}
 			showToast("Success", "Post deleted", "success");
-			navigate(`/${user.username}`);
+			navigate(`/user/${user.username}`);
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		}

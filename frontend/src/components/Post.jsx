@@ -59,7 +59,7 @@ const Post = ({ post, postedBy }) => {
 
 	if (!user) return null;
 	return (
-		<Link to={`/${user.username}/post/${post._id}`}>
+		<Link to={`/user/${user.username}/post/${post._id}`}>
 			<Flex gap={3} mb={4} py={5}>
 				<Flex flexDirection={"column"} alignItems={"center"}>
 					<Avatar
@@ -68,7 +68,7 @@ const Post = ({ post, postedBy }) => {
 						src={user?.profilePic}
 						onClick={(e) => {
 							e.preventDefault();
-							navigate(`/${user.username}`);
+							navigate(`/user/${user.username}`);
 						}}
 					/>
 					<Box w='1px' h={"full"} bg='gray.light' my={2}></Box>
@@ -119,7 +119,7 @@ const Post = ({ post, postedBy }) => {
 								fontWeight={"bold"}
 								onClick={(e) => {
 									e.preventDefault();
-									navigate(`/${user.username}`);
+									navigate(`/user/${user.username}`);
 								}}
 							>
 								{user?.username}
