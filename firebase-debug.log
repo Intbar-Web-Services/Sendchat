@@ -1,0 +1,21 @@
+[debug] [2024-03-23T23:47:35.479Z] ----------------------------------------------------------------------
+[debug] [2024-03-23T23:47:35.500Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\toned\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-03-23T23:47:35.501Z] CLI Version:   13.5.2
+[debug] [2024-03-23T23:47:35.501Z] Platform:      win32
+[debug] [2024-03-23T23:47:35.501Z] Node Version:  v20.11.1
+[debug] [2024-03-23T23:47:35.502Z] Time:          Sat Mar 23 2024 18:47:35 GMT-0500 (Central Daylight Time)
+[debug] [2024-03-23T23:47:35.502Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-23T23:47:35.517Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-23T23:47:35.518Z] > authorizing via signed-in user (toneundeath@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\toned\threads-clone-master
+
