@@ -28,6 +28,9 @@ const Header = () => {
 		  if (event.altKey && event.key === "m") {
 			toggleColorMode();
 		  }
+		  if (event.altKey && event.key === "s") {
+			navigate("/settings")
+		  }
 	  }, []);
 
 	  useEffect(() => {
