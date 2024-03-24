@@ -41,14 +41,14 @@ const Header = () => {
 	  }, [handleKeyPress]);
 
 	return (
-		<Flex justifyContent={"center"} mt={6} mb='9' gap={8}>
+		<Flex justifyContent={"center"} mt={6} mb='5' gap={7}>
 			{user && (
 				<Link as={RouterLink} to='/'>
 					<Image
 				cursor={"pointer"}
 				alt='logo'
-				w={16}
-				h={16}
+				w={14}
+				h={14}
 				src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
 			/>
 				</Link>
@@ -64,13 +64,13 @@ const Header = () => {
 			{user && (
 				<Flex alignItems={"center"} gap={8}>
 					<Link as={RouterLink} to={`/user/${user.username}`}>
-						<RxAvatar size={37} />
+						<RxAvatar size={35} />
 					</Link>
 					<Link as={RouterLink} to={`/chat`}>
-						<BsFillChatQuoteFill size={32} />
+						<BsFillChatQuoteFill size={28} />
 					</Link>
 					<Link as={RouterLink} to={`/settings`}>
-						<MdOutlineSettings size={32} />
+						<MdOutlineSettings size={28} />
 					</Link>
 				</Flex>
 			)}
