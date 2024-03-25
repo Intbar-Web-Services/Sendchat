@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Image, Link, useColorMode, Box, Avatar } from "@chakra-ui/react";
+import { Button, Center, Flex, Image, Link, useColorMode, useColorModeValue, Box, Avatar } from "@chakra-ui/react";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -49,7 +49,13 @@ const Header = () => {
 
 	return (
 		
-		<Flex justifyContent={"center"} mt={6} mb='3' gap={6}>
+		<Flex justifyContent={"center"} mt={0} mb='9' gap={6}
+		
+		position="fixed" zIndex="1" left={0}
+      right={0}
+      backgroundColor={useColorModeValue("gray.900", "#101010")}
+	  paddingTop="1rem"
+	  >
 			{!user && (
 				<Link as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("login")}>
 					Login
@@ -59,7 +65,7 @@ const Header = () => {
 
 			{user && (
 				<>
-					<Flex alignItems={"center"} gap={9}>
+					<Flex alignItems={"center"} gap={9} paddingBottom="0.35rem">
 												<Link as={RouterLink} to={`/chat`}>
 													<BsFillChatQuoteFill size={28} />
 												</Link>
