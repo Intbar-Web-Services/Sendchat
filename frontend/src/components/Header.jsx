@@ -1,10 +1,13 @@
-import { Button, Center, Flex, Image, Link, useColorMode } from "@chakra-ui/react";
+import { Button, Center, Flex, Image, Link, useColorMode, Box, Avatar } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
+
+import { Portal } from "@chakra-ui/portal";
 import { RxAvatar } from "react-icons/rx";
 import { Link as RouterLink } from "react-router-dom";
-import {useEffect, useCallback} from 'react'
+import { useEffect, useCallback } from 'react'
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
@@ -18,64 +21,95 @@ const Header = () => {
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 	const navigate = useNavigate()
+	console.log(user)
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'l') {
 			logout()
-		  }
-		  if (event.altKey && event.key === 'u') {
+		}
+		if (event.altKey && event.key === 'u') {
 			navigate(`/user/${user.username}`)
-		  }
-		  if (event.altKey && event.key === "m") {
+		}
+		if (event.altKey && event.key === "m") {
 			toggleColorMode()
-		  }
-		  if (event.altKey && event.key === "s") {
+		}
+		if (event.altKey && event.key === "s") {
 			navigate("/settings")
-		  }
-	  }, []);
+		}
+	}, []);
 
-	  useEffect(() => {
+	useEffect(() => {
 		// attach the event listener
 		document.addEventListener('keydown', handleKeyPress);
-	
+
 		// remove the event listener
 		return () => {
-		  document.removeEventListener('keydown', handleKeyPress);
+			document.removeEventListener('keydown', handleKeyPress);
 		};
-	  }, [handleKeyPress]);
+	}, [handleKeyPress]);
 
 	return (
-		<Flex justifyContent={"center"} mt={6} mb='5' gap={6}>
-			{user && (
-				<Link as={RouterLink} to='/'>
-					<Image
-				cursor={"pointer"}
-				alt='logo'
-				w={12}
-				h={12}
-				src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
-			/>
-				</Link>
-			)}
+		
+		<Flex justifyContent={"center"} mt={6} mb='3' gap={6}>
 			{!user && (
 				<Link as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("login")}>
 					Login
 				</Link>
 			)}
 
-			
 
 			{user && (
-				<Flex alignItems={"center"} gap={8}>
-					<Link as={RouterLink} to={`/user/${user.username}`}>
-						<RxAvatar size={33} />
-					</Link>
-					<Link as={RouterLink} to={`/chat`}>
-						<BsFillChatQuoteFill size={28} />
-					</Link>
-					<Link as={RouterLink} to={`/settings`}>
-						<MdOutlineSettings size={28} />
-					</Link>
-				</Flex>
+				<>
+					<Flex alignItems={"center"} gap={9}>
+												<Link as={RouterLink} to={`/chat`}>
+													<BsFillChatQuoteFill size={28} />
+												</Link>
+										{user && (
+											<Link as={RouterLink} to='/'>
+												<Image
+													cursor={"pointer"}
+													alt='logo'
+													w={12}
+													h={12}
+													src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
+												/>
+											</Link>
+										)}
+						<Flex>
+							<Box className='icon-container'>
+								<Menu>
+									<MenuButton>
+										<Avatar
+											size={
+												"s"
+											}
+											name={user.name}
+											src={user.profilePic}
+										/>
+									</MenuButton>
+									<Portal>
+										<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate(`/user/${user.username}`))}}>
+												Your Profile
+											</MenuItem>
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/settings"))}}>
+												Settings
+											</MenuItem>
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/shortcuts"))}}>
+												Keyboard Shortcuts
+											</MenuItem>
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/download"))}}>
+												Download App
+											</MenuItem>
+											<MenuItem bg={"gray.dark"} color={"red"} onClick={logout}>
+												Log Out
+											</MenuItem>
+										</MenuList>
+									</Portal>
+								</Menu>
+							</Box>
+						</Flex>
+					</Flex>
+				</>
 			)}
 
 			{!user && (
