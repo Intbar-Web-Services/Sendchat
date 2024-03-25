@@ -70,8 +70,8 @@ export default function UpdateProfilePage() {
 					boxShadow={"lg"}
 					p={6}
 				>
-					<Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
-						IWS Profile Edit
+					<Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} textAlign={"center"}>
+						Edit IWS Profile
 					</Heading>
 					<FormControl id='userName'>
 						<Stack direction={["column", "row"]} spacing={6}>
