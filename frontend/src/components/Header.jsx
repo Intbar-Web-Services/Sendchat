@@ -26,7 +26,7 @@ const Header = () => {
 			navigate(`/user/${user.username}`)
 		  }
 		  if (event.altKey && event.key === "m") {
-			toggleColorMode();
+			toggleColorMode()
 		  }
 		  if (event.altKey && event.key === "s") {
 			navigate("/settings")

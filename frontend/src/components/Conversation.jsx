@@ -43,7 +43,7 @@ const Conversation = ({ conversation, isOnline }) => {
 				})
 			}
 			bg={
-				selectedConversation?._id === conversation._id ? (colorMode === "light" ? "gray.dark" : "gray.400") : ""
+				selectedConversation?._id === conversation._id ? (useColorModeValue("gray.400", "gray.dark")) : ""
 			}
 			borderRadius={"md"}
 		>
@@ -61,10 +61,10 @@ const Conversation = ({ conversation, isOnline }) => {
 			</WrapItem>
 
 			<Stack direction={"column"} fontSize={"sm"}>
-				<Text fontWeight='700' display={"flex"} alignItems={"center"}>
+				<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white") }>
 					{user.username}
 				</Text>
-				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
+				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1} color={useColorModeValue("black", "white") }>
 					{currentUser._id === lastMessage.sender ? (
 						<Box color={lastMessage.seen ? "blue.400" : ""}>
 							<BsCheck2All size={16} />

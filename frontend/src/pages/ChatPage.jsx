@@ -178,7 +178,7 @@ const ChatPage = () => {
 						height={"400px"}
 					>
 						<GiConversation size={100} />
-						<Text fontSize={20}>Select a conversation to start messaging</Text>
+						<Text fontSize={20}>Select someone to start Sendchatting!</Text>
 					</Flex>
 				)}
 
