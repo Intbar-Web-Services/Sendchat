@@ -91,14 +91,14 @@ const Header = () => {
 											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate(`/user/${user.username}`))}}>
 												Your Profile
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/settings"))}}>
-												Settings
-											</MenuItem>
 											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/shortcuts"))}}>
 												Keyboard Shortcuts
 											</MenuItem>
 											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/download"))}}>
 												Download App
+											</MenuItem>
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/settings"))}}>
+												Settings
 											</MenuItem>
 											<MenuItem bg={"gray.dark"} color={"red"} onClick={logout}>
 												Log Out
