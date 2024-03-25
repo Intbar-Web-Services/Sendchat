@@ -133,7 +133,7 @@ const MessageContainer = () => {
 					navigate(`/user/${selectedConversation.username}`);
 				}}
 				>
-					{selectedConversation.name}
+					{selectedConversation.username}
 				</Text>
 			</Flex>
 			</Link>
