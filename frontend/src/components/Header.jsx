@@ -53,7 +53,7 @@ const Header = () => {
 		
 		position="fixed" zIndex="1" left={0}
       right={0}
-      backgroundColor={useColorModeValue("gray.900", "#101010")}
+      backgroundColor={useColorModeValue("gray.100", "#101010")}
 	  paddingTop="1rem"
 	  >
 			{!user && (
