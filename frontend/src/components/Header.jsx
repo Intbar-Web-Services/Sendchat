@@ -77,6 +77,8 @@ const Header = () => {
 						<Flex>
 							<Box className='icon-container'>
 								<Menu>
+								{({ onClose }) => (
+									<>
 									<MenuButton>
 										<Avatar
 											size={
@@ -88,16 +90,16 @@ const Header = () => {
 									</MenuButton>
 									<Portal>
 										<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate(`/user/${user.username}`))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate(`/user/${user.username}`))}}>
 												Your Profile
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/shortcuts"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/shortcuts"))}}>
 												Keyboard Shortcuts
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/download"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/download"))}}>
 												Download App
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/settings"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/settings"))}}>
 												Settings
 											</MenuItem>
 											<MenuItem bg={"gray.dark"} color={"red"} onClick={() => {logout(); navigate("/")}} closeOnSelect={true}>
@@ -105,6 +107,8 @@ const Header = () => {
 											</MenuItem>
 										</MenuList>
 									</Portal>
+									</>
+)}
 								</Menu>
 							</Box>
 						</Flex>
