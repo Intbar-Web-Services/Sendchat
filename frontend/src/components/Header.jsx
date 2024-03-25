@@ -88,19 +88,19 @@ const Header = () => {
 									</MenuButton>
 									<Portal>
 										<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
-											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate(`/user/${user.username}`))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate(`/user/${user.username}`))}}>
 												Your Profile
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/shortcuts"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/shortcuts"))}}>
 												Keyboard Shortcuts
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/download"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/download"))}}>
 												Download App
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} onClick={() => {useEffect(navigate("/settings"))}}>
+											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {useEffect(navigate("/settings"))}}>
 												Settings
 											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"red"} onClick={logout}>
+											<MenuItem bg={"gray.dark"} color={"red"} onClick={() => {logout(); navigate("/")}} closeOnSelect={true}>
 												Log Out
 											</MenuItem>
 										</MenuList>
