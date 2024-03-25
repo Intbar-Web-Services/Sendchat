@@ -67,32 +67,32 @@ export default function SignupCard() {
 				</Stack>
 				<Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
 					<Stack spacing={4}>
-						
-							<Box>
-								<FormControl isRequired>
-									<FormLabel>Display Name</FormLabel>
+
+						<Box>
+							<FormControl isRequired>
+								<FormLabel>Display Name</FormLabel>
+								<Input
+									type='text'
+									onChange={(e) => setInputs({ ...inputs, name: e.target.value.replace(/[^a-zA-Z0-9_. ]/g, "") })}
+									value={inputs.name}
+									maxLength={30}
+								/>
+							</FormControl>
+						</Box>
+						<Box>
+							<FormControl isRequired>
+								<FormLabel>Username</FormLabel>
+								<Flex justify="center" gap={2}>
+									<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
 									<Input
 										type='text'
-										onChange={(e) => setInputs({ ...inputs, name: e.target.value.replace(/[^a-zA-Z0-9_. ]/g, "") })}
-										value={inputs.name}
-										maxLength={30}
+										onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
+										value={inputs.username}
+										maxLength={25}
 									/>
-								</FormControl>
-							</Box>
-							<Box>
-								<FormControl isRequired>
-									<FormLabel>Username</FormLabel>
-									<Flex justify="center" gap={2}>
-										<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
-										<Input
-											type='text'
-											onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
-											value={inputs.username}
-											maxLength={25}
-										/>
-									</Flex>
-								</FormControl>
-							</Box>
+								</Flex>
+							</FormControl>
+						</Box>
 						<FormControl isRequired>
 							<FormLabel>Email address</FormLabel>
 							<Input
