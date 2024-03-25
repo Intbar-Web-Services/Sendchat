@@ -64,7 +64,7 @@ const Header = () => {
 
 			{user && (
 				<>
-					<Flex alignItems={"center"} gap={9} paddingBottom="0.35rem">
+					<Flex alignItems={"center"} gap={9} paddingBottom="1rem">
 												<Link as={RouterLink} to={`/chat`}>
 													<BsFillChatQuoteFill size={28} />
 												</Link>

@@ -51,7 +51,7 @@ function App() {
 		<Header />
 		<Box position={"relative"} w='full'
 		mt="0rem"
-      p="4.5rem"
+      p="5rem"
 		>
 			<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
 				
