@@ -2,7 +2,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Portal } from "@chakra-ui/portal";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, useToast, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -13,6 +13,7 @@ const UserHeader = ({ user }) => {
 	const toast = useToast();
 	const currentUser = useRecoilValue(userAtom); // logged in user
 	const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+	const colorMode = useColorMode();
 
 	const copyURL = () => {
 		const currentURL = window.location.href;
@@ -36,7 +37,7 @@ const UserHeader = ({ user }) => {
 					</Text>
 					<Flex gap={2} alignItems={"center"}>
 						<Text fontSize={"sm"}>{user.username}</Text>
-						<Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
+						<Text fontSize={"xs"} bg={useColorModeValue("gray.300", "gray.dark")} color={"gray.light"} p={1} borderRadius={"full"}>
 							Sendchat 2.0
 						</Text>
 					</Flex>
