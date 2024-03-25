@@ -37,6 +37,17 @@ export const SettingsPage = () => {
 
 	return (
 		<>
+			<Flex
+                flex='70'
+                bg={useColorModeValue("gray.200", "gray.dark")}
+                borderRadius={"md"}
+                p={2}
+                flexDirection={"column"}
+            >
+				<Link to={"/download"}>
+					<Text my={1}>Download our official app for Windows!</Text>
+				</Link>
+			</Flex>
 			<Text my={1} fontWeight={"bold"}>
 				Theme
 			</Text>
@@ -61,11 +72,13 @@ export const SettingsPage = () => {
 			</Button>
 			<Divider my={4}/>
 
-			<Flex _hover={{
-				cursor: "pointer",
-				bg: useColorModeValue("gray.9000", "gray.dark"),
-				color: "white",
-			}}>
+			<Flex
+                flex='70'
+                bg={useColorModeValue("gray.200", "gray.dark")}
+                borderRadius={"md"}
+                p={2}
+                flexDirection={"column"}
+            >
 				<Link to={"/shortcuts"}>
 					<Text my={1}>Use Sendchat faster with Keyboard Shortcuts!</Text>
 				</Link>

@@ -68,13 +68,13 @@ const ChatPage = () => {
 			const res = await fetch(`/api/users/profile/${searchText}`);
 			const searchedUser = await res.json();
 			if (searchedUser.error) {
-				showToast("Error", searchedUser.error, "error");
+				showToast("Error", "Nobody matches this username, check for any typos", "error");
 				return;
 			}
 
 			const messagingYourself = searchedUser._id === currentUser._id;
 			if (messagingYourself) {
-				showToast("Error", "You cannot message yourself", "error");
+				showToast("Error", "You cannot chat with yourself", "error");
 				return;
 			}
 
@@ -134,11 +134,11 @@ const ChatPage = () => {
 			>
 				<Flex flex={30} gap={2} flexDirection={"column"} maxW={{ sm: "250px", md: "full" }} mx={"auto"}>
 					<Text fontWeight={700} color={useColorModeValue("gray.600", "gray.400")}>
-						Your Conversations
+						Your Chats
 					</Text>
 					<form onSubmit={handleConversationSearch}>
 						<Flex alignItems={"center"} gap={2}>
-							<Input placeholder='Search for a user' onChange={(e) => setSearchText(e.target.value)} />
+							<Input placeholder="Chat with anyone" onChange={(e) => setSearchText(e.target.value)} />
 							<Button size={"sm"} onClick={handleConversationSearch} isLoading={searchingUser}>
 								<SearchIcon />
 							</Button>

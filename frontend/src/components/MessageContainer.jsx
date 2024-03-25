@@ -118,7 +118,7 @@ const MessageContainer = () => {
 			<Link to={`/user/${selectedConversation.username}`}>
 			<Flex w={"full"} h={12} alignItems={"center"} gap={2} _hover={{
 				cursor: "pointer",
-				bg: useColorModeValue("gray.9000", "black.dark"),
+				bg: useColorModeValue("gray.50", "gray.500"),
 				color: "white",
 			}}>
 				<Avatar src={selectedConversation.userProfilePic} size={"sm"}
@@ -133,7 +133,7 @@ const MessageContainer = () => {
 					navigate(`/user/${selectedConversation.username}`);
 				}}
 				>
-					{selectedConversation.username}
+					{selectedConversation.name}
 				</Text>
 			</Flex>
 			</Link>

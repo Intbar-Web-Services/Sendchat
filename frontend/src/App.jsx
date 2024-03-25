@@ -5,6 +5,7 @@ import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
+import DownloadApp from "./pages/DownloadApp";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
@@ -71,6 +72,7 @@ function App() {
 					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
 					<Route path='/shortcuts' element={<Shortcuts />} />
 					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
+					<Route path='/download' element={<DownloadApp />} />
 				</Routes>
 			</Container>
 		</Box>
