@@ -1,1 +1,1 @@
-intbar is L ngl
+intbar is W ngl
