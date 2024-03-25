@@ -126,14 +126,13 @@ const MessageContainer = () => {
 					e.preventDefault();
 					navigate(`/user/${selectedConversation.username}`);
 				}} 
+				name={selectedConversation.name}
 				/>
-				<Text display={"flex"} alignItems={"center"}
-				onClick={(e) => {
-					e.preventDefault();
-					navigate(`/user/${selectedConversation.username}`);
-				}}
-				>
-					{selectedConversation.username}
+				<Text fontWeight='500' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white") }>
+					{selectedConversation.name}
+				</Text>
+				<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400") }>
+				{`(`}@{selectedConversation.username}{`)`}
 				</Text>
 			</Flex>
 			</Link>

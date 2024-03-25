@@ -180,6 +180,7 @@ const updateUser = async (req, res) => {
 				$set: {
 					"replies.$[reply].username": user.username,
 					"replies.$[reply].userProfilePic": user.profilePic,
+					"replies.$[reply].name": user.name
 				},
 			},
 			{ arrayFilters: [{ "reply.userId": userId }] }

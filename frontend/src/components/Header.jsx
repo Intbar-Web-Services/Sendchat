@@ -21,7 +21,6 @@ const Header = () => {
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 	const navigate = useNavigate()
-	console.log(user)
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'l') {
 			logout()

@@ -1,6 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
+import { useColorModeValue } from "@chakra-ui/react"
 import { Link, useNavigate } from "react-router-dom";
 import Actions from "./Actions";
 import { useEffect, useState } from "react";
@@ -113,16 +114,12 @@ const Post = ({ post, postedBy }) => {
 				</Flex>
 				<Flex flex={1} flexDirection={"column"} gap={2}>
 					<Flex justifyContent={"space-between"} w={"full"}>
-						<Flex w={"full"} alignItems={"center"}>
-							<Text
-								fontSize={"sm"}
-								fontWeight={"bold"}
-								onClick={(e) => {
-									e.preventDefault();
-									navigate(`/user/${user.username}`);
-								}}
-							>
-								{user?.username}
+						<Flex w={"full"} alignItems={"center"} gap={1.5}>
+							<Text fontSize='sm' fontWeight='bold'>
+								{user?.name}
+							</Text>
+							<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400")}>
+								{`(`}@{user?.username}{`)`}
 							</Text>
 						</Flex>
 						<Flex gap={4} alignItems={"center"}>

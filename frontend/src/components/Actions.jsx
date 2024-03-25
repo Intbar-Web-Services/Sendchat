@@ -215,7 +215,7 @@ const Actions = ({ post }) => {
 					<ModalBody pb={6}>
 						<FormControl>
 							<Input
-								placeholder='Reply goes here..'
+								placeholder='Type your reply here...'
 								value={reply}
 								onChange={(e) => setReply(e.target.value)}
 							/>

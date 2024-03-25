@@ -49,7 +49,6 @@ const ChatPage = () => {
 					showToast("Error", data.error, "error");
 					return;
 				}
-				console.log(data);
 				setConversations(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -87,7 +86,8 @@ const ChatPage = () => {
 					_id: conversationAlreadyExists._id,
 					userId: searchedUser._id,
 					username: searchedUser.username,
-					userProfilePic: searchedUser.profilePic,
+					name: searchedUser.name,
+					userProfilePic: searchedUser.profilePic
 				});
 				return;
 			}
@@ -103,7 +103,8 @@ const ChatPage = () => {
 					{
 						_id: searchedUser._id,
 						username: searchedUser.username,
-						profilePic: searchedUser.profilePic,
+						name: searchedUser.name,
+						profilePic: searchedUser.profilePic
 					},
 				],
 			};

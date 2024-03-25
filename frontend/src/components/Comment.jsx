@@ -1,4 +1,4 @@
-import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Divider, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Comment = ({ reply, lastReply }) => {
@@ -6,13 +6,16 @@ const Comment = ({ reply, lastReply }) => {
 		<>
 			<Flex gap={4} py={2} my={2} w={"full"}>
 				<Link to={`/user/${reply.username}`}>
-					<Avatar src={reply.userProfilePic} size={"sm"} />
+					<Avatar src={reply.userProfilePic} size={"sm"} name={reply.name} />
 				</Link>
 				<Flex gap={1} w={"full"} flexDirection={"column"}>
 					<Link to={`/user/${reply.username}`}>
-						<Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
+						<Flex w={"full"} gap={2} alignItems={"center"}>
 							<Text fontSize='sm' fontWeight='bold'>
-								{reply.username}
+								{reply.name}
+							</Text>
+							<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400")}>
+								{`(`}@{reply.username}{`)`}
 							</Text>
 						</Flex>
 					</Link>

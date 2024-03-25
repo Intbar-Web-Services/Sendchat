@@ -67,26 +67,28 @@ const PostPage = () => {
 	}
 
 	if (!currentPost) return null;
-	console.log("currentPost", currentPost);
 
 	return (
 		<>
 			<Flex justifyContent={"space-between"}>
 				<Link to={`/user/${user.username}`}>
-					<Flex 
-					w={"full"}
-					alignItems={"center"} 
-					gap={3}
-					_hover={{
-						cursor: "pointer",
-						bg: useColorModeValue("gray.9000", "black.dark"),
-						color: "white",
-					}}
+					<Flex
+						w={"full"}
+						alignItems={"center"}
+						gap={3}
+						_hover={{
+							cursor: "pointer",
+							bg: useColorModeValue("gray.9000", "black.dark"),
+							color: "white",
+						}}
 					>
 						<Avatar src={user.profilePic} size={"md"} name={user.name} />
-						<Flex>
-							<Text fontSize={"sm"} fontWeight={"bold"}>
-								{user.username}
+						<Flex gap={1.5}>
+							<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white")}>
+								{user.name}
+							</Text>
+							<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400")}>
+								{`(`}@{user.username}{`)`}
 							</Text>
 						</Flex>
 					</Flex>

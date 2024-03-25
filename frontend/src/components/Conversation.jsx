@@ -21,8 +21,6 @@ const Conversation = ({ conversation, isOnline }) => {
 	const lastMessage = conversation.lastMessage;
 	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
 	const colorMode = useColorMode();
-
-	console.log("selectedConverstion", selectedConversation);
 	return (
 		<Flex
 			gap={4}
@@ -38,6 +36,7 @@ const Conversation = ({ conversation, isOnline }) => {
 					_id: conversation._id,
 					userId: user._id,
 					userProfilePic: user.profilePic,
+					name: user.name,
 					username: user.username,
 					mock: conversation.mock,
 				})
@@ -55,14 +54,18 @@ const Conversation = ({ conversation, isOnline }) => {
 						md: "md",
 					}}
 					src={user.profilePic}
+					name={user.name}
 				>
 					{isOnline ? <AvatarBadge boxSize='1em' bg='green.500' /> : ""}
 				</Avatar>
 			</WrapItem>
 
-			<Stack direction={"column"} fontSize={"sm"}>
+			<Stack direction={"column"} fontSize={"sm"} spacing={0.8}>
 				<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white") }>
-					{user.username}
+					{user.name}
+				</Text>
+				<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400") }>
+				{`(`}@{user.username}{`)`}
 				</Text>
 				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1} color={useColorModeValue("black", "white") }>
 					{currentUser._id === lastMessage.sender ? (
