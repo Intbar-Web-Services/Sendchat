@@ -75,12 +75,15 @@ export default function LoginCard() {
 					<Stack spacing={4}>
 						<FormControl isRequired>
 							<FormLabel>Username</FormLabel>
-							<Input
-								type='text'
-								value={inputs.username}
-								onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") }))}
-								maxLength={25}
-							/>
+							<Flex justify="center" gap={2}>
+								<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
+								<Input
+									type='text'
+									value={inputs.username}
+									onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") }))}
+									maxLength={25}
+								/>
+							</Flex>
 						</FormControl>
 						<FormControl isRequired>
 							<FormLabel>Password</FormLabel>

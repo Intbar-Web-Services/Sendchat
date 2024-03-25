@@ -67,7 +67,7 @@ export default function SignupCard() {
 				</Stack>
 				<Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
 					<Stack spacing={4}>
-						<HStack>
+						
 							<Box>
 								<FormControl isRequired>
 									<FormLabel>Display Name</FormLabel>
@@ -82,15 +82,17 @@ export default function SignupCard() {
 							<Box>
 								<FormControl isRequired>
 									<FormLabel>Username</FormLabel>
-									<Input
-										type='text'
-										onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
-										value={inputs.username}
-										maxLength={25}
-									/>
+									<Flex justify="center" gap={2}>
+										<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
+										<Input
+											type='text'
+											onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
+											value={inputs.username}
+											maxLength={25}
+										/>
+									</Flex>
 								</FormControl>
 							</Box>
-						</HStack>
 						<FormControl isRequired>
 							<FormLabel>Email address</FormLabel>
 							<Input

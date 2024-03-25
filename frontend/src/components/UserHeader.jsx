@@ -36,7 +36,7 @@ const UserHeader = ({ user }) => {
 						{user.name}
 					</Text>
 					<Flex gap={2} alignItems={"center"}>
-						<Text fontSize={"sm"}>{user.username}</Text>
+						<Text fontSize={"sm"}>@{user.username}</Text>
 						<Text fontSize={"xs"} bg={useColorModeValue("gray.300", "gray.dark")} color={"gray.light"} p={1} borderRadius={"full"}>
 							Sendchat 2.0
 						</Text>

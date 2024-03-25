@@ -9,6 +9,7 @@ import {
 	useColorModeValue,
 	Avatar,
 	Center,
+	Text,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -99,13 +100,16 @@ export default function UpdateProfilePage() {
 					</FormControl>
 					<FormControl>
 						<FormLabel>Username</FormLabel>
-						<Input
-							placeholder='johndoe12'
-							value={inputs.username}
-							onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
-							type='text'
-							maxLength={25}
-						/>
+						<Flex justify="center" gap={2}>
+							<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
+							<Input
+								placeholder='johndoe12'
+								value={inputs.username}
+								onChange={(e) => setInputs({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") })}
+								type='text'
+								maxLength={25}
+							/>
+						</Flex>
 					</FormControl>
 					<FormControl>
 						<FormLabel>Email address</FormLabel>
