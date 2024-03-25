@@ -1,10 +1,10 @@
-import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text, useColorModeValue } from "@chakra-ui/react";
 import Actions from "../components/Actions";
 import { useEffect } from "react";
 import Comment from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import useShowToast from "../hooks/useShowToast";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -71,16 +71,26 @@ const PostPage = () => {
 
 	return (
 		<>
-			<Flex>
-				<Flex w={"full"} alignItems={"center"} gap={3}>
-					<Avatar src={user.profilePic} size={"md"} name='Mark Zuckerberg' />
-					<Flex>
-						<Text fontSize={"sm"} fontWeight={"bold"}>
-							{user.username}
-						</Text>
-						<Image src='/verified.png' w='4' h={4} ml={4} />
+			<Flex justifyContent={"space-between"}>
+				<Link to={`/user/${user.username}`}>
+					<Flex 
+					w={"full"}
+					alignItems={"center"} 
+					gap={3}
+					_hover={{
+						cursor: "pointer",
+						bg: useColorModeValue("gray.9000", "black.dark"),
+						color: "white",
+					}}
+					>
+						<Avatar src={user.profilePic} size={"md"} name='Mark Zuckerberg' />
+						<Flex>
+							<Text fontSize={"sm"} fontWeight={"bold"}>
+								{user.username}
+							</Text>
+						</Flex>
 					</Flex>
-				</Flex>
+				</Link>
 				<Flex gap={4} alignItems={"center"}>
 					<Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
 						{formatDistanceToNow(new Date(currentPost.createdAt))} ago

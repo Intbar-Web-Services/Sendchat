@@ -43,7 +43,7 @@ export const SettingsPage = () => {
 			<Button size={"sm"} colorScheme='yellow' onClick={toggleColorMode}>
 				Switch to {currentColorMode} mode
 			</Button>
-			<Divider />
+			<Divider my={4}/>
 			<Text my={1} fontWeight={"bold"}>
 				Log Out
 			</Text>
@@ -51,7 +51,7 @@ export const SettingsPage = () => {
 			<Button size={"sm"} colorScheme='red' onClick={logout}>
 				Log Out
 			</Button>
-			<Divider />
+			<Divider my={4}/>
 			<Text my={1} fontWeight={"bold"}>
 				Freeze Your Account
 			</Text>
@@ -59,7 +59,7 @@ export const SettingsPage = () => {
 			<Button size={"sm"} colorScheme='red' onClick={freezeAccount}>
 				Freeze
 			</Button>
-			<Divider />
+			<Divider my={4}/>
 
 			<Flex _hover={{
 				cursor: "pointer",

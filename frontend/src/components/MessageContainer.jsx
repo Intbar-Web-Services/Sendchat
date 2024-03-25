@@ -133,7 +133,7 @@ const MessageContainer = () => {
 					navigate(`/user/${selectedConversation.username}`);
 				}}
 				>
-					{selectedConversation.username} <Image src='/verified.png' w={4} h={4} ml={1} />
+					{selectedConversation.username}
 				</Text>
 			</Flex>
 			</Link>
