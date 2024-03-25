@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text, useColorModeValue } from "@chakra-ui/react";
+import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text, useColorModeValue, Stack } from "@chakra-ui/react";
 import Actions from "../components/Actions";
 import { useEffect } from "react";
 import Comment from "../components/Comment";
@@ -83,14 +83,14 @@ const PostPage = () => {
 						}}
 					>
 						<Avatar src={user.profilePic} size={"md"} name={user.name} />
-						<Flex gap={1.5}>
-							<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white")}>
+						<Stack w={"full"} alignItems={"left"} spacing={0}>
+							<Text fontSize='sm' fontWeight='bold'>
 								{user.name}
 							</Text>
 							<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400")}>
 								{`(`}@{user.username}{`)`}
 							</Text>
-						</Flex>
+						</Stack>
 					</Flex>
 				</Link>
 				<Flex gap={4} alignItems={"center"}>
