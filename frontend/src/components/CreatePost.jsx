@@ -78,6 +78,7 @@ const CreatePost = () => {
 			onClose();
 			setPostText("");
 			setImgUrl("");
+			navigate("/")
 			navigate(0);
 		} catch (error) {
 			showToast("Error", error, "error");
