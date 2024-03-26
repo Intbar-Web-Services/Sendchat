@@ -66,7 +66,7 @@ async function getMessages(req, res) {
 		});
 
 		if (!conversation) {
-			return res.status(404)
+			return res.status(404).json
 		}
 
 		const messages = await Message.find({
