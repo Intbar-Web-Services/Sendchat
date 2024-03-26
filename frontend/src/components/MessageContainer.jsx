@@ -113,6 +113,7 @@ const MessageContainer = () => {
 			borderRadius={"md"}
 			p={2}
 			flexDirection={"column"}
+			justifyContent={"space-between"}
 		>
 			{/* Message header */}
 			<Link to={`/user/${selectedConversation.username}`}>
