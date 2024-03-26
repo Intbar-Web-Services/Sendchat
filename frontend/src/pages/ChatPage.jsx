@@ -135,7 +135,7 @@ const ChatPage = () => {
 			>
 				<Flex flex={30} gap={2} flexDirection={"column"} maxW={{ sm: "250px", md: "full" }} mx={"auto"}>
 					<Text fontWeight={700} color={useColorModeValue("gray.600", "gray.400")}>
-						Your Chats
+						Your Sendchats
 					</Text>
 					<form onSubmit={handleConversationSearch}>
 						<Flex alignItems={"center"} gap={2}>
@@ -184,7 +184,9 @@ const ChatPage = () => {
 						height={"400px"}
 					>
 						<GiConversation size={100} />
-						<Text fontSize={20}>Select someone to start Sendchatting!</Text>
+						<Text fontSize={20}>Select someone to start chatting!</Text>
+						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>Hint: To start a new Sendchat,</Text>
+						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>type in a username in the search box.</Text>
 					</Flex>
 				)}
 
