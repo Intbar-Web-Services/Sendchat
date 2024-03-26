@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import SuggestedUsers from "../components/SuggestedUsers";
+import messageSound from "../assets/sounds/message.mp3";
 import { useSocket } from "../context/SocketContext";
 
 const HomePage = () => {
