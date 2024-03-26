@@ -18,7 +18,7 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { BsFillImageFill } from "react-icons/bs";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -86,6 +86,22 @@ const CreatePost = () => {
 			setLoading(false);
 		}
 	};
+
+	const handleKeyPress = useCallback((event) => {
+		if (event.altKey && event.key === 'n') {
+			onOpen();
+		}
+	}, []);
+
+	useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
+
+		// remove the event listener
+		return () => {
+			document.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [handleKeyPress]);
 
 	return (
 		<>
