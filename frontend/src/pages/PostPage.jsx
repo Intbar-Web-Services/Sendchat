@@ -79,7 +79,7 @@ const PostPage = () => {
 						_hover={{
 							cursor: "pointer",
 							bg: useColorModeValue("gray.9000", "black.dark"),
-							color: "white",
+							color: useColorModeValue("black.dark", "white"),
 						}}
 					>
 						<Avatar src={user.profilePic} size={"md"} name={user.name} />
