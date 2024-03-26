@@ -112,7 +112,7 @@ const Post = ({ post, postedBy }) => {
 						)}
 					</Box>
 				</Flex>
-				<Flex flex={1} flexDirection={"column"} gap={2}>
+				<Flex flex={1} flexDirection={"column"} gap={1}>
 					<Flex justifyContent={"space-between"} w={"full"}>
 						<Stack w={"full"} alignItems={"left"} spacing={0}>
 							<Text fontSize='sm' fontWeight='bold'>

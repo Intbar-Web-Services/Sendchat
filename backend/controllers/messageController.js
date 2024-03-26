@@ -84,7 +84,7 @@ async function getConversations(req, res) {
 	try {
 		const conversations = await Conversation.find({ participants: userId }).populate({
 			path: "participants",
-			select: "username profilePic",
+			select: "username profilePic name",
 		});
 
 		// remove the current user from the participants array
