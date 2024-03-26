@@ -66,7 +66,7 @@ async function getMessages(req, res) {
 		});
 
 		if (!conversation) {
-			return res.status(404).json({ error: "Chat started" });
+			return res.status(404).json({ success: "Chat started" });
 		}
 
 		const messages = await Message.find({
