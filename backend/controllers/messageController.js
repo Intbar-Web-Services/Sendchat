@@ -65,13 +65,17 @@ async function getMessages(req, res) {
 			participants: { $all: [userId, otherUserId] },
 		});
 
+		if (!conversation) {
+			return res.status(404).json({ error: "Chat started" });
+		}
+
 		const messages = await Message.find({
 			conversationId: conversation._id,
 		}).sort({ createdAt: 1 });
 
 		res.status(200).json(messages);
 	} catch (error) {
-		console.log(error.message)
+		res.status(500).json({ error: error.message });
 	}
 }
 
