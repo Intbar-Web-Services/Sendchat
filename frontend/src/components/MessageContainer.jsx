@@ -111,6 +111,7 @@ const MessageContainer = () => {
 			flex='70'
 			bg={useColorModeValue("gray.200", "gray.dark")}
 			borderRadius={"md"}
+			h={"530px"}
 			p={2}
 			flexDirection={"column"}
 		>
@@ -139,7 +140,7 @@ const MessageContainer = () => {
 
 			<Divider />
 
-			<Flex flexDir={"column"} gap={4} my={"auto"} p={2} height={"400px"} overflowY={"auto"}>
+			<Flex flexDir={"column"} gap={4} my={4} p={2} height={"400px"} overflowY={"auto"}>
 				{loadingMessages &&
 					[...Array(5)].map((_, i) => (
 						<Flex
