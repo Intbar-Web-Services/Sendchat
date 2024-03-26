@@ -5,11 +5,25 @@ import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import SuggestedUsers from "../components/SuggestedUsers";
+import { useSocket } from "../context/SocketContext";
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+	const { socket } = useSocket();
+	useEffect(() => {
+		socket.on("newMessage", () => {
+			// make a sound if the window is not focused
+			if (!document.hasFocus()) {
+				const sound = new Audio(messageSound);
+				sound.play();
+			}
+
+		});
+
+		return () => socket.off("newMessage");
+	}, [socket]);
 	useEffect(() => {
 		const getFeedPosts = async () => {
 			setLoading(true);

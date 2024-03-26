@@ -15,22 +15,8 @@ import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
-import { useSocket } from "./context/SocketContext";
 function App() {
 	const navigate = useNavigate();
-	const { socket } = useSocket();
-	useEffect(() => {
-		socket.on("newMessage", () => {
-			// make a sound if the window is not focused
-			if (!document.hasFocus()) {
-				const sound = new Audio(messageSound);
-				sound.play();
-			}
-
-		});
-
-		return () => socket.off("newMessage");
-	}, [socket]);
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
