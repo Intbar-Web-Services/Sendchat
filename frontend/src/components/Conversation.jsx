@@ -61,13 +61,13 @@ const Conversation = ({ conversation, isOnline }) => {
 			</WrapItem>
 
 			<Stack direction={"column"} fontSize={"sm"} spacing={0.8}>
-				<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white") }>
+				<Text fontWeight='700' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "white")}>
 					{user.name}
 				</Text>
-				<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400") }>
-				{`(`}@{user.username}{`)`}
+				<Text fontWeight='400' display={"flex"} alignItems={"center"} color={useColorModeValue("black", "gray.400")}>
+					@{user.username}
 				</Text>
-				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1} color={useColorModeValue("black", "white") }>
+				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1} color={useColorModeValue("black", "white")}>
 					{currentUser._id === lastMessage.sender ? (
 						<Box color={lastMessage.seen ? "blue.400" : ""}>
 							<BsCheck2All size={16} />

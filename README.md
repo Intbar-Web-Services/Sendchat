@@ -1,1 +1,1 @@
-intbar is W ngl
+intbar kinda sucks
