@@ -185,8 +185,8 @@ const ChatPage = () => {
 					>
 						<GiConversation size={100} />
 						<Text fontSize={20}>Select someone to start chatting!</Text>
-						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>Hint: To start a new Sendchat,</Text>
-						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>type in a username in the search box.</Text>
+						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>To start a new Sendchat,</Text>
+						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>Type a username in the search box.</Text>
 					</Flex>
 				)}
 
