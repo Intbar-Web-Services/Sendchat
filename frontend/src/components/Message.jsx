@@ -53,11 +53,11 @@ const Message = ({ ownMessage, message }) => {
 						</Flex>
 					)}
 
-					<Avatar src={user.profilePic} w='7' h={7} />
+					<Avatar src={user.profilePic} w='7' h={7} name={user.name} />
 				</Flex>
 			) : (
 				<Flex gap={2}>
-					<Avatar src={selectedConversation.userProfilePic} w='7' h={7} />
+					<Avatar src={selectedConversation.userProfilePic} w='7' h={7} name={selectedConversation.name} />
 
 					{message.text && (
 						<Text maxW={"350px"} bg={"gray.400"} p={1} borderRadius={"md"} color={"black"}>
