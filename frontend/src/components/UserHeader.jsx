@@ -3,17 +3,95 @@ import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Portal } from "@chakra-ui/portal";
 import { Button, useToast, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import useShowToast from "../hooks/useShowToast";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
+import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 
 const UserHeader = ({ user }) => {
 	const toast = useToast();
 	const currentUser = useRecoilValue(userAtom); // logged in user
 	const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
 	const colorMode = useColorMode();
+	const [searchingUser, setSearchingUser] = useState(false);
+	const [loadingConversations, setLoadingConversations] = useState(true);
+	const [searchText, setSearchText] = useState("");
+	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
+	const [conversations, setConversations] = useRecoilState(conversationsAtom);
+	const [newConversation, setNewConversation] = useRecoilState(newConversationAtom);
+	const showToast = useShowToast();
+	const navigate = useNavigate();
+
+	const handleConversationSearch = async (e) => {
+		e.preventDefault();
+		navigate("/chat")
+			
+		setSearchingUser(true);
+		try {
+			const res = await fetch(`/api/users/profile/${user.username}`);
+			const searchedUser = await res.json();
+			if (searchedUser.error) {
+				showToast("Error", "There was an issue starting a Sendchat with this user", "error");
+				return;
+			}
+
+			const conversationAlreadyExists = conversations.find(
+				(conversation) => conversation.participants[0]._id === searchedUser._id
+			);
+
+			if (conversationAlreadyExists) {
+				setSelectedConversation({
+					_id: conversationAlreadyExists._id,
+					userId: searchedUser._id,
+					username: searchedUser.username,
+					name: searchedUser.name,
+					userProfilePic: searchedUser.profilePic
+				});
+				return;
+			}
+
+			setNewConversation({
+				mock: true,
+				lastMessage: {
+					text: "",
+					sender: "",
+				},
+				_id: Date.now(),
+				participants: [
+					{
+						_id: searchedUser._id,
+						username: searchedUser.username,
+						name: searchedUser.name,
+						profilePic: searchedUser.profilePic
+					},
+				],
+			})
+
+			
+			function timeout(delay) {
+				return new Promise((resolve) => setTimeout(resolve, delay));
+			  }
+			await timeout(2000);
+			
+			setConversations((prevConvs) => [...prevConvs, newConversation]);
+			setSelectedConversation({
+				_id: searchedUser._id,
+				userId: searchedUser._id,
+				username: searchedUser.username,
+				name: searchedUser.name,
+				userProfilePic: searchedUser.profilePic
+			});
+		} catch (error) {
+			showToast("Error", error.message, "error");
+		} finally {
+			setSearchingUser(false);
+		}
+	};
 
 	const copyURL = () => {
 		const currentURL = window.location.href;
@@ -74,14 +152,17 @@ const UserHeader = ({ user }) => {
 				</Link>
 			)}
 			{currentUser?._id !== user._id && (
-				<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
-					{following ? "Unfollow" : "Follow"}
-				</Button>
+				<Flex gap={3}>
+					<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
+						{following ? "Unfollow" : "Follow"}
+					</Button>
+					<Button size={"sm"} onClick={handleConversationSearch}>Chat</Button>
+				</Flex>
 			)}
 			<Flex w={"full"} justifyContent={"space-between"}>
 				<Flex gap={2} alignItems={"center"}>
 					<Text color={"gray.light"}>{user.followers.length} followers</Text>
-			</Flex>
+				</Flex>
 				<Flex>
 					<Box className='icon-container'>
 						<Menu>

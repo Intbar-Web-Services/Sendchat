@@ -14,3 +14,22 @@ export const selectedConversationAtom = atom({
 		userProfilePic: ""
 	},
 });
+export const newConversationAtom = atom({
+	key: "newConversationAtom",
+	default: {
+		mock: true,
+		lastMessage: {
+			text: "",
+			sender: "",
+		},
+		_id: Date.now(),
+		participants: [
+			{
+				_id: "",
+				username: "",
+				name: "",
+				profilePic: ""
+			},
+		],
+	},
+})

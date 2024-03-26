@@ -6,7 +6,7 @@ import MessageContainer from "../components/MessageContainer";
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAtom";
+import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
 
@@ -16,6 +16,7 @@ const ChatPage = () => {
 	const [searchText, setSearchText] = useState("");
 	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
 	const [conversations, setConversations] = useRecoilState(conversationsAtom);
+	const [newConversation, setNewConversation] = useRecoilState(newConversationAtom);
 	const currentUser = useRecoilValue(userAtom);
 	const showToast = useShowToast();
 	const { socket, onlineUsers } = useSocket();
@@ -91,8 +92,7 @@ const ChatPage = () => {
 				});
 				return;
 			}
-
-			const mockConversation = {
+			setNewConversation({
 				mock: true,
 				lastMessage: {
 					text: "",
@@ -107,8 +107,9 @@ const ChatPage = () => {
 						profilePic: searchedUser.profilePic
 					},
 				],
-			};
-			setConversations((prevConvs) => [...prevConvs, mockConversation]);
+			})
+			
+			setConversations((prevConvs) => [...prevConvs, newConversation]);
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		} finally {
