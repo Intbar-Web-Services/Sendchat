@@ -129,7 +129,7 @@ const CreatePost = () => {
 								onChange={handleTextChange}
 								value={postText}
 							/>
-							<Text fontSize='xs' fontWeight='bold' textAlign={"right"} m={"1"} color={"gray.800"}>
+							<Text fontSize='xs' fontWeight='bold' textAlign={"right"} m={"1"} color={useColorModeValue("gray.800", "gray.300")}>
 								{remainingChar}/{MAX_CHAR}
 							</Text>
 
