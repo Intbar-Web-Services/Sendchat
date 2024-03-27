@@ -21,8 +21,8 @@ function App() {
 	const location = useLocation();
 	const { socket } = useSocket();
 	console.log(location.pathname);
-	useEffect(() => {
-		if (!location.pathname.includes("chat")) {
+	if (!location.pathname.includes("chat")) {
+		useEffect(() => {
 			if (socket) {
 				socket.on("newMessage", () => {
 
@@ -33,8 +33,8 @@ function App() {
 
 				return () => socket.off("newMessage");
 			}
-		}
-	}, [socket]);
+		}, [socket]);
+	}
 
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
