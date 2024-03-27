@@ -8,6 +8,7 @@ export default function Shortcuts() {
 			<h3>Ctrl + / - View Shortcuts</h3>
 			<h3>Alt + N - Create New Post {`(on pages where the Post button is visible)`}</h3>
 			<h3>Alt + R - Reply to Post {`(only when looking at a post's page)`}</h3>
+			<h3>Escape - Close the Post you are looking at {`(only when looking at a post's page)`}</h3>
 			<h3>Alt + H - Home Feed</h3>
 			<h3>Alt + C - Chats</h3>
 			<h3>Alt + L - Quick IWS Logout</h3>

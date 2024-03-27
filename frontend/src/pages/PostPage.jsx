@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text, useColorModeValue, Stack } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 import Actions from "../components/Actions";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import Comment from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import useShowToast from "../hooks/useShowToast";
@@ -20,6 +21,22 @@ const PostPage = () => {
 	const navigate = useNavigate();
 
 	const currentPost = posts[0];
+
+	const handleKeyPress = useCallback((event) => {
+		if (event.key === "Escape") {
+			navigate(-1);
+		}
+	}, []);
+
+	useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
+
+		// remove the event listener
+		return () => {
+			document.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [handleKeyPress]);
 
 	useEffect(() => {
 		const getPost = async () => {
@@ -66,10 +83,21 @@ const PostPage = () => {
 		);
 	}
 
+
 	if (!currentPost) return null;
 
 	return (
 		<>
+		<Button
+				position={"fixed"}
+				bottom={10}
+				right={5}
+				bg={useColorModeValue("gray.300", "gray.dark")}
+				onClick={() => {navigate(-1);}}
+				size={{ base: "sm", sm: "md" }}
+			>
+				<CloseIcon />
+			</Button>
 			<Flex justifyContent={"space-between"}>
 				<Link to={`/user/${user.username}`}>
 					<Flex

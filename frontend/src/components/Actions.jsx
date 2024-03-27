@@ -130,10 +130,11 @@ const Actions = ({ post }) => {
 
 	const handleKeyPress = useCallback((event) => {
 		if (location.pathname.includes("/post")) {
-		if (event.altKey && event.key === 'r') {
-			onOpen();
+			if (event.altKey && event.key === 'r') {
+				onOpen();
+			}
 		}
-	}}, []);
+	}, []);
 
 
 	useEffect(() => {
