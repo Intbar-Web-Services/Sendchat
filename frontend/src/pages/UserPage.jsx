@@ -7,6 +7,8 @@ import Post from "../components/Post";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
+import { useSocket } from "../context/SocketContext.jsx";
+import messageSound from "../assets/sounds/message.mp3";
 
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
@@ -14,6 +16,19 @@ const UserPage = () => {
 	const showToast = useShowToast();
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
+	const { socket } = useSocket();
+	useEffect(() => {
+		if (socket) {
+			socket.on("newMessage", () => {
+
+				// make a sound if the window is not focused
+				const sound = new Audio(messageSound);
+				sound.play();
+			});
+
+			return () => socket.off("newMessage");
+		}
+	}, [socket]);
 
 	useEffect(() => {
 		const getPosts = async () => {

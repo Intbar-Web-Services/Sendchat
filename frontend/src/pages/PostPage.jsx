@@ -11,6 +11,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import postsAtom from "../atoms/postsAtom";
+import { useSocket } from "../context/SocketContext.jsx";
+import messageSound from "../assets/sounds/message.mp3";
 
 const PostPage = () => {
 	const { user, loading } = useGetUserProfile();
@@ -19,6 +21,20 @@ const PostPage = () => {
 	const { pid } = useParams();
 	const currentUser = useRecoilValue(userAtom);
 	const navigate = useNavigate();
+	const { socket } = useSocket();
+	useEffect(() => {
+		if (socket) {
+			socket.on("newMessage", () => {
+
+				// make a sound if the window is not focused
+				const sound = new Audio(messageSound);
+				sound.play();
+			});
+
+			return () => socket.off("newMessage");
+		}
+	}, [socket]);
+	
 
 	const currentPost = posts[0];
 

@@ -16,6 +16,8 @@ import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
+import { useSocket } from "../context/SocketContext.jsx";
+import messageSound from "../assets/sounds/message.mp3";
 
 export default function UpdateProfilePage() {
 	const [user, setUser] = useRecoilState(userAtom);
@@ -28,6 +30,19 @@ export default function UpdateProfilePage() {
 	});
 	const fileRef = useRef(null);
 	const [updating, setUpdating] = useState(false);
+	const { socket } = useSocket();
+	useEffect(() => {
+		if (socket) {
+			socket.on("newMessage", () => {
+
+				// make a sound if the window is not focused
+				const sound = new Audio(messageSound);
+				sound.play();
+			});
+
+			return () => socket.off("newMessage");
+		}
+	}, [socket]);
 
 	const showToast = useShowToast();
 
