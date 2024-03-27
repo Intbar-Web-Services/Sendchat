@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import DownloadApp from "./pages/DownloadApp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
 import {useEffect, useCallback} from 'react'
@@ -15,8 +15,25 @@ import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
+import { useSocket } from "./context/SocketContext";
+import messageSound from "./assets/sounds/message.mp3"
 function App() {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { socket } = useSocket();
+	useEffect(() => {
+		if (socket && location.pathname !== "/chat") {
+		socket.on("newMessage", () => {
+
+			// make a sound if the window is not focused
+				const sound = new Audio(messageSound);
+				sound.play();
+		});
+
+		return () => socket.off("newMessage");
+	}
+	}, [socket]);
+
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
