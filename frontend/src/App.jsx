@@ -27,8 +27,7 @@ function App() {
 			const sound = new Audio(messageSound);
 			sound.play();
 		}
-	}
-};
+	};
 
 useEffect(() => {
 	if (socket) {
