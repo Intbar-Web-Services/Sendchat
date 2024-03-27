@@ -23,14 +23,8 @@ function App() {
 	console.log(location.pathname);
 
 	useEffect(() => {
-		if (socket) {
+		if (socket && location.pathname == "/") {
 			socket.on("newMessage", () => {
-
-				// make a sound if the window is not focused
-				if (location.pathname.includes("chat")) {
-
-					return () => socket.off("newMessage");
-				}
 				const sound = new Audio(messageSound);
 				sound.play();
 			});
