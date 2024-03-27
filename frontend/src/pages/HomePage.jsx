@@ -20,10 +20,8 @@ const HomePage = () => {
 		socket.on("newMessage", () => {
 
 			// make a sound if the window is not focused
-			if (!document.hasFocus()) {
 				const sound = new Audio(messageSound);
 				sound.play();
-			}
 		});
 
 		return () => socket.off("newMessage");
