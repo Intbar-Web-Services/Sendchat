@@ -15,8 +15,9 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useLocation } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
@@ -29,6 +30,7 @@ const Actions = ({ post }) => {
 	const [isReplying, setIsReplying] = useState(false);
 	const [reply, setReply] = useState("");
 	const toast = useToast();
+	let location = useLocation();
 
 	const showToast = useShowToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -125,6 +127,24 @@ const Actions = ({ post }) => {
 			setIsReplying(false);
 		}
 	};
+
+	const handleKeyPress = useCallback((event) => {
+		if (location.pathname.includes("/post")) {
+		if (event.altKey && event.key === 'r') {
+			onOpen();
+		}
+	}}, []);
+
+
+	useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
+
+		// remove the event listener
+		return () => {
+			document.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [handleKeyPress]);
 
 	return (
 		<Flex flexDirection='column'>
