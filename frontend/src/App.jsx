@@ -21,21 +21,22 @@ function App() {
 	const location = useLocation();
 	const { socket } = useSocket();
 	console.log(location.pathname);
-	
-		useEffect(() => {
-			if (socket) {
-				socket.on("newMessage", () => {
 
-					// make a sound if the window is not focused
-					if (!location.pathname.includes("chat")) {
-					const sound = new Audio(messageSound);
-					sound.play();
-					}
-				});
+	useEffect(() => {
+		if (socket) {
+			socket.on("newMessage", () => {
 
-				return () => socket.off("newMessage");
-			}
-		}, [socket]);
+				// make a sound if the window is not focused
+				if (!location.pathname.includes("chat")) {
+					return () => socket.off("newMessage");
+				}
+				const sound = new Audio(messageSound);
+				sound.play();
+			});
+
+			return () => socket.off("newMessage");
+		}
+	}, [socket]);
 
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
