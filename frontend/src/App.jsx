@@ -23,88 +23,87 @@ function App() {
 	console.log(location.pathname);
 
 	function makeNoise() {
-		if (!location.pathname.includes("chat")) {
-			const sound = new Audio(messageSound);
-			sound.play();
+
+	};
+
+	useEffect(() => {
+		if (socket) {
+			if (!location.pathname.includes("chat")) {
+				socket.on("newMessage", () => {
+					const sound = new Audio(messageSound);
+					sound.play();
+				});
+			}
+			return () => socket.off("newMessage");
 		}
-	};
+	}, [socket]);
 
-useEffect(() => {
-	if (socket) {
-		socket.on("newMessage", () => {
-			makeNoise();
-		});
+	const handleKeyPress = useCallback((event) => {
+		if (event.altKey && event.key === 'c') {
+			navigate("/chat")
+		}
+		if (event.altKey && event.key === 'h') {
+			navigate("/");
+		}
+		if (event.altKey && event.key === 's') {
+			navigate("/settings");
+		}
+		if (event.ctrlKey && event.key === ',') {
+			navigate("/update");
+		}
+		if (event.ctrlKey && event.key === '/') {
+			navigate("/shortcuts")
+		}
+	}, []);
 
-		return () => socket.off("newMessage");
-	}
-}, [socket]);
+	useEffect(() => {
+		// attach the event listener
+		document.addEventListener('keydown', handleKeyPress);
 
-const handleKeyPress = useCallback((event) => {
-	if (event.altKey && event.key === 'c') {
-		navigate("/chat")
-	}
-	if (event.altKey && event.key === 'h') {
-		navigate("/");
-	}
-	if (event.altKey && event.key === 's') {
-		navigate("/settings");
-	}
-	if (event.ctrlKey && event.key === ',') {
-		navigate("/update");
-	}
-	if (event.ctrlKey && event.key === '/') {
-		navigate("/shortcuts")
-	}
-}, []);
+		// remove the event listener
+		return () => {
+			document.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [handleKeyPress]);
+	const user = useRecoilValue(userAtom);
+	const { pathname } = useLocation();
+	return (
+		<>
+			<Header />
+			<Box position={"relative"} w='full'
+				mt="0rem"
+				p="5rem"
+			>
+				<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
 
-useEffect(() => {
-	// attach the event listener
-	document.addEventListener('keydown', handleKeyPress);
+					<Routes>
+						<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
+						<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
+						<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
 
-	// remove the event listener
-	return () => {
-		document.removeEventListener('keydown', handleKeyPress);
-	};
-}, [handleKeyPress]);
-const user = useRecoilValue(userAtom);
-const { pathname } = useLocation();
-return (
-	<>
-		<Header />
-		<Box position={"relative"} w='full'
-			mt="0rem"
-			p="5rem"
-		>
-			<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
-
-				<Routes>
-					<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
-					<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
-					<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
-
-					<Route
-						path='/user/:username'
-						element={
-							user ? (
-								<>
+						<Route
+							path='/user/:username'
+							element={
+								user ? (
+									<>
+										<UserPage />
+										<CreatePost />
+									</>
+								) : (
 									<UserPage />
-									<CreatePost />
-								</>
-							) : (
-								<UserPage />
-							)
-						}
-					/>
-					<Route path='/user/:username/post/:pid' element={<PostPage />} />
-					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
-					<Route path='/shortcuts' element={<Shortcuts />} />
-					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
-					<Route path='/download' element={<DownloadApp />} />
-				</Routes>
-			</Container>
-		</Box>
-	</>
-);
+								)
+							}
+						/>
+						<Route path='/user/:username/post/:pid' element={<PostPage />} />
+						<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
+						<Route path='/shortcuts' element={<Shortcuts />} />
+						<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
+						<Route path='/download' element={<DownloadApp />} />
+					</Routes>
+				</Container>
+			</Box>
+		</>
+	);
 }
 
 export default App;
