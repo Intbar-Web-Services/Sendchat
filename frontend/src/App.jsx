@@ -27,14 +27,15 @@ function App() {
 	};
 
 	useEffect(() => {
-		if (socket) {
-			if (!location.pathname.includes("chat")) {
+		if (!location.pathname.includes("chat")) {
+			if (socket) {
 				socket.on("newMessage", () => {
 					const sound = new Audio(messageSound);
 					sound.play();
 				});
+
+				return () => socket.off("newMessage");
 			}
-			return () => socket.off("newMessage");
 		}
 	}, [socket]);
 
