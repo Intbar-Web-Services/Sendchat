@@ -20,8 +20,9 @@ function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { socket } = useSocket();
+	console.log(location.pathname);
 	useEffect(() => {
-		if (!location.pathname.includes("/chat")) {
+		if (!location.pathname.includes("chat")) {
 			if (socket) {
 				socket.on("newMessage", () => {
 
@@ -29,9 +30,9 @@ function App() {
 					const sound = new Audio(messageSound);
 					sound.play();
 				});
-			}
 
-			return () => socket.off("newMessage");
+				return () => socket.off("newMessage");
+			}
 		}
 	}, [socket]);
 
