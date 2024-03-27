@@ -78,8 +78,8 @@ const CreatePost = () => {
 			onClose();
 			setPostText("");
 			setImgUrl("");
-			navigate("/")
-			navigate(0);
+			navigate("/");
+			setPosts([data, ...posts]);
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {
