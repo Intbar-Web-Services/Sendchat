@@ -168,7 +168,7 @@ const Actions = ({ post }) => {
 				</svg>
 
 				<svg
-					aria-label='Comment'
+					aria-label='Reply'
 					color=''
 					fill=''
 					height='20'
@@ -177,7 +177,7 @@ const Actions = ({ post }) => {
 					width='20'
 					onClick={onOpen}
 				>
-					<title>Comment</title>
+					<title>Reply</title>
 					<path
 						d='M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z'
 						fill='none'
