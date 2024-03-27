@@ -8,7 +8,7 @@ import AuthPage from "./pages/AuthPage";
 import DownloadApp from "./pages/DownloadApp";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
-import {useEffect, useCallback} from 'react'
+import { useEffect, useCallback } from 'react'
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
@@ -21,22 +21,24 @@ function App() {
 	const location = useLocation();
 	const { socket } = useSocket();
 	useEffect(() => {
-		if (socket && location.pathname.includes("/chat") === false) {
-		socket.on("newMessage", () => {
+		if (!location.pathname.includes("/chat")) {
+			if (socket) {
+				socket.on("newMessage", () => {
 
-			// make a sound if the window is not focused
-				const sound = new Audio(messageSound);
-				sound.play();
-		});
+					// make a sound if the window is not focused
+					const sound = new Audio(messageSound);
+					sound.play();
+				});
+			}
 
-		return () => socket.off("newMessage");
-	}
+			return () => socket.off("newMessage");
+		}
 	}, [socket]);
 
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
-		  }
+		}
 		if (event.altKey && event.key === 'h') {
 			navigate("/");
 		}
@@ -49,54 +51,54 @@ function App() {
 		if (event.ctrlKey && event.key === '/') {
 			navigate("/shortcuts")
 		}
-	  }, []);
-	
-	  useEffect(() => {
+	}, []);
+
+	useEffect(() => {
 		// attach the event listener
 		document.addEventListener('keydown', handleKeyPress);
-	
+
 		// remove the event listener
 		return () => {
-		  document.removeEventListener('keydown', handleKeyPress);
+			document.removeEventListener('keydown', handleKeyPress);
 		};
-	  }, [handleKeyPress]);
+	}, [handleKeyPress]);
 	const user = useRecoilValue(userAtom);
 	const { pathname } = useLocation();
 	return (
 		<>
-		<Header />
-		<Box position={"relative"} w='full'
-		mt="0rem"
-      p="5rem"
-		>
-			<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
-				
-				<Routes>
-					<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
-					<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
-					<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
+			<Header />
+			<Box position={"relative"} w='full'
+				mt="0rem"
+				p="5rem"
+			>
+				<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
 
-					<Route
-						path='/user/:username'
-						element={
-							user ? (
-								<>
+					<Routes>
+						<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
+						<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
+						<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
+
+						<Route
+							path='/user/:username'
+							element={
+								user ? (
+									<>
+										<UserPage />
+										<CreatePost />
+									</>
+								) : (
 									<UserPage />
-									<CreatePost />
-								</>
-							) : (
-								<UserPage />
-							)
-						}
-					/>
-					<Route path='/user/:username/post/:pid' element={<PostPage />} />
-					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
-					<Route path='/shortcuts' element={<Shortcuts />} />
-					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
-					<Route path='/download' element={<DownloadApp />} />
-				</Routes>
-			</Container>
-		</Box>
+								)
+							}
+						/>
+						<Route path='/user/:username/post/:pid' element={<PostPage />} />
+						<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
+						<Route path='/shortcuts' element={<Shortcuts />} />
+						<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
+						<Route path='/download' element={<DownloadApp />} />
+					</Routes>
+				</Container>
+			</Box>
 		</>
 	);
 }
