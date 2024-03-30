@@ -29,7 +29,7 @@ cloudinary.config({
 app.use(
   cors({
     credentials: true,
-    origin: "*", // your_frontend_domain, it's an example
+    origin: "https://localhost:3000", // your_frontend_domain, it's an example
   })
 );
 
