@@ -9,7 +9,6 @@ import messageRoutes from "./routes/messageRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./socket/socket.js";
 import job from "./cron/cron.js";
-import cors from "cors";
 
 dotenv.config();
 
@@ -26,18 +25,6 @@ cloudinary.config({
 });
 
 // Middlewares
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://localhost:3000", // your_frontend_domain, it's an example
-  })
-);
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "*"); // your_frontend_domain, it's an example
-  next();
-});
 app.use(express.json({ limit: "50mb" })); // To parse JSON data in the req.body
 app.use(express.urlencoded({ extended: true })); // To parse form data in the req.body
 app.use(cookieParser());
