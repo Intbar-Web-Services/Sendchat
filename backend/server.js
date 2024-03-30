@@ -25,6 +25,18 @@ cloudinary.config({
 });
 
 // Middlewares
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5501", // your_frontend_domain, it's an example
+  })
+);
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // your_frontend_domain, it's an example
+  next();
+});
 app.use(express.json({ limit: "50mb" })); // To parse JSON data in the req.body
 app.use(express.urlencoded({ extended: true })); // To parse form data in the req.body
 app.use(cookieParser());
@@ -42,8 +54,6 @@ if (process.env.NODE_ENV === "production") {
   // react app
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5501");
   });
 }
 
