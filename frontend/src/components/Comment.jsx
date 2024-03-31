@@ -1,5 +1,6 @@
 import { Avatar, Divider, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Linkify from "react-linkify";
 
 const Comment = ({ reply, lastReply }) => {
 	return (
@@ -19,7 +20,15 @@ const Comment = ({ reply, lastReply }) => {
 							</Text>
 						</Flex>
 					</Link>
-					<Text>{reply.text}</Text>
+					<Linkify
+						componentDecorator={(decoratedHref, decoratedText, key) => (
+							<a target="blank" href={decoratedHref} key={key}>
+								{decoratedText}
+							</a>
+						)}
+					>
+						<Text>{reply.text}</Text>
+					</Linkify>
 				</Flex>
 			</Flex>
 			{!lastReply ? <Divider /> : null}

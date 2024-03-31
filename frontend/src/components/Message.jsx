@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
 import { useState } from "react";
+import Linkify from "react-linkify";
 
 const Message = ({ ownMessage, message }) => {
 	const selectedConversation = useRecoilValue(selectedConversationAtom);
@@ -15,7 +16,15 @@ const Message = ({ ownMessage, message }) => {
 				<Flex gap={2} alignSelf={"flex-end"}>
 					{message.text && (
 						<Flex bg={"green.800"} maxW={"350px"} p={1} borderRadius={"md"}>
-							<Text color={"white"}>{message.text}</Text>
+							<Linkify
+								componentDecorator={(decoratedHref, decoratedText, key) => (
+									<a target="blank" href={decoratedHref} key={key}>
+										{decoratedText}
+									</a>
+								)}
+							>
+								<Text color={"white"}>{message.text}</Text>
+							</Linkify>
 							<Box
 								alignSelf={"flex-end"}
 								ml={1}
@@ -60,9 +69,17 @@ const Message = ({ ownMessage, message }) => {
 					<Avatar src={selectedConversation.userProfilePic} w='7' h={7} name={selectedConversation.name} />
 
 					{message.text && (
-						<Text maxW={"350px"} bg={"gray.400"} p={1} borderRadius={"md"} color={"black"}>
-							{message.text}
-						</Text>
+						<Linkify
+							componentDecorator={(decoratedHref, decoratedText, key) => (
+								<a target="blank" href={decoratedHref} key={key}>
+									{decoratedText}
+								</a>
+							)}
+						>
+							<Text maxW={"350px"} bg={"gray.400"} p={1} borderRadius={"md"} color={"black"}>
+								{message.text}
+							</Text>
+						</Linkify>
 					)}
 					{message.img && !imgLoaded && (
 						<Flex mt={5} w={"200px"}>

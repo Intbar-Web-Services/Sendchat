@@ -11,6 +11,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
+import Linkify from "react-linkify";
 
 const Post = ({ post, postedBy }) => {
 	const [user, setUser] = useState(null);
@@ -60,8 +61,9 @@ const Post = ({ post, postedBy }) => {
 
 	if (!user) return null;
 	return (
-		<Link to={`/user/${user.username}/post/${post._id}`}>
-			<Flex gap={3} mb={4} py={5}>
+
+		<Flex gap={3} mb={4} py={5}>
+			<Link to={`/user/${user.username}/post/${post._id}`}>
 				<Flex flexDirection={"column"} alignItems={"center"}>
 					<Avatar
 						size='md'
@@ -112,7 +114,9 @@ const Post = ({ post, postedBy }) => {
 						)}
 					</Box>
 				</Flex>
-				<Flex flex={1} flexDirection={"column"} gap={1}>
+			</Link>
+			<Flex flex={1} flexDirection={"column"} gap={1}>
+				<Link to={`/user/${user.username}/post/${post._id}`}>
 					<Flex justifyContent={"space-between"} w={"full"}>
 						<Stack w={"full"} alignItems={"left"} spacing={0}>
 							<Text fontSize='sm' fontWeight='bold'>
@@ -130,8 +134,17 @@ const Post = ({ post, postedBy }) => {
 							{currentUser?._id === user._id && <DeleteIcon size={20} onClick={handleDeletePost} />}
 						</Flex>
 					</Flex>
-
-					<Text fontSize={"sm"}>{post.text}</Text>
+				</Link>
+				<Linkify
+					componentDecorator={(decoratedHref, decoratedText, key) => (
+						<a target="blank" href={decoratedHref} key={key}>
+							{decoratedText}
+						</a>
+					)}
+				>
+					<Text fontSize={"sm"} zIndex={1}>{post.text}</Text>
+				</Linkify>
+				<Link to={`/user/${user.username}/post/${post._id}`}>
 					{post.img && (
 						<Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
 							<Image src={post.img} w={"full"} />
@@ -141,9 +154,10 @@ const Post = ({ post, postedBy }) => {
 					<Flex gap={3} my={1}>
 						<Actions post={post} />
 					</Flex>
-				</Flex>
+				</Link>
 			</Flex>
-		</Link>
+		</Flex>
+
 	);
 };
 

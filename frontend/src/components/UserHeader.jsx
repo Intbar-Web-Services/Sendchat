@@ -12,6 +12,7 @@ import userAtom from "../atoms/userAtom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
 import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
+import Linkify from "react-linkify";
 
 const UserHeader = ({ user }) => {
 	const toast = useToast();
@@ -30,7 +31,7 @@ const UserHeader = ({ user }) => {
 	const handleConversationSearch = async (e) => {
 		e.preventDefault();
 		navigate("/chat")
-			
+
 		setSearchingUser(true);
 		try {
 			const res = await fetch(`/api/users/profile/${user.username}`);
@@ -72,12 +73,12 @@ const UserHeader = ({ user }) => {
 				],
 			})
 
-			
+
 			function timeout(delay) {
 				return new Promise((resolve) => setTimeout(resolve, delay));
-			  }
+			}
 			await timeout(2000);
-			
+
 			setConversations((prevConvs) => [...prevConvs, newConversation]);
 			setSelectedConversation({
 				_id: searchedUser._id,
@@ -143,8 +144,15 @@ const UserHeader = ({ user }) => {
 					)}
 				</Box>
 			</Flex>
-
-			<Text>{user.bio}</Text>
+			<Linkify
+				componentDecorator={(decoratedHref, decoratedText, key) => (
+					<a target="blank" href={decoratedHref} key={key}>
+						{decoratedText}
+					</a>
+				)}
+			>
+				<Text>{user.bio}</Text>
+			</Linkify>
 
 			{currentUser?._id === user._id && (
 				<Link as={RouterLink} to='/update'>

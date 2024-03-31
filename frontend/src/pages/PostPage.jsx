@@ -13,6 +13,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import postsAtom from "../atoms/postsAtom";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
+import Linkify from "react-linkify";
 
 const PostPage = () => {
 	const { user, loading } = useGetUserProfile();
@@ -34,7 +35,7 @@ const PostPage = () => {
 			return () => socket.off("newMessage");
 		}
 	}, [socket]);
-	
+
 
 	const currentPost = posts[0];
 
@@ -104,12 +105,12 @@ const PostPage = () => {
 
 	return (
 		<>
-		<Button
+			<Button
 				position={"fixed"}
 				bottom={10}
 				right={5}
 				bg={useColorModeValue("gray.300", "gray.dark")}
-				onClick={() => {navigate(-1);}}
+				onClick={() => { navigate(-1); }}
 				size={{ base: "sm", sm: "md" }}
 			>
 				<CloseIcon />
@@ -147,8 +148,15 @@ const PostPage = () => {
 					)}
 				</Flex>
 			</Flex>
-
-			<Text my={3}>{currentPost.text}</Text>
+			<Linkify
+				componentDecorator={(decoratedHref, decoratedText, key) => (
+					<a target="blank" href={decoratedHref} key={key}>
+						{decoratedText}
+					</a>
+				)}
+			>
+				<Text my={3}>{currentPost.text}</Text>
+			</Linkify>
 
 			{currentPost.img && (
 				<Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
