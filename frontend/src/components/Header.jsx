@@ -12,6 +12,9 @@ import authScreenAtom from "../atoms/authAtom";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 
 const Header = () => {
+	const userAgent = navigator.userAgent;
+	const shouldRenderComponent = !userAgent.includes('electron') && !userAgent.includes('Mobile');
+	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
@@ -98,9 +101,14 @@ const Header = () => {
 													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate(`/user/${user.username}`)) }}>
 														Your Profile
 													</MenuItem>
-													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
-														Keyboard Shortcuts
-													</MenuItem>
+													{shouldRenderComponent &&
+														(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/download")) }}>
+															Download Desktop App
+														</MenuItem>)}
+													{shouldRenderShortcuts &&
+														(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
+															Keyboard Shortcuts
+														</MenuItem>)}
 													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/settings")) }}>
 														Settings
 													</MenuItem>

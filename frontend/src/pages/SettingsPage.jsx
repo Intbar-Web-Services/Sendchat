@@ -6,6 +6,8 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 export const SettingsPage = () => {
+	const userAgent = navigator.userAgent;
+	const shouldRenderShortcuts = !userAgent.includes('Mobile');
 	const showToast = useShowToast();
 	const logout = useLogout();
 	const navigate = useNavigate();
@@ -51,19 +53,22 @@ export const SettingsPage = () => {
 			<Button size={"sm"} colorScheme='red' onClick={freezeAccount}>
 				Freeze
 			</Button>
-			<Divider my={4} />
+			{shouldRenderShortcuts && (
+				<>
+					<Divider my={4} />
 
-			<Flex
-				flex='70'
-				bg={useColorModeValue("gray.200", "gray.dark")}
-				borderRadius={"md"}
-				p={2}
-				flexDirection={"column"}
-			>
-				<Link to={"/shortcuts"}>
-					<Text my={1}>Use Sendchat faster with Keyboard Shortcuts!</Text>
-				</Link>
-			</Flex>
+					<Flex
+						flex='70'
+						bg={useColorModeValue("gray.200", "gray.dark")}
+						borderRadius={"md"}
+						p={2}
+						flexDirection={"column"}
+					>
+						<Link to={"/shortcuts"}>
+							<Text my={1}>Use Sendchat faster with Keyboard Shortcuts!</Text>
+						</Link>
+					</Flex>
+				</>)}
 		</>
 	);
 };
