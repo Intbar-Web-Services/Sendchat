@@ -74,7 +74,7 @@ const Post = ({ post, postedBy }) => {
 							navigate(`/user/${user.username}`);
 						}}
 					/>
-					<Box w='1px' h={"full"} bg='gray.light' my={2}></Box>
+					<Box w='1px' h={"70px"} bg='gray.light' my={2}></Box>
 					<Box position={"relative"} w={"full"}>
 						{post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
 						{post.replies[0] && (
