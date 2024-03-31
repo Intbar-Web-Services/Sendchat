@@ -43,73 +43,74 @@ const Header = () => {
 	}, [handleKeyPress]);
 
 	return (
-		
+
 		<Flex justifyContent={"center"} mt={0} mb='9' gap={6}
-		
-		position="fixed" zIndex="1" left={0}
-      right={0}
-      backgroundColor={useColorModeValue("gray.100", "#101010")}
-	  paddingTop="1rem"
-	  >
+
+			position="fixed" zIndex="1" left={0}
+			right={0}
+			backgroundColor={useColorModeValue("gray.100", "#101010")}
+			paddingTop="1rem"
+			style={{ webkitAppRegion: 'drag' }}
+		>
 			{!user && (
-				<Link as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("login")}>
-					Login
-				</Link>
+				<Flex alignItems={"center"} gap={9} paddingBottom="1.85rem">
+					<Link paddingTop="0.7rem" as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("login")} style={{ webkitAppRegion: 'no-drag' }}>
+						Login
+					</Link>
+				</Flex>
 			)}
 
 
 			{user && (
 				<>
 					<Flex alignItems={"center"} gap={9} paddingBottom="1rem">
-												<Link as={RouterLink} to={`/chat`}>
-													<BsFillChatQuoteFill size={28} />
-												</Link>
-										{user && (
-											<Link as={RouterLink} to='/'>
-												<Image
-													cursor={"pointer"}
-													alt='logo'
-													w={12}
-													h={12}
-													src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
-												/>
-											</Link>
-										)}
+						<Link as={RouterLink} to={`/chat`} style={{ webkitAppRegion: 'no-drag' }}>
+							<BsFillChatQuoteFill size={28} />
+						</Link>
+						{user && (
+							<Link as={RouterLink} to='/'>
+								<Image
+									cursor={"pointer"}
+									alt='logo'
+									w={12}
+									h={12}
+									src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
+									style={{ webkitAppRegion: 'no-drag' }}
+								/>
+							</Link>
+						)}
 						<Flex>
-							<Box className='icon-container'>
-								<Menu>
-								{({ onClose }) => (
-									<>
-									<MenuButton>
-										<Avatar
-											size={
-												"s"
-											}
-											name={user.name}
-											src={user.profilePic}
-										/>
-									</MenuButton>
-									<Portal>
-										<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate(`/user/${user.username}`))}}>
-												Your Profile
-											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/shortcuts"))}}>
-												Keyboard Shortcuts
-											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/download"))}}>
-												Download App
-											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => {onClose(); useEffect(navigate("/settings"))}}>
-												Settings
-											</MenuItem>
-											<MenuItem bg={"gray.dark"} color={"red"} onClick={() => {logout(); navigate("/")}} closeOnSelect={true}>
-												Log Out
-											</MenuItem>
-										</MenuList>
-									</Portal>
-									</>
-)}
+							<Box className='icon-container' style={{ webkitAppRegion: 'no-drag' }}>
+								<Menu style={{ webkitAppRegion: 'no-drag' }}>
+									{({ onClose }) => (
+										<>
+											<MenuButton>
+												<Avatar
+													size={
+														"s"
+													}
+													name={user.name}
+													src={user.profilePic}
+												/>
+											</MenuButton>
+											<Portal>
+												<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
+													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate(`/user/${user.username}`)) }}>
+														Your Profile
+													</MenuItem>
+													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
+														Keyboard Shortcuts
+													</MenuItem>
+													<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/settings")) }}>
+														Settings
+													</MenuItem>
+													<MenuItem bg={"gray.dark"} color={"red"} onClick={() => { logout(); navigate("/") }} closeOnSelect={true}>
+														Log Out
+													</MenuItem>
+												</MenuList>
+											</Portal>
+										</>
+									)}
 								</Menu>
 							</Box>
 						</Flex>
@@ -118,7 +119,7 @@ const Header = () => {
 			)}
 
 			{!user && (
-				<Link as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("signup")}>
+				<Link paddingTop="0.7rem" as={RouterLink} to={"/auth"} onClick={() => setAuthScreen("signup")} style={{ webkitAppRegion: 'no-drag' }}>
 					Sign up
 				</Link>
 			)}
