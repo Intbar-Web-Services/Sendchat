@@ -13,7 +13,7 @@ import { BsFillChatQuoteFill } from "react-icons/bs";
 
 const Header = () => {
 	const userAgent = navigator.userAgent;
-	const shouldRenderComponent = !userAgent.includes('electron') && !userAgent.includes('Mobile');
+	const shouldRenderComponent = !userAgent.includes('Electron') && !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
 	const user = useRecoilValue(userAtom);
