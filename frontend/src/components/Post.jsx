@@ -74,44 +74,45 @@ const Post = ({ post, postedBy }) => {
 							navigate(`/user/${user.username}`);
 						}}
 					/>
-					<Box w='1px' h={"full"} bg='gray.light' my={2}></Box>
-					<Box position={"relative"} w={"full"}>
-						{post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
-						{post.replies[0] && (
-							<Avatar
-								size='xs'
-								name={post.replies[0].name}
-								src={post.replies[0].userProfilePic}
-								position={"absolute"}
-								top={"0px"}
-								left='15px'
-								padding={"2px"}
-							/>
-						)}
+					<Box w='1px' h={"full"} bg='gray.light' my={2}>
+						<Box position={"relative"} w={"full"}>
+							{post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
+							{post.replies[0] && (
+								<Avatar
+									size='xs'
+									name={post.replies[0].name}
+									src={post.replies[0].userProfilePic}
+									position={"absolute"}
+									top={"0px"}
+									left='15px'
+									padding={"2px"}
+								/>
+							)}
 
-						{post.replies[1] && (
-							<Avatar
-								size='xs'
-								name={post.replies[1].name}
-								src={post.replies[1].userProfilePic}
-								position={"absolute"}
-								bottom={"0px"}
-								right='-5px'
-								padding={"2px"}
-							/>
-						)}
+							{post.replies[1] && (
+								<Avatar
+									size='xs'
+									name={post.replies[1].name}
+									src={post.replies[1].userProfilePic}
+									position={"absolute"}
+									bottom={"0px"}
+									right='-5px'
+									padding={"2px"}
+								/>
+							)}
 
-						{post.replies[2] && (
-							<Avatar
-								size='xs'
-								name={post.replies[2].name}
-								src={post.replies[2].userProfilePic}
-								position={"absolute"}
-								bottom={"0px"}
-								left='4px'
-								padding={"2px"}
-							/>
-						)}
+							{post.replies[2] && (
+								<Avatar
+									size='xs'
+									name={post.replies[2].name}
+									src={post.replies[2].userProfilePic}
+									position={"absolute"}
+									bottom={"0px"}
+									left='4px'
+									padding={"2px"}
+								/>
+							)}
+						</Box>
 					</Box>
 				</Flex>
 			</Link>
