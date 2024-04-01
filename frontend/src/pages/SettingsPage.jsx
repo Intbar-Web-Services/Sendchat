@@ -8,6 +8,16 @@ import { useEffect } from "react";
 export const SettingsPage = () => {
 	const userAgent = navigator.userAgent;
 	const shouldRenderShortcuts = !userAgent.includes('Mobile');
+	let versionType = "";
+	if (userAgent.includes('Electron')) {
+		versionType = "Sendchat Desktop for Windows"
+	}
+	if (userAgent.includes('Web')) {
+		versionType = "Sendchat for Web"
+	}
+	if (userAgent.includes('Mobile')) {
+		versionType = "Sendchat Web for Mobile"
+	}
 	const showToast = useShowToast();
 	const logout = useLogout();
 	const navigate = useNavigate();
@@ -69,6 +79,7 @@ export const SettingsPage = () => {
 						</Link>
 					</Flex>
 				</>)}
+			<Text my={1} fontSize={12} color={useColorModeValue("gray.500", "gray.400")}>You're using {versionType}</Text>
 		</>
 	);
 };
