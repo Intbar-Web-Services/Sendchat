@@ -2,11 +2,11 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Portal } from "@chakra-ui/portal";
-import { Button, useToast, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { Button, useToast, useColorMode, useColorModeValue, Select } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { CgMoreO } from "react-icons/cg";
+import { CgMoreO, CgArrowDown } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -27,6 +27,31 @@ const UserHeader = ({ user }) => {
 	const [newConversation, setNewConversation] = useRecoilState(newConversationAtom);
 	const showToast = useShowToast();
 	const navigate = useNavigate();
+	const [followerNames, setFollowerNames] = useState([]);
+
+
+	useEffect(() => {
+		async function fetchFollowerData() {
+			const names = [];
+
+			for (const followerId of user.followers) {
+				try {
+					const response = await fetch(`/api/users/profile/${followerId}`);
+					const userData = await response.json();
+					const userName = userData.username;
+					if (userName) {
+						names.push(userName);
+					}
+				} catch (error) {
+					showToast('Error', 'There was an issue getting this persons followers..', 'error');
+				}
+			}
+
+			setFollowerNames(names);
+		}
+
+		fetchFollowerData();
+	}, [user.followers]);
 
 	const handleConversationSearch = async (e) => {
 		e.preventDefault();
@@ -168,8 +193,24 @@ const UserHeader = ({ user }) => {
 				</Flex>
 			)}
 			<Flex w={"full"} justifyContent={"space-between"}>
-				<Flex gap={2} alignItems={"center"}>
+				<Flex gap={0.2} alignItems={"center"}>
 					<Text color={"gray.light"}>{user.followers.length} followers</Text>
+					{!user.followers.length == 0 && (
+						<Box className='icon-container' paddingTop="0.5rem">
+							<Menu>
+								<MenuButton>
+									<CgArrowDown size={24} cursor={"pointer"} />
+								</MenuButton>
+								<Portal>
+									<MenuList bg={"gray.dark"}>
+										{followerNames.slice(0, 6).map((name, index) => (
+											<MenuItem key={index} bg={"gray.dark"} color={"white"} onClick={() => navigate(`/user/${name}`)}>@{name}</MenuItem>
+										))}
+									</MenuList>
+								</Portal>
+							</Menu>
+						</Box>
+					)}
 				</Flex>
 				<Flex>
 					<Box className='icon-container'>
@@ -188,7 +229,6 @@ const UserHeader = ({ user }) => {
 					</Box>
 				</Flex>
 			</Flex>
-
 			<Flex w={"full"}>
 				<Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb='3' cursor={"pointer"}>
 					<Text fontWeight={"bold"}> Posts</Text>
