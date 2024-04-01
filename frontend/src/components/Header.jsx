@@ -104,7 +104,7 @@ const Header = () => {
 														</MenuItem>
 														{shouldRenderComponent &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/download")) }}>
-																Download Desktop App
+																Get Desktop App
 															</MenuItem>)}
 														{shouldRenderShortcuts &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
@@ -141,7 +141,7 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1rem"
 				>
-					<Button onClick={() => { navigate("/download") }}>Download App</Button>
+					<Button onClick={() => { navigate("/download") }}>Get Desktop App</Button>
 				</Flex>
 			)}
 		</>
