@@ -41,8 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 				<ChakraProvider theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<SocketContextProvider>
-						{/* <App /> */}
-						<p>Sendchat 4.2</p>
+						<App />
 					</SocketContextProvider>
 				</ChakraProvider>
 			</BrowserRouter>
