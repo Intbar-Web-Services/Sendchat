@@ -17,7 +17,7 @@ import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 function App() {
 	let versionType = "";
-	if (window.userAgent.includes('WebView2')) {
+	if (navigator.userAgent.includes('WebView2')) {
 		versionType = "Windows11"
 	}
 	const navigate = useNavigate();
