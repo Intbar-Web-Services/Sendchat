@@ -16,6 +16,10 @@ import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 function App() {
+	versionType = "";
+	if (userAgent.includes('WebView2')) {
+		versionType = "Windows11"
+	}
 	const navigate = useNavigate();
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
@@ -48,7 +52,8 @@ function App() {
 	const { pathname } = useLocation();
 	return (
 		<>
-		<Header />
+		{ versionType != "Windows11" &&
+		<Header /> }
 		<Box position={"relative"} w='full'
 		mt="0rem"
       p="5rem"

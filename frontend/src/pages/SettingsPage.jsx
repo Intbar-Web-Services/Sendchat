@@ -16,7 +16,10 @@ export const SettingsPage = () => {
 		versionType = "Sendchat Web for Mobile"
 	}
 	if (userAgent.includes('Electron')) {
-		versionType = "Sendchat Desktop for Windows"
+		versionType = "Sendchat Desktop (Electron)"
+	}
+	if (userAgent.includes('WebView2')) {
+		versionType = "Sendchat Desktop for Windows 11 or 10"
 	}
 	const showToast = useShowToast();
 	const logout = useLogout();
@@ -80,6 +83,7 @@ export const SettingsPage = () => {
 					</Flex>
 				</>)}
 			<Text my={1} fontSize={12} color={useColorModeValue("gray.500", "gray.400")}>You're using {versionType}</Text>
+			{versionType == "Sendchat Desktop for Windows 11 or 10" && <Text my={1} fontSize={12} color={useColorModeValue("gray.500", "gray.400")}>Go to Settings to change themes for the edges of the window and see app info.</Text>}
 		</>
 	);
 };
