@@ -16,8 +16,8 @@ import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 function App() {
-	versionType = "";
-	if (userAgent.includes('WebView2')) {
+	let versionType = "";
+	if (window.userAgent.includes('WebView2')) {
 		versionType = "Windows11"
 	}
 	const navigate = useNavigate();
