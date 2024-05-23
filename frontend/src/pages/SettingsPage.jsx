@@ -18,7 +18,7 @@ export const SettingsPage = () => {
 	if (userAgent.includes('Electron')) {
 		versionType = "Sendchat Desktop (Electron)"
 	}
-	if (userAgent.includes('WebView2')) {
+	if (userAgent.includes('Edge')) {
 		versionType = "Sendchat Desktop for Windows 11 or 10"
 	}
 	const showToast = useShowToast();
