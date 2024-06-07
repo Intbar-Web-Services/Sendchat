@@ -17,9 +17,6 @@ import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 function App() {
 	let versionType = "";
-	if (navigator.userAgent.includes('Edg')) {
-		versionType = "Windows11"
-	}
 	const navigate = useNavigate();
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
@@ -52,8 +49,7 @@ function App() {
 	const { pathname } = useLocation();
 	return (
 		<>
-		{ versionType != "Windows11" &&
-		<Header /> }
+		<Header />
 		<Box position={"relative"} w='full'
 		mt="0rem"
       p="5rem"
@@ -81,7 +77,7 @@ function App() {
 					<Route path='/user/:username/post/:pid' element={<PostPage />} />
 					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
 					<Route path='/shortcuts' element={<Shortcuts />} />
-					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
+					<Route path='/settings' element={user ? <SettingsPage /> : <	Navigate to={"/auth"} />} />
 					<Route path='/download' element={<DownloadApp />} />
 				</Routes>
 			</Container>
@@ -89,5 +85,4 @@ function App() {
 		</>
 	);
 }
-
 export default App;
