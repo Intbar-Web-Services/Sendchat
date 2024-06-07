@@ -35,7 +35,7 @@ const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// React.StrictMode renders every component twice (in the initial render), only in development.
-	<React.StrictMode>
+	/* <React.StrictMode>
 		<RecoilRoot>
 			<BrowserRouter>
 				<ChakraProvider theme={theme}>
@@ -47,4 +47,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 			</BrowserRouter>
 		</RecoilRoot>
 	</React.StrictMode>
+	*/
+	sendchat.xyz
 );
