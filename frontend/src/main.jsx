@@ -48,5 +48,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		</RecoilRoot>
 	</React.StrictMode>
 	*/
-	sendchat.xyz
+	<p>sendchat.xyz</p>
 );
