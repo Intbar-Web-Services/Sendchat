@@ -5,7 +5,7 @@ import userAtom from "../atoms/userAtom";
 
 import { Portal } from "@chakra-ui/portal";
 import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
@@ -104,7 +104,7 @@ const Header = () => {
 														</MenuItem>
 														{shouldRenderComponent &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/download")) }}>
-																Get Desktop App
+																What is the point?
 															</MenuItem>)}
 														{shouldRenderShortcuts &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
