@@ -56,7 +56,7 @@ export default function LoginCard() {
 	};
 	return (
 		<Flex align={"center"} justify={"center"}>
-			{/* <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+			<Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
 				<Stack align={"center"}>
 					<Heading fontSize={"4xl"} textAlign={"center"}>
 						Login to Sendchat
@@ -73,7 +73,7 @@ export default function LoginCard() {
 					}}
 				>
 					<Stack spacing={4}>
-						<FormControl isRequired>
+						{/* <FormControl isRequired>
 							<FormLabel>Username</FormLabel>
 							<Flex justify="center" gap={2}>
 								<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
@@ -127,11 +127,12 @@ export default function LoginCard() {
 									Sign up with IWS
 								</Link>
 							</Text>
-						</Stack>
+						</Stack> */}
+
+						<Text alignSelf="center">Login is paused.</Text>
 					</Stack>
 				</Box>
-			</Stack> */}
-			<Text>Login is paused.</Text>
+			</Stack>
 		</Flex>
 	);
 }
