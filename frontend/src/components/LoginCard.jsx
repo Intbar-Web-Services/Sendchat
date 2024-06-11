@@ -73,7 +73,7 @@ export default function LoginCard() {
 					}}
 				>
 					<Stack spacing={4}>
-						{/* <FormControl isRequired>
+						<FormControl isRequired>
 							<FormLabel>Username</FormLabel>
 							<Flex justify="center" gap={2}>
 								<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
@@ -127,9 +127,7 @@ export default function LoginCard() {
 									Sign up with IWS
 								</Link>
 							</Text>
-						</Stack> */}
-
-						<Text alignSelf="center">Login is paused.</Text>
+						</Stack>
 					</Stack>
 				</Box>
 			</Stack>

@@ -66,7 +66,7 @@ export default function SignupCard() {
 					</Heading>
 				</Stack>
 				<Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
-					{/* <Stack spacing={4}>
+					<Stack spacing={4}>
 
 						<Box>
 							<FormControl isRequired>
@@ -144,9 +144,7 @@ export default function SignupCard() {
 								</Link>
 							</Text>
 						</Stack>
-					</Stack> */}
-
-					<Text alignSelf="center">Sign up is paused.</Text>
+					</Stack>
 				</Box>
 			</Stack>
 		</Flex>
