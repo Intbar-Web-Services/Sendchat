@@ -76,6 +76,7 @@ const Header = () => {
 									<Image
 										cursor={"pointer"}
 										alt='logo'
+										marginTop={5}
 										w={12}
 										h={12}
 										src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
