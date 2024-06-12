@@ -67,18 +67,19 @@ const Header = () => {
 
 				{user && (
 					<>
-						<Flex alignItems={"center"} gap={9} paddingBottom="1rem">
+						<Flex alignItems={"center"} gap={8} paddingBottom="0.5rem">
 							<Link as={RouterLink} to={`/chat`} style={{ webkitAppRegion: 'no-drag' }}>
-								<BsFillChatQuoteFill size={28} />
+								<BsFillChatQuoteFill size={35} />
 							</Link>
 							{user && (
 								<Link as={RouterLink} to='/'>
 									<Image
 										cursor={"pointer"}
 										alt='logo'
-										marginTop={2}
-										w={12}
-										h={12}
+										marginTop={0}
+										marginBottom={1}
+										w="3.9em"
+										h="3.9em"
 										src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
 										style={{ webkitAppRegion: 'no-drag' }}
 									/>
@@ -140,7 +141,7 @@ const Header = () => {
 					position="fixed" zIndex={1}
 					right={0}
 					paddingRight="1.5rem"
-					paddingTop="1rem"
+					paddingTop="2rem"
 				>
 					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
 				</Flex>
