@@ -77,8 +77,8 @@ const Header = () => {
 										cursor={"pointer"}
 										alt='logo'
 										marginTop={2}
-										w={15}
-										h={15}
+										w={12}
+										h={12}
 										src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
 										style={{ webkitAppRegion: 'no-drag' }}
 									/>
