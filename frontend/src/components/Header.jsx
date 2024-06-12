@@ -140,7 +140,7 @@ const Header = () => {
 					position="fixed" zIndex={1}
 					right={0}
 					paddingRight="1.5rem"
-					paddingTop="1rem"
+					paddingTop="1.9rem"
 				>
 					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
 				</Flex>
