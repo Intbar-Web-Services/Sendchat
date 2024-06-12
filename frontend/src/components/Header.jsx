@@ -78,7 +78,7 @@ const Header = () => {
 										alt='logo'
 										w={12}
 										h={12}
-										src={colorMode === "dark" ? "/favicon.png" : "/favicon.png"}
+										src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
 										style={{ webkitAppRegion: 'no-drag' }}
 									/>
 								</Link>
@@ -104,7 +104,7 @@ const Header = () => {
 														</MenuItem>
 														{shouldRenderComponent &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/download")) }}>
-																What is the point?
+																Get Desktop App
 															</MenuItem>)}
 														{shouldRenderShortcuts &&
 															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
@@ -141,7 +141,7 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1rem"
 				>
-					<Button onClick={() => { navigate("/download") }}>Get Desktop App</Button>
+					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
 				</Flex>
 			)}
 		</>
