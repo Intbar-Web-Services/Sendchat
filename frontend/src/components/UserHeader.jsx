@@ -6,7 +6,7 @@ import { Button, useToast, useColorMode, useColorModeValue, Select } from "@chak
 import useShowToast from "../hooks/useShowToast";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { CgMoreO, CgArrowDown } from "react-icons/cg";
+import { CgMoreO, CgArrowDown, CgArrowUp } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -28,6 +28,7 @@ const UserHeader = ({ user }) => {
 	const showToast = useShowToast();
 	const navigate = useNavigate();
 	const [followerNames, setFollowerNames] = useState([]);
+	const [followingNames, setFollowingNames] = useState([]);
 
 
 	useEffect(() => {
@@ -52,6 +53,29 @@ const UserHeader = ({ user }) => {
 
 		fetchFollowerData();
 	}, [user.followers]);
+
+	useEffect(() => {
+		async function fetchFollowingData() {
+			const names = [];
+
+			for (const followingId of user.following) {
+				try {
+					const response = await fetch(`/api/users/profile/${followingId}`);
+					const userData = await response.json();
+					const userName = userData.username;
+					if (userName) {
+						names.push(userName);
+					}
+				} catch (error) {
+					showToast('Error', 'There was an issue getting this persons following..', 'error');
+				}
+			}
+
+			setFollowingNames(names);
+		}
+
+		fetchFollowingData();
+	}, [user.following]);
 
 	const handleConversationSearch = async (e) => {
 		e.preventDefault();
@@ -211,6 +235,25 @@ const UserHeader = ({ user }) => {
 							</Menu>
 						</Box>
 					)}
+
+					<Text color={"gray.light"}>{user.following.length} following</Text>
+					{!user.following.length == 0 && (
+						<Box className='icon-container' paddingTop="0.5rem">
+							<Menu>
+								<MenuButton>
+									<CgArrowUp size={24} cursor={"pointer"} />
+								</MenuButton>
+								<Portal>
+									<MenuList bg={"gray.dark"}>
+										{followingNames.slice(0, 6).map((name, index) => (
+											<MenuItem key={index} bg={"gray.dark"} color={"white"} onClick={() => navigate(`/user/${name}`)}>@{name}</MenuItem>
+										))}
+									</MenuList>
+								</Portal>
+							</Menu>
+						</Box>
+					)}
+
 				</Flex>
 				<Flex>
 					<Box className='icon-container'>
