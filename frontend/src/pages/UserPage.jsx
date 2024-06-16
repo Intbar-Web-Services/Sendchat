@@ -89,6 +89,7 @@ const UserPage = () => {
 				<TabList>
 					<Tab>Posts</Tab>
 					<Tab>Replies</Tab>
+					<Tab>Likes</Tab>
 				</TabList>
 
 				<TabPanels>
@@ -107,7 +108,7 @@ const UserPage = () => {
 
 					<TabPanel>
 						{!fetchingReplies && replies.length === 0 && <h1>This person has never replied.</h1>}
-						{fetchingPosts && (
+						{fetchingReplies && (
 							<Flex justifyContent={"center"} my={12}>
 								<Spinner size={"xl"} />
 							</Flex>
@@ -131,6 +132,23 @@ const UserPage = () => {
 											reply={reply}
 											lastReply={reply._id === postReply.replies[postReply.replies.length - 1]._id}
 										/>
+									</>))
+						))))}
+					</TabPanel>
+
+					<TabPanel>
+						{!fetchingReplies && replies.length === 0 && <h1>This person has never liked anything.</h1>}
+						{fetchingReplies && (
+							<Flex justifyContent={"center"} my={12}>
+								<Spinner size={"xl"} />
+							</Flex>
+						)}
+
+						{replies.slice(0).reverse().map((postReply) => (postReply.likes.map((userId) => (
+							(userId == user._id &&
+								(
+									<>
+										<Post key={postReply._id} post={postReply} postedBy={postReply.postedBy} />
 									</>))
 						))))}
 					</TabPanel>
