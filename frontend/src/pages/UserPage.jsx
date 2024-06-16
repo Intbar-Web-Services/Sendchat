@@ -7,6 +7,7 @@ import Post from "../components/Post";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
+import repliesAtom from "../atoms/repliesAtom";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
 import Comment from "../components/Comment";
@@ -17,7 +18,7 @@ const UserPage = () => {
 	const { username } = useParams();
 	const showToast = useShowToast();
 	const [posts, setPosts] = useRecoilState(postsAtom);
-	const [replies, setReplies] = useRecoilState(postsAtom);
+	const [replies, setReplies] = useRecoilState(repliesAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
 	const [fetchingReplies, setFetchingReplies] = useState(true);
 	const { socket } = useSocket();
