@@ -54,6 +54,20 @@ const getPost = async (req, res) => {
 	}
 };
 
+const getPosts = async (req, res) => {
+	try {
+		const posts = await Post.find();
+
+		if (!posts) {
+			return res.status(404).json({ error: "No posts on Sendchat?" });
+		}
+		console.log(posts);
+		res.status(200).json(posts);
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
 const deletePost = async (req, res) => {
 	try {
 		const post = await Post.findById(req.params.id);
@@ -147,10 +161,10 @@ const getFeedPosts = async (req, res) => {
 
 		const feedPosts = await Post.find({
 			$or: [
-			  { postedBy: userId }, // Posts by the user
-			  { postedBy: { $in: following } }, // Posts by the user's followings
+				{ postedBy: userId }, // Posts by the user
+				{ postedBy: { $in: following } }, // Posts by the user's followings
 			],
-		  }).sort({ createdAt: -1 });
+		}).sort({ createdAt: -1 });
 
 		res.status(200).json(feedPosts);
 	} catch (err) {
@@ -174,4 +188,4 @@ const getUserPosts = async (req, res) => {
 	}
 };
 
-export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts };
+export { createPost, getPost, getPosts, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts };

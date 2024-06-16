@@ -3,6 +3,7 @@ import {
 	createPost,
 	deletePost,
 	getPost,
+	getPosts,
 	likeUnlikePost,
 	replyToPost,
 	getFeedPosts,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.get("/feed", protectRoute, getFeedPosts);
 router.get("/:id", getPost);
+router.get("/", getPosts);
 router.get("/user/:username", getUserPosts);
 router.post("/create", protectRoute, createPost);
 router.delete("/:id", protectRoute, deletePost);
