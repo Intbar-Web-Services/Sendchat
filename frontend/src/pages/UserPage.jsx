@@ -113,7 +113,7 @@ const UserPage = () => {
 							</Flex>
 						)}
 
-						{replies.map((postReply) => (postReply.replies.map((reply) => (
+						{replies.slice(0).reverse().map((postReply) => (postReply.replies.map((reply) => (
 							(reply.userId == user._id &&
 								(
 									<>
