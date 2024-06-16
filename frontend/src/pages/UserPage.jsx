@@ -21,6 +21,7 @@ const UserPage = () => {
 	const [replies, setReplies] = useRecoilState(repliesAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
 	const [fetchingReplies, setFetchingReplies] = useState(true);
+
 	const { socket } = useSocket();
 	useEffect(() => {
 		if (socket) {
@@ -115,7 +116,7 @@ const UserPage = () => {
 							</Flex>
 						)}
 
-						{replies.slice(0).reverse().map((postReply) => (postReply.replies.map((reply) => (
+						{replies.slice(0).reverse().map((postReply) => (postReply.replies.slice(0).reverse().map((reply) => (
 							(reply.userId == user._id &&
 								(
 									<>
