@@ -14,7 +14,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "npm: build"
+            "preLaunchTask": "${defaultBuildTask}"
         },
         {
             "type": "node-terminal",
