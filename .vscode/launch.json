@@ -5,7 +5,9 @@
             "command": "npm start",
             "name": "Build and run",
             "request": "launch",
-            "type": "node-terminal"
+            "type": "node-terminal",
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "npm: build"
         },
         {
             "type": "node-terminal",
