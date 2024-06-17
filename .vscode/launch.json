@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "request": "launch",
+            "name": "ServerStart",
+            "command": "npm run dev",
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "npm: install"
+        },
+        {
+            "type": "node-terminal",
+            "request": "launch",
+            "name": "ClientStart",
+            "command": "npm run dev",
+            "cwd": "${workspaceRoot}/frontend",
+            "preLaunchTask": "npm: install - frontend"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Server/Client",
+            "configurations": [
+                "ServerStart",
+                "ClientStart"
+            ],
+            "preLaunchTask": "npm: install - frontend",
+            "stopAll": true
+        }
+    ]
+}
