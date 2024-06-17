@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/frontend"
+        },
+        {
             "command": "npm start",
             "name": "Build and run",
             "request": "launch",
@@ -31,7 +38,8 @@
             "name": "Start Development Server",
             "configurations": [
                 "Start server (Express)",
-                "Start React Client (Vite)"
+                "Start React Client (Vite)",
+                "Launch Edge"
             ],
             "preLaunchTask": "npm: install - frontend",
             "stopAll": true
