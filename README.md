@@ -11,6 +11,7 @@ what else could you even say about it
 i should fix those issues
 
 ADMIN CODES:
+
 Everyone here gets a free 'admin code' which allows you to gain admin immediately
 
 Steps:
@@ -21,3 +22,13 @@ FbhYbF3B929+gDAQzFY
 
 
 DON'T SHARE THESE WITH PEOPLE YOU DON'T TRUST CAUSE IT GIVES THEM AUTOMATED ADMIN ACCESS !!
+
+<h1>FOR VSCODE USERS:</h1>
+
+You can now use the built in "run and debug" feature with this repo
+
+When you clone the repo, simply just click run and debug, and choose "Client/Server" at the top then press play
+
+it installs dependancies for you and then starts the server and client with debugging features
+
+(You still need a .env file for local copies though)
