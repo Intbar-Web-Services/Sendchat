@@ -2,9 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "command": "npm start",
+            "name": "Build and run",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
             "type": "node-terminal",
             "request": "launch",
-            "name": "ServerStart",
+            "name": "Start server (Express)",
             "command": "npm run dev",
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "npm: install"
@@ -12,7 +18,7 @@
         {
             "type": "node-terminal",
             "request": "launch",
-            "name": "ClientStart",
+            "name": "Start React Client (Vite)",
             "command": "npm run dev",
             "cwd": "${workspaceRoot}/frontend",
             "preLaunchTask": "npm: install - frontend"
@@ -20,10 +26,10 @@
     ],
     "compounds": [
         {
-            "name": "Server/Client",
+            "name": "Start Development Server",
             "configurations": [
-                "ServerStart",
-                "ClientStart"
+                "Start server (Express)",
+                "Start React Client (Vite)"
             ],
             "preLaunchTask": "npm: install - frontend",
             "stopAll": true
