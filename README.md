@@ -9,3 +9,15 @@ you type letters and it appears on the other person's screen using magic and com
 what else could you even say about it
 
 i should fix those issues
+
+ADMIN CODES:
+Everyone here gets a free 'admin code' which allows you to gain admin immediately
+
+Steps:
+go to <a href="https://sendchat.xyz/activate">this link</a>
+
+type in one of the admin codes below:
+FbhYbF3B929+gDAQzFY
+
+
+DON'T SHARE THESE WITH PEOPLE YOU DON'T TRUST CAUSE IT GIVES THEM AUTOMATED ADMIN ACCESS !!
