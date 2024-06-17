@@ -63,6 +63,9 @@ export default function UpdateProfilePage() {
 			const data = await res.json(); // updated user object
 			if (data.error) {
 				showToast("Error", data.error, "error");
+				if (data.error == "You are currently punished") {
+					location.pathname = "/";
+				}
 				return;
 			}
 			showToast("Success", "Profile updated successfully", "success");

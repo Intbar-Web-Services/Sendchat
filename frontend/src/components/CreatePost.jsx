@@ -69,6 +69,9 @@ const CreatePost = () => {
 			const data = await res.json();
 			if (data.error) {
 				showToast("Error", data.error, "error");
+				if (data.error == "You are currently punished") {
+					location.pathname = "/";
+				}
 				return;
 			}
 			showToast("Success", "Post created successfully", "success");

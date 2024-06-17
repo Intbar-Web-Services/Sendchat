@@ -109,7 +109,12 @@ const Actions = ({ post }) => {
 				body: JSON.stringify({ text: reply }),
 			});
 			const data = await res.json();
-			if (data.error) return showToast("Error", data.error, "error");
+			if (data.error) {
+				if (data.error == "You are currently punished") {
+					window.location.pathname = "/";
+				}
+				return showToast("Error", data.error, "error")
+			};
 
 			const updatedPosts = posts.map((p) => {
 				if (p._id === post._id) {
