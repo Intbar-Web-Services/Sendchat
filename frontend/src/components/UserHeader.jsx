@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
+import ModerationMenu from "../components/ModerationMenu";
 import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 import Linkify from "react-linkify";
 
@@ -29,7 +30,11 @@ const UserHeader = ({ user }) => {
 	const navigate = useNavigate();
 	const [followerNames, setFollowerNames] = useState([]);
 	const [followingNames, setFollowingNames] = useState([]);
-
+	const isModerator = currentUser.isAdmin;
+	const [showModerationMenu, setShowModerationMenu] = useState(false);
+	function handleModeration() {
+		setShowModerationMenu(true);
+	}
 
 	useEffect(() => {
 		async function fetchFollowerData() {
@@ -165,9 +170,11 @@ const UserHeader = ({ user }) => {
 					</Text>
 					<Flex gap={2} alignItems={"center"}>
 						<Text fontSize={"sm"}>@{user.username}</Text>
-						<Text fontSize={"xs"} bg={useColorModeValue("gray.300", "gray.dark")} color={"gray.light"} p={1} borderRadius={"full"}>
-							Sendchat 2.0
-						</Text>
+						{user.isAdmin &&
+							(<Text fontSize={"xs"} bg={useColorModeValue("gray.300", "gray.dark")} color={"gray.light"} p={1} borderRadius={"full"}>
+								Admin
+							</Text>)
+						}
 					</Flex>
 				</Box>
 				<Box>
@@ -266,12 +273,18 @@ const UserHeader = ({ user }) => {
 									<MenuItem bg={"gray.dark"} color={"white"} onClick={copyURL}>
 										Copy link
 									</MenuItem>
+									{(isModerator && user._id != currentUser._id) && (
+										<MenuItem bg={"gray.dark"} color={"white"} onClick={handleModeration}>
+											Moderate
+										</MenuItem>
+									)}
 								</MenuList>
 							</Portal>
 						</Menu>
 					</Box>
 				</Flex>
 			</Flex>
+			<ModerationMenu id={user._id} isOpen={showModerationMenu} onClose={() => setShowModerationMenu(false)} />
 		</VStack>
 	);
 };

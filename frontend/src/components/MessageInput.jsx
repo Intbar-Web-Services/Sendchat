@@ -18,8 +18,10 @@ import { IoSendSharp } from "react-icons/io5";
 import useShowToast from "../hooks/useShowToast";
 import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import userAtom from "../atoms/userAtom";
 import { BsFillImageFill } from "react-icons/bs";
 import usePreviewImg from "../hooks/usePreviewImg";
+import useGetUserProfile from "../hooks/useGetUserProfile";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
@@ -33,6 +35,7 @@ const MessageInput = ({ setMessages }) => {
 
 	const handleSendMessage = async (e) => {
 		e.preventDefault();
+
 		if (!messageText && !imgUrl) return;
 		if (isSending) return;
 
@@ -52,6 +55,9 @@ const MessageInput = ({ setMessages }) => {
 			});
 			const data = await res.json();
 			if (data.error) {
+				if (data.error == "You are currently punished") {
+					location.pathname = "/";
+				}
 				showToast("Error", data.error, "error");
 				return;
 			}

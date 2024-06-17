@@ -131,7 +131,7 @@ const Post = ({ post, postedBy }) => {
 								{formatDistanceToNow(new Date(post.createdAt))} ago
 							</Text>
 
-							{currentUser?._id === user._id && <DeleteIcon size={20} onClick={handleDeletePost} />}
+							{(currentUser?._id === user._id || currentUser.isAdmin) && <DeleteIcon size={20} onClick={handleDeletePost} />}
 						</Flex>
 					</Flex>
 				</Link>

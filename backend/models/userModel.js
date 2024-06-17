@@ -21,6 +21,11 @@ const userSchema = mongoose.Schema(
 			minLength: 6,
 			required: true,
 		},
+		isAdmin: {
+			type: Boolean,
+			default: false
+
+		},
 		profilePic: {
 			type: String,
 			default: "",
@@ -36,6 +41,29 @@ const userSchema = mongoose.Schema(
 		bio: {
 			type: String,
 			default: "",
+		},
+		likesHidden: {
+			type: Boolean,
+			default: false
+		},
+		punishment: {
+			type: {
+				type: String,
+				enum: ['warn', 'suspend', 'ban', 'none'],
+				default: 'none',
+			},
+			reason: {
+				type: String,
+				default: '',
+			},
+			hours: {
+				type: Number,
+				default: null,
+			},
+			offenses: {
+				type: Number,
+				default: 0,
+			},
 		},
 		isFrozen: {
 			type: Boolean,
