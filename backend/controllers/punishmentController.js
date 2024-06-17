@@ -46,6 +46,8 @@ const warnUser = async (req, res) => {
 
         if (!req.user.isAdmin) return res.status(401).json({ error: "You are not an admin." });
 
+        if (user.isAdmin) return res.status(400).json({ error: "You cannot warn an admin." });
+
         user.punishment.type = "warn";
         user.punishment.hours = hours;
         user.punishment.reason = reason;
