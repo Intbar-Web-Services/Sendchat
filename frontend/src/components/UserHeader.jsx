@@ -273,7 +273,7 @@ const UserHeader = ({ user }) => {
 									<MenuItem bg={"gray.dark"} color={"white"} onClick={copyURL}>
 										Copy link
 									</MenuItem>
-									{(isModerator && user._id != currentUser._id) && (
+									{(isModerator && user._id != currentUser._id && !user.isAdmin) && (
 										<MenuItem bg={"gray.dark"} color={"white"} onClick={handleModeration}>
 											Moderate
 										</MenuItem>
