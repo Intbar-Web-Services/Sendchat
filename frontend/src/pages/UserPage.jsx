@@ -82,7 +82,7 @@ const UserPage = () => {
 		);
 	}
 
-	if (!user && !loading) return <h1>We can't find this user. Press the home button to see recent posts.</h1>;
+	if ((!user && !loading) || (user._id === "6670f6d092d28380a1932445" && !location.pathname.includes("deleteduser"))) return <h1>We can't find this user. Press the home button to see recent posts.</h1>;
 
 	return (
 		<>
