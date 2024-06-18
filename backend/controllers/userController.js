@@ -43,6 +43,34 @@ const signupUser = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
+		if (username) {
+			if (new RegExp(/[^a-z0-9_]/g, "").test(username))
+				return res.status(400).json({ error: "Your username contains characters that aren't allowed" });
+			if (username.length > 25 || username.length < 3)
+				return res.status(400).json({ error: "Your username is too long or too short" });
+		}
+
+		if (name) {
+			if (name.length > 30 || name.length < 3)
+				return res.status(400).json({ error: "Your display name is too long or too short" });
+			if (new RegExp(/[^a-zA-Z0-9_. ]/g, "").test(name))
+				return res.status(400).json({ error: "Your display name contains characters that aren't allowed" });
+		}
+
+		if (bio) {
+			if (bio.length > 500)
+				return res.status(400).json({ error: "Your bio is too long" });
+		}
+
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+		if (email) {
+			if (email.length > 200)
+				return res.status(400).json({ error: "Your email is too long" });
+			if (!emailRegex.test(email))
+				return res.status(400).json({ error: "Your email is invalid" });
+		}
+
 		const newUser = new User({
 			name,
 			email,
@@ -161,6 +189,34 @@ const updateUser = async (req, res) => {
 			const salt = await bcrypt.genSalt(10);
 			const hashedPassword = await bcrypt.hash(password, salt);
 			user.password = hashedPassword;
+		}
+
+		if (username) {
+			if (new RegExp(/[^a-z0-9_]/g, "").test(username))
+				return res.status(400).json({ error: "Your username contains characters that aren't allowed" });
+			if (username.length > 25 || username.length < 3)
+				return res.status(400).json({ error: "Your username is too long or too short" });
+		}
+
+		if (name) {
+			if (name.length > 30 || name.length < 3)
+				return res.status(400).json({ error: "Your display name is too long or too short" });
+			if (new RegExp(/[^a-zA-Z0-9_. ]/g, "").test(name))
+				return res.status(400).json({ error: "Your display name contains characters that aren't allowed" });
+		}
+
+		if (bio) {
+			if (bio.length > 500)
+				return res.status(400).json({ error: "Your bio is too long" });
+		}
+
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+		if (email) {
+			if (email.length > 200)
+				return res.status(400).json({ error: "Your email is too long" });
+			if (!emailRegex.test(email))
+				return res.status(400).json({ error: "Your email is invalid" });
 		}
 
 		if (profilePic) {
