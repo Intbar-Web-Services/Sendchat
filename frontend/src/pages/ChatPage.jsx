@@ -67,13 +67,8 @@ const ChatPage = () => {
 		try {
 			const res = await fetch(`/api/users/profile/${searchText}`);
 			const searchedUser = await res.json();
-			if (searchedUser.error) {
+			if (searchedUser.error || searchedUser._id === "6670f6d092d28380a1932445") {
 				showToast("Error", "Nobody matches this username, check for any typos", "error");
-				return;
-			}
-
-			if (searchedUser._id === "6670f6d092d28380a1932445") {
-				showToast("Error", "You cannot Sendchat with this user", "error");
 				return;
 			}
 
