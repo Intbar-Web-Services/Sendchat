@@ -132,8 +132,10 @@ export async function checkContent(req, res, next) {
       return true;
     } else if (typeof value === 'object' && value !== null) {
       for (let key in value) {
-        if (checkContentRecursive(value[key])) {
-          return true;
+        if (key != "imgUrl") {
+          if (checkContentRecursive(value[key])) {
+            return true;
+          }
         }
       }
     }
