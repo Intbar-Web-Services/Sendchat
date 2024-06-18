@@ -37,6 +37,10 @@ const UserHeader = ({ user: givenUser }) => {
 		setShowModerationMenu(true);
 	};
 
+	useEffect(() => {
+		setUser(givenUser);
+	}, [givenUser]);
+
 	const handleUnWarn = async () => {
 		const res = await fetch(`/api/punishments/unwarn/${user._id}`);
 		if (res.error) return showToast("Error", res.error, "error");
