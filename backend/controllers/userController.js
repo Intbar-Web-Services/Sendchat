@@ -209,7 +209,7 @@ const getSuggestedUsers = async (req, res) => {
 		const users = await User.aggregate([
 			{
 				$match: {
-					_id: { $ne: userId },
+					_id: { $ne: userId, $ne: "6670f6d092d28380a1932445" },
 				},
 			},
 			{
