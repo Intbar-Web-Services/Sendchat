@@ -15,15 +15,15 @@ const getUserProfile = async (req, res) => {
 
 		// query is userId
 		if (mongoose.Types.ObjectId.isValid(query)) {
-			user = await User.findOne({ _id: query }).select("-password").select("-updatedAt");
+			user = await User.findOne({ _id: query }).select("-password").select("-updatedAt").select("-email");
 		} else {
 			// query is username
-			user = await User.findOne({ username: query }).select("-password").select("-updatedAt");
+			user = await User.findOne({ username: query }).select("-password").select("-updatedAt").select("-email");
 		}
 
 		if (!user) return res.status(404).json({ error: "User not found" });
 
-		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6670f6d092d28380a1932445" }).select("-password").select("-updatedAt"));
+		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6670f6d092d28380a1932445" }).select("-password").select("-updatedAt").select("-email"));
 
 		res.status(200).json(user);
 	} catch (err) {

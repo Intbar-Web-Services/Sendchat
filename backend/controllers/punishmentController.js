@@ -37,10 +37,10 @@ const warnUser = async (req, res) => {
 
         // query is userId
         if (mongoose.Types.ObjectId.isValid(id)) {
-            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt").select("-email");
         } else {
             // query is username
-            user = await User.findOne({ username: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ username: id }).select("-password").select("-updatedAt").select("-email");
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
@@ -70,10 +70,10 @@ const banUser = async (req, res) => {
 
         // query is userId
         if (mongoose.Types.ObjectId.isValid(id)) {
-            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt").select("-email");
         } else {
             // query is username
-            user = await User.findOne({ username: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ username: id }).select("-password").select("-updatedAt").select("-email");
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
@@ -144,10 +144,10 @@ const suspendUser = async (req, res) => {
         const { hoursParsed, reason } = req.body;
 
         if (mongoose.Types.ObjectId.isValid(id)) {
-            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt").select("-email");
         } else {
             // query is username
-            user = await User.findOne({ username: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ username: id }).select("-password").select("-updatedAt").select("-email");
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
@@ -188,10 +188,10 @@ const unWarnUser = async (req, res) => {
         let user;
 
         if (mongoose.Types.ObjectId.isValid(id)) {
-            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ _id: id }).select("-password").select("-updatedAt").select("-email");
         } else {
             // query is username
-            user = await User.findOne({ username: id }).select("-password").select("-updatedAt");
+            user = await User.findOne({ username: id }).select("-password").select("-updatedAt").select("-email");
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
