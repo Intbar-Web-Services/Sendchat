@@ -12,6 +12,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./socket/socket.js";
 import job from "./cron/cron.js";
 import jwt from "jsonwebtoken";
+import cron from "cron";
 
 dotenv.config();
 
@@ -22,6 +23,51 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 const pattern = /(\b\W*f\W*a\W*g\W*(g\W*o\W*t\W*t\W*a\W*r\W*d)?|m\W*a\W*r\W*i\W*c\W*o\W*s?|c\W*o\W*c\W*k\W*s?\W*u\W*c\W*k\W*e\W*r\W*(s\W*i\W*n\W*g)?|\bn\W*i\W*g\W*(\b|g\W*(a\W*|e\W*r)?s?)\b|d\W*i\W*n\W*d\W*u\W*(s?)|m\W*u\W*d\W*s\W*l\W*i\W*m\W*e\W*s?|k\W*i\W*k\W*e\W*s?|m\W*o\W*n\W*g\W*o\W*l\W*o\W*i\W*d\W*s?|t\W*o\W*w\W*e\W*l\W*\s\W*h\W*e\W*a\W*d\W*s?|\bs\W*p\W*i\W*(c\W*|\W*)s?\b|\bch\W*i\W*n\W*k\W*s?|n\W*i\W*g\W*l\W*e\W*t\W*s?|b\W*e\W*a\W*n\W*e\W*r\W*s?|\bn\W*i\W*p\W*s?\b|\bco\W*o\W*n\W*s?\b|j\W*u\W*n\W*g\W*l\W*e\W*\s\W*b\W*u\W*n\W*n\W*(y\W*|i\W*e\W*s?)|j\W*i\W*g\W*g?\W*a\W*b\W*o\W*o\W*s?|\bp\W*a\W*k\W*i\W*s?\b|r\W*a\W*g\W*\s\W*h\W*e\W*a\W*d\W*s?|g\W*o\W*o\W*k\W*s?|c\W*u\W*n\W*t\W*s?\W*(e\W*s\W*|i\W*n\W*g\W*|y)?|t\W*w\W*a\W*t\W*s?|f\W*e\W*m\W*i\W*n\W*a\W*z\W*i\W*s?|w\W*h\W*o\W*r\W*(e\W*s?\W*|i\W*n\W*g)|\bs\W*l\W*u\W*t\W*(s\W*|t\W*?\W*y)?|\btr\W*a\W*n\W*n?\W*(y\W*|i\W*e\W*s?)|l\W*a\W*d\W*y\W*b\W*o\W*y\W*(s?))/gmi;
+
+const bannedUsers = await User.find({ 'punishment.type': { $exists: true, $eq: 'ban' } });
+
+if (bannedUsers) {
+  bannedUsers.map((user) => {
+    const job = new cron.CronJob("0 * * * *", async () => {
+      const cronUser = user;
+      if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
+        if (cronUser.punishment.type === "ban") {
+          cronUser.username = `deletedUser_${cronUser._id}`
+          cronUser.name = `Deleted User ${cronUser._id}`
+          cronUser.isDeleted = true;
+          cronUser.password = `${Date.now()}`;
+
+          await cronUser.save();
+          job.stop();
+        } else {
+          job.stop();
+        }
+      }
+    });
+
+    job.start();
+  });
+}
+
+const suspendedUsers = await User.find({ 'punishment.type': { $exists: true, $eq: 'suspend' } });
+
+if (suspendedUsers) {
+  suspendedUsers.map((user) => {
+    const job = new cron.CronJob("*/14 * * * *", async function () {
+      const cronUser = user;
+      if (cronUser.punishment.hours <= Math.floor(new Date().getTime() / 1000.0)) {
+        cronUser.punishment.type = "warn";
+        cronUser.punishment.reason = "You've been suspended recently, watch your behavior.";
+        cronUser.hours = 0;
+
+        await cronUser.save();
+        job.stop();
+      }
+    });
+
+    job.start();
+  });
+}
 
 export async function punishmentCheck(req, res, next) {
   const token = req.cookies.jwt;
