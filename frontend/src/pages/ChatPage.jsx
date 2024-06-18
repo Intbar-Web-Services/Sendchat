@@ -72,6 +72,11 @@ const ChatPage = () => {
 				return;
 			}
 
+			if (searchedUser._id === "6670f6d092d28380a1932445") {
+				showToast("Error", "You cannot Sendchat with this user", "error");
+				return;
+			}
+
 			const messagingYourself = searchedUser._id === currentUser._id;
 			if (messagingYourself) {
 				showToast("Error", "You cannot chat with yourself", "error");
@@ -108,7 +113,7 @@ const ChatPage = () => {
 					},
 				],
 			})
-			
+
 			setConversations((prevConvs) => [...prevConvs, newConversation]);
 		} catch (error) {
 			showToast("Error", error.message, "error");
