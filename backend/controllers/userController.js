@@ -122,6 +122,10 @@ const followUnFollowUser = async (req, res) => {
 
 		if (!userToModify || !currentUser) return res.status(400).json({ error: "User not found" });
 
+		if (id === "6670f6d092d28380a1932445") {
+			return res.status(400).json({ error: "Don't follow the deleted user mask account" });
+		}
+
 		const isFollowing = currentUser.following.includes(id);
 
 		if (isFollowing) {
