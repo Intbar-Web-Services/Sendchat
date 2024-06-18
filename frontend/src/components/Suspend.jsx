@@ -32,7 +32,7 @@ const Suspend = ({ user, reason, hours }) => {
 
     return (
         <>
-            <Text>You have {days} day{days > 1 ? "s" : ""} left, {hoursParsed} hour{hoursParsed > 1 ? "s" : ""} left, and {minutes} minute{minutes > 1 ? "s" : ""} left</Text>
+            <Text>You have {days} day{(days > 1 || days === 0) ? "s" : ""} left, {hoursParsed} hour{(hoursParsed > 1 || hoursParsed === 0) ? "s" : ""} left, and {minutes} minute{(minutes > 1 || minutes === 0) ? "s" : ""} left</Text>
             <Text>{reason}</Text>
             <Button isLoading={loading} onClick={() => { setLoading(true); location.reload() }}>Reload</Button>
         </>
