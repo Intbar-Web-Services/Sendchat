@@ -15,7 +15,8 @@ import ModerationMenu from "../components/ModerationMenu";
 import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 import Linkify from "react-linkify";
 
-const UserHeader = ({ user }) => {
+const UserHeader = ({ user: givenUser }) => {
+	let [user, setUser] = useState(givenUser);
 	const toast = useToast();
 	const currentUser = useRecoilValue(userAtom); // logged in user
 	const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
@@ -32,9 +33,19 @@ const UserHeader = ({ user }) => {
 	const [followingNames, setFollowingNames] = useState([]);
 	const isModerator = currentUser.isAdmin;
 	const [showModerationMenu, setShowModerationMenu] = useState(false);
-	function handleModeration() {
+	const handleModeration = () => {
 		setShowModerationMenu(true);
-	}
+	};
+
+	const handleUnWarn = async () => {
+		const res = await fetch(`/api/punishments/unwarn/${user._id}`);
+		if (res.error) return showToast("Error", res.error, "error");
+		let editedUser = structuredClone(givenUser);
+		editedUser.punishment.type = "none";
+		setUser(editedUser);
+
+		showToast("Success", "User successfuly unwarned", "success");
+	};
 
 	useEffect(() => {
 		async function fetchFollowerData() {
@@ -215,7 +226,7 @@ const UserHeader = ({ user }) => {
 					<Button size={"sm"}>Update Profile</Button>
 				</Link>
 			)}
-			{currentUser?._id !== user._id && (
+			{(currentUser?._id !== user._id && user._id !== "6670f6d092d28380a1932445") && (
 				<Flex gap={3}>
 					<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
 						{following ? "Unfollow" : "Follow"}
@@ -225,8 +236,10 @@ const UserHeader = ({ user }) => {
 			)}
 			<Flex w={"full"} justifyContent={"space-between"}>
 				<Flex gap={0.2} alignItems={"center"}>
-					<Text color={"gray.light"}>{user.followers.length} followers</Text>
-					{!user.followers.length == 0 && (
+					{user._id !== "6670f6d092d28380a1932445" && (
+						<Text color={"gray.light"}>{user.followers.length} followers</Text>
+					)}
+					{(!user.followers.length == 0 && user._id !== "6670f6d092d28380a1932445") && (
 						<Box className='icon-container' paddingTop="0.5rem">
 							<Menu>
 								<MenuButton>
@@ -242,9 +255,10 @@ const UserHeader = ({ user }) => {
 							</Menu>
 						</Box>
 					)}
-
-					<Text color={"gray.light"}>{user.following.length} following</Text>
-					{!user.following.length == 0 && (
+					{user._id !== "6670f6d092d28380a1932445" && (
+						<Text color={"gray.light"}>{user.following.length} following</Text>
+					)}
+					{(!user.following.length == 0 && user._id !== "6670f6d092d28380a1932445") && (
 						<Box className='icon-container' paddingTop="0.5rem">
 							<Menu>
 								<MenuButton>
@@ -260,31 +274,50 @@ const UserHeader = ({ user }) => {
 							</Menu>
 						</Box>
 					)}
-
 				</Flex>
 				<Flex>
-					<Box className='icon-container'>
-						<Menu>
-							<MenuButton>
-								<CgMoreO size={24} cursor={"pointer"} />
-							</MenuButton>
-							<Portal>
-								<MenuList bg={"gray.dark"}>
-									<MenuItem bg={"gray.dark"} color={"white"} onClick={copyURL}>
-										Copy link
-									</MenuItem>
-									{(isModerator && user._id != currentUser._id && !user.isAdmin) && (
-										<MenuItem bg={"gray.dark"} color={"white"} onClick={handleModeration}>
-											Moderate
+					{user._id !== "6670f6d092d28380a1932445" && (
+						<Box className='icon-container'>
+							<Menu>
+								<MenuButton>
+									<CgMoreO size={24} cursor={"pointer"} />
+								</MenuButton>
+								<Portal>
+									<MenuList bg={"gray.dark"}>
+										<MenuItem bg={"gray.dark"} color={"white"} onClick={copyURL}>
+											Copy link
 										</MenuItem>
-									)}
-								</MenuList>
-							</Portal>
-						</Menu>
-					</Box>
+										{(isModerator && user._id != currentUser._id && !user.isAdmin && user.punishment.type == "none" && user._id !== "6670f6d092d28380a1932445") && (
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={handleModeration}>
+												Moderate
+											</MenuItem>
+										)}
+										{(user.punishment.type == "warn") && (
+											<MenuItem bg={"gray.dark"} color={"white"} onClick={handleUnWarn}>
+												Unwarn
+											</MenuItem>
+										)}
+									</MenuList>
+								</Portal>
+							</Menu>
+						</Box>
+					)}
 				</Flex>
 			</Flex>
-			<ModerationMenu id={user._id} isOpen={showModerationMenu} onClose={() => setShowModerationMenu(false)} />
+			<ModerationMenu id={user._id} isOpen={showModerationMenu} onClose={async () => {
+				setShowModerationMenu(false);
+				const res = await fetch(`/api/users/profile/${user._id}`);
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					return;
+				}
+				if (data.isFrozen) {
+					setUser(null);
+					return;
+				}
+				setUser(data);
+			}} />
 		</VStack>
 	);
 };

@@ -87,75 +87,77 @@ const UserPage = () => {
 	return (
 		<>
 			<UserHeader user={user} />
-			<Tabs isFitted>
-				<TabList>
-					<Tab>Posts</Tab>
-					<Tab>Replies</Tab>
-					<Tab>Likes</Tab>
-				</TabList>
+			{user._id !== "6670f6d092d28380a1932445" && (
+				<Tabs isFitted>
+					<TabList>
+						<Tab>Posts</Tab>
+						<Tab>Replies</Tab>
+						<Tab>Likes</Tab>
+					</TabList>
 
-				<TabPanels>
-					<TabPanel>
-						{!fetchingPosts && posts.length === 0 && <h1>There's no posts here yet.</h1>}
-						{fetchingPosts && (
-							<Flex justifyContent={"center"} my={12}>
-								<Spinner size={"xl"} />
-							</Flex>
-						)}
+					<TabPanels>
+						<TabPanel>
+							{!fetchingPosts && posts.length === 0 && <h1>There's no posts here yet.</h1>}
+							{fetchingPosts && (
+								<Flex justifyContent={"center"} my={12}>
+									<Spinner size={"xl"} />
+								</Flex>
+							)}
 
-						{posts.map((post) => (
-							<Post key={post._id} post={post} postedBy={post.postedBy} />
-						))}
-					</TabPanel>
+							{posts.map((post) => (
+								<Post key={post._id} post={post} postedBy={post.postedBy} />
+							))}
+						</TabPanel>
 
-					<TabPanel>
-						{!fetchingReplies && replies.length === 0 && <h1>This person has never replied.</h1>}
-						{fetchingReplies && (
-							<Flex justifyContent={"center"} my={12}>
-								<Spinner size={"xl"} />
-							</Flex>
-						)}
+						<TabPanel>
+							{!fetchingReplies && replies.length === 0 && <h1>This person has never replied.</h1>}
+							{fetchingReplies && (
+								<Flex justifyContent={"center"} my={12}>
+									<Spinner size={"xl"} />
+								</Flex>
+							)}
 
-						{replies.slice(0).reverse().map((postReply) => (postReply.replies.slice(0).reverse().map((reply) => (
-							(reply.userId == user._id &&
-								(
-									<>
-										<Link to={`/user/${postReply.postedBy}/post/${postReply._id}`}>
-											<Flex marginTop={3}>
-												<Text marginRight={2} marginTop={0}>
-													Go to post
-												</Text>
-												<BsBoxArrowUpRight marginTop={2} />
-											</Flex>
-										</Link>
+							{replies.slice(0).reverse().map((postReply) => (postReply.replies.slice(0).reverse().map((reply) => (
+								(reply.userId == user._id &&
+									(
+										<>
+											<Link to={`/user/${postReply.postedBy}/post/${postReply._id}`}>
+												<Flex marginTop={3}>
+													<Text marginRight={2} marginTop={0}>
+														Go to post
+													</Text>
+													<BsBoxArrowUpRight marginTop={2} />
+												</Flex>
+											</Link>
 
-										<Comment
-											key={reply._id}
-											reply={reply}
-											lastReply={reply._id === postReply.replies[postReply.replies.length - 1]._id}
-										/>
-									</>))
-						))))}
-					</TabPanel>
+											<Comment
+												key={reply._id}
+												reply={reply}
+												lastReply={reply._id === postReply.replies[postReply.replies.length - 1]._id}
+											/>
+										</>))
+							))))}
+						</TabPanel>
 
-					<TabPanel>
-						{!fetchingReplies && replies.length === 0 && <h1>This person has never liked anything.</h1>}
-						{fetchingReplies && (
-							<Flex justifyContent={"center"} my={12}>
-								<Spinner size={"xl"} />
-							</Flex>
-						)}
+						<TabPanel>
+							{!fetchingReplies && replies.length === 0 && <h1>This person has never liked anything.</h1>}
+							{fetchingReplies && (
+								<Flex justifyContent={"center"} my={12}>
+									<Spinner size={"xl"} />
+								</Flex>
+							)}
 
-						{replies.slice(0).reverse().map((postReply) => (postReply.likes.map((userId) => (
-							(userId == user._id &&
-								(
-									<>
-										<Post key={postReply._id} post={postReply} postedBy={postReply.postedBy} />
-									</>))
-						))))}
-					</TabPanel>
-				</TabPanels>
-			</Tabs>
+							{replies.slice(0).reverse().map((postReply) => (postReply.likes.map((userId) => (
+								(userId == user._id &&
+									(
+										<>
+											<Post key={postReply._id} post={postReply} postedBy={postReply.postedBy} />
+										</>))
+							))))}
+						</TabPanel>
+					</TabPanels>
+				</Tabs>
+			)}
 		</>
 	);
 };

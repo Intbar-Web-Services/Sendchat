@@ -99,7 +99,7 @@ function App() {
 							</Routes>
 						</Container>
 					</Box></>) : (
-				<PunishmentPage user={currentUser.user} type={currentUser.user.punishment.type} reason={currentUser.user.punishment.reason} />
+				<PunishmentPage user={currentUser.user} type={currentUser.user.punishment.type} reason={currentUser.user.punishment.reason} hours={currentUser.user.punishment.hours} />
 			)}
 		</>
 	);

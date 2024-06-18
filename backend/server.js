@@ -83,13 +83,37 @@ export async function checkContent(req, res, next) {
 
     user.punishment.offenses++;
     if (!user.isAdmin) {
-      if (user.punishment.offenses >= 2) {
+      if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
         user.punishment.type = "warn";
         user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
-      } else if (user.punishment.offenses == 3) {
+      } else if (user.punishment.offenses >= 3 && user.punishment.offenses <= 20) {
         user.punishment.type = "suspend";
-        user.punishment.hours = Date.now() + 259200;
+        user.punishment.hours = Math.floor(new Date().getTime() / 1000.0) + 259200;
         user.punishment.reason = "You have said too many blacklisted words. You are now supended"
+      } else if (user.punishment.offenses > 20) {
+        user.punishment.type = "ban";
+        user.punishment.reason = reason;
+        user.punishment.hours = hoursParsedDate;
+        user.punishment.offenses++;
+
+        const job = new cron.CronJob("0 * * * *", async () => {
+          const cronUser = user;
+          if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
+            if (cronUser.punishment.type === "ban") {
+              cronUser.username = `deletedUser_${cronUser._id}`
+              cronUser.name = `Deleted User ${cronUser._id}`
+              cronUser.isDeleted = true;
+              cronUser.password = `${Date.now()}`;
+
+              await cronUser.save();
+              job.stop();
+            } else {
+              job.stop();
+            }
+          }
+        });
+
+        job.start();
       }
       await user.save();
     }
