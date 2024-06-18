@@ -182,8 +182,8 @@ export async function checkContent(req, res, next) {
         job.start();
       }
       await user.save();
+      return res.status(400).json({ error: "Contains blacklisted word." });
     }
-    return res.status(400).json({ error: "Contains blacklisted word." });
   }
 
   next();
