@@ -88,12 +88,15 @@ const banUser = async (req, res) => {
         user.punishment.offenses++;
         user = await user.save();
 
-        const job = new cron.CronJob("0 * * * *", async () => {
+        const job = new cron.CronJob("*/10 * * * *", async () => {
             const cronUser = user;
             if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
                 if (cronUser.punishment.type === "ban") {
                     cronUser.username = `deletedUser_${cronUser._id}`
                     cronUser.name = `Deleted User ${cronUser._id}`
+                    cronUser.bio = "";
+                    cronUser.punishment.type = "none";
+                    cronUser.profilePic = "";
                     cronUser.isDeleted = true;
                     cronUser.password = `${Date.now()}`;
 

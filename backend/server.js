@@ -5,6 +5,7 @@ import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import User from "./models/userModel.js";
+import Post from "./models/postModel.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import punishmentRoutes from "./routes/punishmentRoutes.js"
@@ -28,12 +29,31 @@ const bannedUsers = await User.find({ 'punishment.type': { $exists: true, $eq: '
 
 if (bannedUsers) {
   bannedUsers.map((user) => {
-    const job = new cron.CronJob("0 * * * *", async () => {
+    const job = new cron.CronJob("*/10 * * * *", async () => {
       const cronUser = user;
       if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
         if (cronUser.punishment.type === "ban") {
+          const posts = Post.find();
+          posts.map((post) => {
+            if (post.replies) {
+              post.replies.map((reply) => {
+                bannedUsers.map((bannedUser) => {
+                  if (reply.userId.toString() == bannedUser._id.toString()) {
+                    reply.username = `deletedUser_${cronUser._id}`
+                    reply.name = `Deleted User ${cronUser._id}`
+                    reply.userProfilePic = "";
+                  }
+                });
+              });
+            }
+
+            post.save()
+          });
           cronUser.username = `deletedUser_${cronUser._id}`
           cronUser.name = `Deleted User ${cronUser._id}`
+          cronUser.bio = "";
+          cronUser.punishment.type = "none";
+          cronUser.profilePic = "";
           cronUser.isDeleted = true;
           cronUser.password = `${Date.now()}`;
 
