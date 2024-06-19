@@ -1,4 +1,4 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Input, Select } from "@chakra-ui/react"; // this is a bunch of imports from chakra ui
+import { Button, Modal, Flex, VStack, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Input, Select } from "@chakra-ui/react"; // this is a bunch of imports from chakra ui
 import { useState } from "react"; // this is a hook that allows you to use state in a functional component
 import useShowToast from "../hooks/useShowToast";
 
@@ -69,20 +69,25 @@ const ModerationMenu = ({ id, isOpen, onClose }) => { // this is a functional co
                 <ModalHeader>Moderate User</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <Select placeholder="Select punishment" onChange={(e) => setPunishment(e.target.value)}>
-                        <option value="warn">Warn</option>
-                        <option value="suspend">Suspend</option>
-                        <option value="ban">Ban</option>
-                    </Select>
-                    {punishment === "suspend" && (
-                        <Select placeholder="Select time" onChange={(e) => setHours(e.target.value)}>
-                            <option value={3600}>1 hour</option>
-                            <option value={18000}>5 hours</option>
-                            <option value={259200}>3 days</option>
+                    <VStack>
+                        <Select placeholder="Select punishment" onChange={(e) => setPunishment(e.target.value)}>
+                            <option value="warn">Warn</option>
+                            <option value="suspend">Suspend</option>
+                            <option value="ban">Ban</option>
                         </Select>
-                    )}
-                    <Input placeholder={`Moderation reason for: ${id}`} onChange={(e) => setReason(e.target.value)} />
-                    <Button isLoading={loading} onClick={handleSubmit}>Submit</Button>
+                        {punishment === "suspend" && (
+                            <Select placeholder="Select time" onChange={(e) => setHours(e.target.value)}>
+                                <option value={3600}>1 hour</option>
+                                <option value={18000}>5 hours</option>
+                                <option value={259200}>3 days</option>
+                            </Select>
+                        )}
+                        <Input placeholder={`Moderation reason for: ${id}`} onChange={(e) => setReason(e.target.value)} />
+                        <Flex w="100%" gap="255" marginBottom={3}>
+                            <Button onClick={onClose} alignSelf="start">Cancel</Button>
+                            <Button isLoading={loading} alignSelf="end" onClick={handleSubmit}>Submit</Button>
+                        </Flex>
+                    </VStack>
                 </ModalBody>
             </ModalContent>
         </Modal>
