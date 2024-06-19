@@ -116,6 +116,8 @@ const loginUser = async (req, res) => {
 			isAdmin: user.isAdmin,
 			username: user.username,
 			bio: user.bio,
+			likesHidden: user.likesHiden,
+			punishment: user.punishment,
 			profilePic: user.profilePic,
 		});
 	} catch (error) {
