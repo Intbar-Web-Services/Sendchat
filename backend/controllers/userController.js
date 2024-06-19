@@ -82,8 +82,11 @@ const signupUser = async (req, res) => {
 				_id: newUser._id,
 				name: newUser.name,
 				email: newUser.email,
+				isAdmin: newUser.isAdmin,
 				username: newUser.username,
 				bio: newUser.bio,
+				likesHidden: newUser.likesHidden,
+				punishment: newUser.punishment,
 				profilePic: newUser.profilePic,
 			});
 		} else {
@@ -117,7 +120,7 @@ const loginUser = async (req, res) => {
 			isAdmin: user.isAdmin,
 			username: user.username,
 			bio: user.bio,
-			likesHidden: user.likesHiden,
+			likesHidden: user.likesHidden,
 			punishment: user.punishment,
 			profilePic: user.profilePic,
 		});
