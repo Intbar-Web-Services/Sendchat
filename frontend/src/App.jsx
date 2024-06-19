@@ -18,6 +18,7 @@ import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
+
 function App() {
 	let versionType = "";
 	const setStoredUser = useSetRecoilState(userAtom);
@@ -53,10 +54,23 @@ function App() {
 	const currentUser = useGetUserProfile(user ? { username: user._id } : { username: null });
 	useEffect(() => {
 		if (!currentUser.loading && currentUser.user) {
-			setStoredUser(currentUser.user);
-			localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
+			if (currentUser.user.punishment.type != "") {
+				setStoredUser(currentUser.user);
+				localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
+			}
 		}
-	});
+	}, []);
+
+
+	useEffect(() => {
+		if (document.cookie == '') {
+			if (localStorage.getItem("user-threads") != null) {
+				localStorage.removeItem("user-threads");
+				setStoredUser(null);
+				location.reload();
+			}
+		}
+	}, [])
 
 	const { pathname } = useLocation();
 	if (!currentUser.user && currentUser.loading) {

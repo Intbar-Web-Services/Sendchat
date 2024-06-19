@@ -5,10 +5,17 @@ import userAtom from "../atoms/userAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
-const ActivatePage = () => {
+const ActivatePage = (props) => {
     const [code, setCode] = useState("");
     const [updating, setUpdating] = useState(false);
     const showToast = useShowToast();
+    const search = props.location.search;
+    const params = new URLSearchParams(search);
+
+    if (params.code) {
+        setCode(code);
+        handleSubmit();
+    }
     const setUser = useSetRecoilState(userAtom);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {

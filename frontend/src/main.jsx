@@ -7,6 +7,7 @@ import { mode } from "@chakra-ui/theme-tools";
 import { extendTheme } from "@chakra-ui/theme-utils";
 import { ColorModeScript } from "@chakra-ui/color-mode";
 import { BrowserRouter } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { SocketContextProvider } from "./context/SocketContext.jsx";
 
