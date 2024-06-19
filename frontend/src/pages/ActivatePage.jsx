@@ -73,7 +73,7 @@ const ActivatePage = () => {
                     <Input
                         placeholder='Your Admin Code'
                         onChange={(e) => { setCode(e.target.value); }}
-                        content={code}
+                        value={code}
                         _placeholder={{ color: "gray.500" }}
                         type='text'
                         maxLength={30}
