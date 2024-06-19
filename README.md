@@ -35,6 +35,7 @@ Steps:
 go to <a href="https://sendchat.xyz/activate">this link</a>
 
 type in one of the admin codes below:
+
 FbhYbF3B929gDAQzFY
 
 FabFhCbNiy4368fYavE
