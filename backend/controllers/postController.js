@@ -61,7 +61,6 @@ const getPosts = async (req, res) => {
 		if (!posts) {
 			return res.status(404).json({ error: "No posts on Sendchat?" });
 		}
-		console.log(posts);
 		res.status(200).json(posts);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
