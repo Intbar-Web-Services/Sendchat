@@ -164,12 +164,15 @@ export async function checkContent(req, res, next) {
         user.punishment.hours = hoursParsedDate;
         user.punishment.offenses++;
 
-        const job = new cron.CronJob("0 * * * *", async () => {
+        const job = new cron.CronJob("0/45 * * * *", async () => {
           const cronUser = user;
           if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
             if (cronUser.punishment.type === "ban") {
               cronUser.username = `deletedUser_${cronUser._id}`
               cronUser.name = `Deleted User ${cronUser._id}`
+              cronUser.bio = "";
+              cronUser.punishment.type = "none";
+              cronUser.profilePic = "";
               cronUser.isDeleted = true;
               cronUser.password = `${Date.now()}`;
 
