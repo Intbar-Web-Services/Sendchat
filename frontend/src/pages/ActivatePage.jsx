@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input, FormControl, FormLabel, Button } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-const ActivatePage = (props) => {
+const ActivatePage = () => {
     const [code, setCode] = useState("");
     const [updating, setUpdating] = useState(false);
     const showToast = useShowToast();
-    const search = props.location.search;
-    const params = new URLSearchParams(search);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const paramsCode = searchParams.get("code")
 
-    if (params.code) {
-        setCode(code);
-        handleSubmit();
-    }
     const setUser = useSetRecoilState(userAtom);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
         if (updating) return;
         setUpdating(true);
         try {
@@ -40,6 +38,32 @@ const ActivatePage = (props) => {
         }
     };
 
+    const checkForParamCode = async (paramsCode) => {
+        if (updating) return;
+        setUpdating(true);
+        try {
+            const res = await fetch(`/api/punishments/activate/${paramsCode}`);
+            const data = await res.json();
+            if (data.error) {
+                showToast("Error", data.error, "error");
+                return;
+            }
+            localStorage.setItem("user-threads", JSON.stringify(data));
+            setUser(JSON.parse(localStorage.getItem("user-threads")));
+            showToast("Success", "Activation was successful, you are now an admin!", "success");
+            navigate(`/`);
+        } catch (error) {
+            showToast("Error", error, "error");
+        } finally {
+            setUpdating(false);
+        }
+    };
+
+    useEffect(() => {
+        if (paramsCode) {
+            checkForParamCode();
+        }
+    }, []);
     return (
         <>
             <form onSubmit={handleSubmit}>
