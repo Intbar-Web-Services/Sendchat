@@ -58,6 +58,8 @@ const CreatePost = () => {
 	const handleCreatePost = async () => {
 		setLoading(true);
 		try {
+			if (postText.trim() == "") showToast("Error", "Your post must contain text", "error");
+			else {
 			const res = await fetch("/api/posts/create", {
 				method: "POST",
 				headers: {
@@ -83,6 +85,7 @@ const CreatePost = () => {
 			setImgUrl("");
 			navigate("/");
 			setPosts([data, ...posts]);
+			}
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {

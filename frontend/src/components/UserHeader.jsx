@@ -55,9 +55,9 @@ const UserHeader = ({ user: givenUser }) => {
 		async function fetchFollowerData() {
 			const names = [];
 
-			for (const followerId of user.followers) {
+			for (let i = 0; i < ((user.followers.length > 5) ? 5 : user.followers.length); i++) {
 				try {
-					const response = await fetch(`/api/users/profile/${followerId}`);
+					const response = await fetch(`/api/users/profile/${user.followers[i]}`);
 					const userData = await response.json();
 					const userName = userData.username;
 					if (userName) {
@@ -78,9 +78,9 @@ const UserHeader = ({ user: givenUser }) => {
 		async function fetchFollowingData() {
 			const names = [];
 
-			for (const followingId of user.following) {
+			for (let i = 0; i < ((user.following.length > 5) ? 5 : user.following.length); i++) {
 				try {
-					const response = await fetch(`/api/users/profile/${followingId}`);
+					const response = await fetch(`/api/users/profile/${user.following[i]}`);
 					const userData = await response.json();
 					const userName = userData.username;
 					if (userName) {
