@@ -18,7 +18,7 @@ import Linkify from "react-linkify";
 const UserHeader = ({ user: givenUser }) => {
 	let [user, setUser] = useState(givenUser);
 	const toast = useToast();
-	const currentUser = useRecoilValue(userAtom); // logged in user
+	let currentUser = useRecoilValue(userAtom); // logged in user
 	const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
 	const colorMode = useColorMode();
 	const [searchingUser, setSearchingUser] = useState(false);
@@ -31,7 +31,7 @@ const UserHeader = ({ user: givenUser }) => {
 	const navigate = useNavigate();
 	const [followerNames, setFollowerNames] = useState([]);
 	const [followingNames, setFollowingNames] = useState([]);
-	const isModerator = currentUser.isAdmin;
+	const isModerator = currentUser ? currentUser.isAdmin : false;
 	const [showModerationMenu, setShowModerationMenu] = useState(false);
 	const handleModeration = () => {
 		setShowModerationMenu(true);

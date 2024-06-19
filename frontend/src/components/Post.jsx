@@ -16,7 +16,7 @@ import Linkify from "react-linkify";
 const Post = ({ post, postedBy }) => {
 	const [user, setUser] = useState(null);
 	const showToast = useShowToast();
-	const currentUser = useRecoilValue(userAtom);
+	let currentUser = useRecoilValue(userAtom);
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const navigate = useNavigate();
 
@@ -38,6 +38,9 @@ const Post = ({ post, postedBy }) => {
 
 		getUser();
 	}, [postedBy, showToast]);
+
+	if (!currentUser)
+		currentUser = { isAdmin: false };
 
 	const handleDeletePost = async (e) => {
 		try {

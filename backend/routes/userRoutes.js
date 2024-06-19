@@ -16,7 +16,7 @@ import { checkSignUpContent } from "../server.js";
 
 const router = express.Router();
 
-router.get("/profile/:query", protectRoute, getUserProfile);
+router.get("/profile/:query", getUserProfile);
 router.get("/suggested", protectRoute, getSuggestedUsers);
 router.post("/signup", checkSignUpContent, signupUser);
 router.post("/login", loginUser);
