@@ -260,7 +260,7 @@ const UserHeader = ({ user: givenUser }) => {
 						</Box>
 					)}
 					{user._id !== "6670f6d092d28380a1932445" && (
-						<Text color={"gray.light"}>{user.following.length} following</Text>
+						<Text color={"gray.light"} marginLeft={2.5}>{user.following.length} following</Text>
 					)}
 					{(!user.following.length == 0 && user._id !== "6670f6d092d28380a1932445") && (
 						<Box className='icon-container' paddingTop="0.5rem">
