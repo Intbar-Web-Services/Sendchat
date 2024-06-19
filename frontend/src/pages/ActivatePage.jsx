@@ -38,9 +38,10 @@ const ActivatePage = () => {
         }
     };
 
-    const checkForParamCode = async (paramsCode) => {
+    const checkForParamCode = async () => {
         if (updating) return;
         setUpdating(true);
+        setCode(paramsCode);
         try {
             const res = await fetch(`/api/punishments/activate/${paramsCode}`);
             const data = await res.json();
@@ -71,7 +72,8 @@ const ActivatePage = () => {
                     <FormLabel>Admin Code</FormLabel>
                     <Input
                         placeholder='Your Admin Code'
-                        onChange={(e) => setCode(e.target.value)}
+                        onChange={(e) => { setCode(e.target.value); }}
+                        content={code}
                         _placeholder={{ color: "gray.500" }}
                         type='text'
                         maxLength={30}
