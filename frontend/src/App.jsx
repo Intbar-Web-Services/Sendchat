@@ -1,5 +1,5 @@
 import { Box, Container, Flex, Spinner, Text } from "@chakra-ui/react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
@@ -9,8 +9,7 @@ import PunishmentPage from "./pages/PunishmentPage";
 import DownloadApp from "./pages/DownloadApp";
 import ActivatePage from "./pages/ActivatePage";
 import useGetUserProfile from "./hooks/useGetUserProfile";
-import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "./atoms/userAtom";
 import { useEffect, useCallback } from 'react'
 import UpdateProfilePage from "./pages/UpdateProfilePage";
@@ -21,6 +20,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
 function App() {
 	let versionType = "";
+	const setStoredUser = useSetRecoilState(userAtom);
 	const navigate = useNavigate();
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
@@ -50,7 +50,14 @@ function App() {
 		};
 	}, [handleKeyPress]);
 	const user = useRecoilValue(userAtom);
-	const currentUser = useGetUserProfile(user ? { username: user.username } : { username: null });
+	const currentUser = useGetUserProfile(user ? { username: user._id } : { username: null });
+	useEffect(() => {
+		if (!currentUser.loading && currentUser.user) {
+			setStoredUser(currentUser.user);
+			localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
+		}
+	});
+
 	const { pathname } = useLocation();
 	if (!currentUser.user && currentUser.loading) {
 		return (
