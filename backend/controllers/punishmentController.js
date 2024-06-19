@@ -181,6 +181,22 @@ const suspendUser = async (req, res) => {
     }
 };
 
+const demoteSelf = async (req, res) => {
+    try {
+        let user = req.user;
+
+        if (!user.isAdmin) return res.status(401).json({ error: "You are not an admin" });
+
+        user.isAdmin = false;
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.log("Error demoting self: ", err.message);
+    }
+};
+
 const unWarnUser = async (req, res) => {
     const { id } = req.params;
 
@@ -238,6 +254,7 @@ export {
     unWarnSelf,
     unsuspendSelf,
     banUser,
+    demoteSelf,
     suspendUser,
     activateCode,
 };

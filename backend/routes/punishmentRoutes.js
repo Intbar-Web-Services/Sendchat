@@ -3,6 +3,7 @@ import {
     warnUser,
     unWarnUser,
     unWarnSelf,
+    demoteSelf,
     unsuspendSelf,
     banUser,
     suspendUser,
@@ -16,6 +17,7 @@ const router = express.Router();
 router.post("/warn/:id", protectRoute, warnUser);
 router.post("/suspend/:id", protectRoute, suspendUser);
 router.get("/unwarn/:id", protectRoute, unWarnUser);
+router.get("/demoteself", protectRoute, demoteSelf);
 router.get("/unwarn", protectRoute, unWarnSelf);
 router.get("/unsuspend", protectRoute, unsuspendSelf);
 router.get("/activate/:code", protectRoute, punishmentCheck, activateCode);
