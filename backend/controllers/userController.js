@@ -24,7 +24,7 @@ const getUserProfile = async (req, res) => {
 
 		if (!user) return res.status(404).json({ error: "User not found" });
 
-		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6670f6d092d28380a1932445" }).select("-password").select("-updatedAt").select("-email"));
+		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6672b78eab0404a06146d47c" }).select("-password").select("-updatedAt").select("-email"));
 
 		res.status(200).json(user);
 	} catch (err) {
@@ -151,7 +151,7 @@ const followUnFollowUser = async (req, res) => {
 
 		if (!userToModify || !currentUser) return res.status(400).json({ error: "User not found" });
 
-		if (id === "6670f6d092d28380a1932445") {
+		if (id === "6672b78eab0404a06146d47c") {
 			return res.status(400).json({ error: "Don't follow the deleted user mask account" });
 		}
 
@@ -313,7 +313,7 @@ const getSuggestedUsers = async (req, res) => {
 		const users = await User.aggregate([
 			{
 				$match: {
-					_id: { $nin: [userId, "6670f6d092d28380a1932445"] },
+					_id: { $nin: [userId, new mongoose.Types.ObjectId("6672b78eab0404a06146d47c")] },
 				},
 			},
 			{
