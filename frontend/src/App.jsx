@@ -83,7 +83,7 @@ function App() {
 
 	return (
 		<>
-			{!user || currentUser.user.punishment.type == "none" ? (
+			{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
 				<>
 					<Header />
 					<Box position={"relative"} w='full'
