@@ -158,6 +158,20 @@ export async function checkContent(req, res, next) {
         user.punishment.type = "suspend";
         user.punishment.hours = Math.floor(new Date().getTime() / 1000.0) + 259200;
         user.punishment.reason = "You have said too many blacklisted words. You are now supended"
+
+        const job = new cron.CronJob("*/14 * * * *", async function () {
+          const cronUser = user;
+          if (cronUser.punishment.hours <= Math.floor(new Date().getTime() / 1000.0)) {
+            cronUser.punishment.type = "warn";
+            cronUser.punishment.reason = "You've been suspended recently, watch your behavior.";
+            cronUser.hours = 0;
+
+            await cronUser.save();
+            job.stop();
+          }
+        });
+
+        job.start();
       } else if (user.punishment.offenses > 20) {
         user.punishment.type = "ban";
         user.punishment.reason = reason;
