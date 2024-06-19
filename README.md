@@ -1,5 +1,14 @@
 <img src="https://github.com/Intbar-Web-Services/Sendchat/assets/111395398/dffcd659-a8dc-4e19-8a38-375ea4430bc2" width="400" />
 
+
+PSA!!
+
+**__SOMEONE__** HERE HAS *SHUT DOWN* SENDCHAT RECENTLY DUE TO OVERLOADING THE API
+
+DO. NOT. OVERLOAD. THE. API.
+
+IT. IS. SUCH. A. PAIN. TO. SET. UP. A. NEW. ACCOUNT. AFTER. RENDER. ACTS. LIKE. A. PISS. ASS. MOFO.
+
 sendchat
 
 it's a chat app
