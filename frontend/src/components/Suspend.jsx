@@ -55,7 +55,7 @@ const Suspend = ({ user, reason, hours }) => {
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={12}>
                 <Stack align={"center"}>
                     <Heading fontSize={"4xl"} textAlign={"center"}>
-                        Your account has been suspended.
+                        Your account has been suspended
                     </Heading>
                 </Stack>
                 <Box
