@@ -150,7 +150,7 @@ const Post = ({ post, postedBy }) => {
 				<Link to={`/user/${user.username}/post/${post._id}`}>
 					{post.img && (
 						<Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-							<Image src={post.img} w={"full"} />
+							<Image src={post.img} w={"auto"} h={"auto"} maxH={520} maxW={520}/>
 						</Box>
 					)}
 
