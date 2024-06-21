@@ -11,12 +11,12 @@ export const SettingsPage = () => {
 	const currentUser = useRecoilValue(userAtom);
 	const setCurrentUser = useSetRecoilState(userAtom);
 	let versionType = "";
-	if (userAgent.includes('Web') || userAgent.includes('Firefox')) {
+	if (userAgent.includes('Electron')) {
+		versionType = "Sendchat Desktop (Electron)";
+	} else if (userAgent.includes('Web') || userAgent.includes('Firefox')) {
 		versionType = "Sendchat for Web";
 	} else if (userAgent.includes('Mobile')) {
 		versionType = "Sendchat Web for Mobile";
-	} else if (userAgent.includes('Electron')) {
-		versionType = "Sendchat Desktop (Electron)";
 	} else {
 		versionType = "an unknown device or browser";
 	}
