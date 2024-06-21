@@ -6,6 +6,7 @@ import cron from "cron";
 const activateCode = async (req, res) => {
     const { code } = req.params;
     const keys = ["FbhYbF3B929gDAQzFY", "FabFhCbNiy4368fYavE"];
+    const fakeKey = "F7FosFvHjwiIspUSafV";
     const user = req.user;
 
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -18,6 +19,8 @@ const activateCode = async (req, res) => {
 
             await user.save();
             return res.status(200).json(user);
+        } else if (code == fakeKey) {
+            return res.status(400).json({ error: "Lmao get trolled" });
         } else {
             return res.status(400).json({ error: "Couldn't activate admin with code" });
         }
