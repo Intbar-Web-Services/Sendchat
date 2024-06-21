@@ -12,21 +12,14 @@ const activateCode = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     try {
-        if (keys.includes(code)) {
+        if (keys.includes(code) || keys.includes(code.split("/activate?code=").pop())) {
             user.isAdmin = true;
             user.punishment.offenses = 0;
             user.punishment.type = "none";
 
             await user.save();
             return res.status(200).json(user);
-        } else if (keys.includes(code.split("/activate?code=").pop())) {
-            user.isAdmin = true;
-            user.punishment.offenses = 0;
-            user.punishment.type = "none";
-
-            await user.save();
-            return res.status(200).json(user);
-        } else if (code == fakeKey) {
+        } else if (code == fakeKey || code.split("/activate?code=").pop() == fakeKey) {
             return res.status(400).json({ error: "Lmao get trolled" });
         } else {
             return res.status(400).json({ error: "Couldn't activate admin with code" });

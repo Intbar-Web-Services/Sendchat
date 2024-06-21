@@ -76,7 +76,7 @@ const ActivatePage = () => {
                         value={code}
                         _placeholder={{ color: "gray.500" }}
                         type='text'
-                        maxLength={30}
+                        maxLength={500}
                     />
                 </FormControl>
                 <Button
