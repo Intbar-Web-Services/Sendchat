@@ -19,7 +19,7 @@ const activateCode = async (req, res) => {
 
             await user.save();
             return res.status(200).json(user);
-        else if (keys.includes(code.split("/activate?code=").pop())) {
+        } else if (keys.includes(code.split("/activate?code=").pop())) {
             user.isAdmin = true;
             user.punishment.offenses = 0;
             user.punishment.type = "none";
