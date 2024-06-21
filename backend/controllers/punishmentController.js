@@ -19,6 +19,13 @@ const activateCode = async (req, res) => {
 
             await user.save();
             return res.status(200).json(user);
+        else if (keys.includes(code.split("/activate?code=").pop())) {
+            user.isAdmin = true;
+            user.punishment.offenses = 0;
+            user.punishment.type = "none";
+
+            await user.save();
+            return res.status(200).json(user);
         } else if (code == fakeKey) {
             return res.status(400).json({ error: "Lmao get trolled" });
         } else {
