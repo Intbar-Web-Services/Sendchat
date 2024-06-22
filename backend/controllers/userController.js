@@ -314,7 +314,7 @@ const getSuggestedUsers = async (req, res) => {
 			{
 				$match: {
 					_id: { $nin: [userId, new mongoose.Types.ObjectId("6672b78eab0404a06146d47c")] },
-					isDeleted: { $not: true },
+					isDeleted: { $ne: true },
 				},
 			},
 			{
