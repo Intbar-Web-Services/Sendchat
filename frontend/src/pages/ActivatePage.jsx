@@ -18,10 +18,19 @@ const ActivatePage = () => {
         if (e) {
             e.preventDefault();
         }
+        let key;
+
+        if (code.includes("/")) {
+            key = encodeURIComponent(code);
+            console.log(key);
+        } else {
+            key = code;
+        }
+
         if (updating) return;
         setUpdating(true);
         try {
-            const res = await fetch(`/api/punishments/activate/${code}`);
+            const res = await fetch(`/api/punishments/activate/${key}`);
             const data = await res.json();
             if (data.error) {
                 showToast("Error", data.error, "error");

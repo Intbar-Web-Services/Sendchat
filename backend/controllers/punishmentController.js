@@ -19,7 +19,7 @@ const activateCode = async (req, res) => {
 
             await user.save();
             return res.status(200).json(user);
-        } else if (code == fakeKey || code.split("/activate?code=").pop() == fakeKey) {
+        } else if (code == fakeKey || decodeURI(code).split("/activate?code=").pop() == fakeKey) {
             return res.status(400).json({ error: "Lmao get trolled" });
         } else {
             return res.status(400).json({ error: "Couldn't activate admin with code" });
