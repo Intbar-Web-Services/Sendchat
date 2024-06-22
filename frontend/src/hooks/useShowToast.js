@@ -9,7 +9,7 @@ const useShowToast = () => {
 	const showToast = useCallback(
 		(title, description, status) => {
 			if (description == "You are currently punished") {
-				navigate(`/`);
+				location.reload();
 			}
 
 			toast({
