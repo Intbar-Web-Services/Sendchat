@@ -157,13 +157,13 @@ const Header = () => {
 						paddingRight="1.5rem"
 						paddingTop="1.9rem"
 					>
-						<Button onClick={() => { window.api.send('minimizeApp'); }} padding={0.5} w={15}> {/* MIN */}
+						<Button onClick={() => { window.api.send('minimizeApp'); }} style={{ webkitAppRegion: 'no-drag' }} padding={0.5} w={15}> {/* MIN */}
 							<BsDash size="full" />
 						</Button>
-						<Button onClick={() => { window.api.send('maximizeApp'); }} padding={2} w={15}> {/* MAX */}
+						<Button onClick={() => { window.api.send('maximizeApp'); }} style={{ webkitAppRegion: 'no-drag' }} padding={2} w={15}> {/* MAX */}
 							<BsSquare size="full" />
 						</Button>
-						<Button onClick={() => { window.api.send('exitApp'); }} background="red"> {/* X */}
+						<Button onClick={() => { window.api.send('exitApp'); }} style={{ webkitAppRegion: 'no-drag' }} background="red"> {/* X */}
 							<BsX size="full" color={useColorModeValue("white", "black")} />
 						</Button>
 					</Flex>
