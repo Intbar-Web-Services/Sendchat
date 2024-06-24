@@ -17,6 +17,9 @@ const Header = () => {
 	const shouldRenderComponent = !userAgent.includes('Electron') && !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
+	useEffect(() => {
+		window.api.send('appReady');
+	}, []);
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
@@ -45,8 +48,6 @@ const Header = () => {
 			document.removeEventListener('keydown', handleKeyPress);
 		};
 	}, [handleKeyPress]);
-
-	window.api.send("appReady");
 
 	return (
 		<>
@@ -137,18 +138,7 @@ const Header = () => {
 					</Link>
 				)}
 			</Flex>
-			{shouldRenderComponent && (
-				<Flex justifyContent={"right"} mt={0}
-
-					position="fixed" zIndex={1}
-					right={0}
-					paddingRight="1.5rem"
-					paddingTop="1.9rem"
-				>
-					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
-				</Flex>
-			)}
-			{(!shouldRenderComponent && !navigator.userAgent.includes("Windows")) && (
+			{(!navigator.userAgent.includes("Windows")) && (
 				<>
 					<Flex
 						justifyContent={"right"}
