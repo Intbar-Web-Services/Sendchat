@@ -46,6 +46,8 @@ const Header = () => {
 		};
 	}, [handleKeyPress]);
 
+	window.api.send("appReady");
+
 	return (
 		<>
 
@@ -146,6 +148,7 @@ const Header = () => {
 					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
 				</Flex>
 			)}
+			{(!shouldRenderComponent && !navigator.userAgent.includes("Windows")) && (
 				<>
 					<Flex
 						justifyContent={"right"}
@@ -167,6 +170,7 @@ const Header = () => {
 						</Button>
 					</Flex>
 				</>
+			)}
 		</>
 	);
 };
