@@ -6,8 +6,6 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import PunishmentPage from "./pages/PunishmentPage";
-import DownloadApp from "./pages/DownloadApp";
-import ActivatePage from "./pages/ActivatePage";
 import useGetUserProfile from "./hooks/useGetUserProfile";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "./atoms/userAtom";
@@ -17,7 +15,6 @@ import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
-import ProbePage from "./pages/ProbePage";
 
 function App() {
 	let versionType = "";
@@ -114,9 +111,6 @@ function App() {
 								<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
 								<Route path='/shortcuts' element={<Shortcuts />} />
 								<Route path='/settings' element={user ? <SettingsPage /> : <	Navigate to={"/auth"} />} />
-								<Route path='/download' element={<DownloadApp />} />
-								<Route path="/probe" element={<ProbePage />} />
-								<Route path="/activate" element={(user && !currentUser.user.isAdmin) ? <ActivatePage /> : <Navigate to='/' />} />
 							</Routes>
 						</Container>
 					</Box></>) : (
