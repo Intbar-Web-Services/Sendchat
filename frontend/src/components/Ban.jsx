@@ -41,7 +41,7 @@ const Ban = ({ user, reason, hours }) => {
                     }}
                 >
                     <Stack spacing={4}>
-                        <Text fontWeight='semibold'>We're showing you this message your account, {user.name} (@{user.username}), has been terminated. Your account will be anonymized and all personal information removed within 30 days.</Text>
+                        <Text fontWeight='semibold'>We're showing you this message because your account, {user.name} (@{user.username}), has been terminated. Your account will be anonymized and all personal information removed within 30 days.</Text>
 
                         <Text fontWeight='bold'>Reason:</Text>
                         <Text marginTop={1} marginBottom={5}>{reason ? reason : "No reason given."}</Text>
@@ -49,7 +49,7 @@ const Ban = ({ user, reason, hours }) => {
                             <Button
                                 marginTop={-6}
                                 size='lg'
-                                onClick={() => logout()}
+                                onClick={() => { logout(); location.reload(); }}
                                 bg={useColorModeValue("gray.600", "gray.700")}
                                 color={"white"}
                                 _hover={{

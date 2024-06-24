@@ -92,7 +92,7 @@ const Suspend = ({ user, reason, hours }) => {
                             <Button
                                 marginTop={-6}
                                 size='lg'
-                                onClick={() => logout()}
+                                onClick={() => { logout(); location.reload(); }}
                                 bg={useColorModeValue("gray.600", "gray.700")}
                                 color={"white"}
                                 _hover={{

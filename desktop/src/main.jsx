@@ -33,6 +33,10 @@ const colors = {
 
 const theme = extendTheme({ config, styles, colors });
 
+if (!navigator.userAgent.includes("Electron")) {
+	location.pathname = "/";
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// React.StrictMode renders every component twice (in the initial render), only in development.
 	<React.StrictMode>

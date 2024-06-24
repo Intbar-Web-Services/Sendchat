@@ -35,9 +35,7 @@ const Actions = ({ post }) => {
 	const showToast = useShowToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const copyURL = () => {
-		const currentURL = window.location.href
-		// Assuming currentURL is already defined
-		const url = new URL(currentURL);
+		const url = new URL("https://sendchat.xyz");
 
 		// Extract the base URL (including protocol and hostname)
 		const baseURL = `${url.protocol}//${url.hostname}/`;

@@ -9,12 +9,11 @@ import { useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
-import { BsDash, BsDiamond, BsFillChatQuoteFill, BsLine, BsSquare, BsX } from "react-icons/bs";
-import { CgMaximize, CgMinimize } from "react-icons/cg";
+import { BsFillChatQuoteFill } from "react-icons/bs";
 
 const Header = () => {
 	const userAgent = navigator.userAgent;
-	const shouldRenderComponent = !userAgent.includes('Electron') && !userAgent.includes('Mobile');
+	const shouldRenderComponent = !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
 	const user = useRecoilValue(userAtom);
@@ -134,41 +133,18 @@ const Header = () => {
 						Sign up
 					</Link>
 				)}
-			</Flex>
-			{shouldRenderComponent && (
-				<Flex justifyContent={"right"} mt={0}
 
+				<Flex
+					justifyContent={"right"}
+					mt={0}
 					position="fixed" zIndex={1}
 					right={0}
 					paddingRight="1.5rem"
 					paddingTop="1.9rem"
 				>
-					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
+					<Button onClick={() => { navigate("/download") }}>Download Desktop App</Button>
 				</Flex>
-			)}
-			{(!shouldRenderComponent && !navigator.userAgent.includes("Windows")) && (
-				<>
-					<Flex
-						justifyContent={"right"}
-						mt={0}
-						gap={5}
-						position="fixed" zIndex={1}
-						right={0}
-						paddingRight="1.5rem"
-						paddingTop="1.9rem"
-					>
-						<Button onClick={() => { window.api.send('minimizeApp'); }} style={{ webkitAppRegion: 'no-drag' }} padding={0.5} w={15}> {/* MIN */}
-							<BsDash size="full" />
-						</Button>
-						<Button onClick={() => { window.api.send('maximizeApp'); }} style={{ webkitAppRegion: 'no-drag' }} padding={2} w={15}> {/* MAX */}
-							<BsSquare size="full" />
-						</Button>
-						<Button onClick={() => { window.api.send('exitApp'); }} style={{ webkitAppRegion: 'no-drag' }} background="red"> {/* X */}
-							<BsX size="full" color={useColorModeValue("white", "black")} />
-						</Button>
-					</Flex>
-				</>
-			)}
+			</Flex>
 		</>
 	);
 };
