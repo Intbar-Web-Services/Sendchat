@@ -34,7 +34,6 @@ const colors = {
 const theme = extendTheme({ config, styles, colors });
 
 if (!navigator.userAgent.includes("Electron")) {
-	console.log(navigator.userAgent);
 	location.pathname = "/";
 }
 
