@@ -24,13 +24,18 @@ const MessageContainer = () => {
 		socket.on("newMessage", (message) => {
 			if (selectedConversation._id === message.conversationId) {
 				setMessages((prev) => [...prev, message]);
-				console.log(message);
 			}
+
+			console.log(message);
 
 			// make a sound if the window is not focused
 			if (!document.hasFocus()) {
-				const sound = new Audio(messageSound);
-				sound.play();
+				new Audio(messageSound).play();
+
+				new Notification({
+					title: "Sendchat",
+					body: `New version is available`,
+				}).show();
 			}
 
 			setConversations((prev) => {
