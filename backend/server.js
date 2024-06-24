@@ -229,6 +229,7 @@ app.use("/api/punishments", punishmentRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.use(express.static(path.join(__dirname, "/desktop/dist")));
 
   app.use("/app", (req, res) => {
     res.sendFile(path.resolve(__dirname, "desktop", "dist", "index.html"));
