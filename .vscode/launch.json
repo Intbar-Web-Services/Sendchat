@@ -2,46 +2,84 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Edge",
+            "name": "Start Server",
             "request": "launch",
-            "type": "msedge",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/frontend"
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "cwd": "${workspaceFolder}/backend",
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         },
         {
-            "command": "npm start",
-            "name": "Build and run",
+            "name": "Start Client",
             "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "${defaultBuildTask}"
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "serverReadyAction": {
+                "pattern": "localhost:([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+                "action": "debugWithEdge"
+            },
+            "cwd": "${workspaceFolder}/frontend",
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         },
         {
-            "type": "node-terminal",
+            "name": "Start Desktop",
             "request": "launch",
-            "name": "Start server (Express)",
-            "command": "npm run dev",
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "npm: install"
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "cwd": "${workspaceFolder}/desktop",
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         },
         {
-            "type": "node-terminal",
+            "name": "Build And Run",
             "request": "launch",
-            "name": "Start React Client (Vite)",
-            "command": "npm run dev",
-            "cwd": "${workspaceRoot}/frontend",
-            "preLaunchTask": "npm: install - frontend"
-        }
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            "serverReadyAction": {
+                "pattern": "localhost:([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+                "action": "debugWithEdge"
+            },
+            "runtimeExecutable": "npm",
+            "preLaunchTask": "${defaultBuildTask}",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
     ],
     "compounds": [
         {
             "name": "Start Development Server",
             "configurations": [
-                "Start server (Express)",
-                "Start React Client (Vite)",
-                "Launch Edge"
+                "Start Server",
+                "Start Client",
+                "Start Desktop"
             ],
-            "preLaunchTask": "npm: install - frontend",
             "stopAll": true
         }
     ]
