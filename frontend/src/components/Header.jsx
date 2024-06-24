@@ -146,7 +146,7 @@ const Header = () => {
 					<Button onClick={() => { navigate("/download") }}>What is the point?</Button>
 				</Flex>
 			)}
-			{!shouldRenderComponent && (
+			{(!shouldRenderComponent && !navigator.userAgent.includes("Windows")) && (
 				<>
 					<Flex
 						justifyContent={"right"}
