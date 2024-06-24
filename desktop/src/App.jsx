@@ -82,7 +82,7 @@ function App() {
 		<>
 			{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
 				<>
-					<Header />
+					<Header winApi={window.api} />
 					<Box position={"relative"} w='full'
 						mt="0rem"
 						p="6rem"
