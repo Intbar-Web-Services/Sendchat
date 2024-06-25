@@ -33,7 +33,7 @@ const colors = {
 
 const theme = extendTheme({ config, styles, colors });
 
-if (!navigator.userAgent.includes("Electron")) {
+if (!navigator.userAgent.includes("sendchat-desktop")) {
 	location.pathname = "/";
 }
 
