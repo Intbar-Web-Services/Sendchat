@@ -58,7 +58,6 @@ function App() {
 		}
 	}, []);
 
-
 	useEffect(() => {
 		if (document.cookie == '') {
 			if (localStorage.getItem("user-threads") != null) {
@@ -77,8 +76,6 @@ function App() {
 			</Flex>
 		);
 	}
-
-	useEffect(() => window.api.send("appReady"));
 
 	return (
 		<>

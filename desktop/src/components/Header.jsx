@@ -17,6 +17,9 @@ const Header = () => {
 	const shouldRenderComponent = !userAgent.includes('Electron') && !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
+	useEffect(() => {
+		window.api.send('appReady');
+	}, []);
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
