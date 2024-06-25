@@ -12,14 +12,11 @@ import authScreenAtom from "../atoms/authAtom";
 import { BsDash, BsDiamond, BsFillChatQuoteFill, BsLine, BsSquare, BsX } from "react-icons/bs";
 import { CgMaximize, CgMinimize } from "react-icons/cg";
 
-const Header = ({ winApi }) => {
+const Header = () => {
 	const userAgent = navigator.userAgent;
 	const shouldRenderComponent = !userAgent.includes('Electron') && !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
-	useEffect(() => {
-		winApi.send('appReady');
-	}, []);
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);

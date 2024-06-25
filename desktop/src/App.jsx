@@ -78,11 +78,13 @@ function App() {
 		);
 	}
 
+	useEffect(() => window.api.send("appReady"));
+
 	return (
 		<>
 			{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
 				<>
-					<Header winApi={window.api} />
+					<Header />
 					<Box position={"relative"} w='full'
 						mt="0rem"
 						p="6rem"
