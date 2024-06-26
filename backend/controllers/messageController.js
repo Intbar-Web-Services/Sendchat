@@ -122,7 +122,7 @@ async function sendMessage(req, res) {
 				const fbMessage = {
 					data: {
 						body: message,
-						image: user.profilePic,
+						image: req.user.profilePic,
 						title: req.user.name,
 						username: req.user.username,
 						isImage,
