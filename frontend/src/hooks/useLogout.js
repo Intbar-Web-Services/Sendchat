@@ -11,7 +11,7 @@ const useLogout = () => {
 		try {
 			const res = await fetch("/api/users/logout", {
 				method: "POST",
-				body: { oldToken: messaging.token },
+				body: JSON.stringify({ oldToken: messaging.token }),
 				headers: {
 					"Content-Type": "application/json",
 				},
