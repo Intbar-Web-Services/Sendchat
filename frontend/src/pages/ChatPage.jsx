@@ -12,6 +12,7 @@ import { useSocket } from "../context/SocketContext";
 import { messaging } from "../firebase";
 import { onMessage, getToken } from "firebase/messaging";
 import mongoose from "mongoose";
+import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
 	const [searchingUser, setSearchingUser] = useState(false);
@@ -24,6 +25,7 @@ const ChatPage = () => {
 	const currentUser = useRecoilValue(userAtom);
 	const showToast = useShowToast();
 	const { socket, onlineUsers } = useSocket();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		socket?.on("messagesSeen", ({ conversationId }) => {
@@ -71,6 +73,32 @@ const ChatPage = () => {
 			handleConversationSearch(null);
 		}
 	}, [loadingConversations]);
+
+	const getSelectedUser = () => {
+		return selectedConversation;
+	};
+
+	useEffect(() => {
+		if (Notification.permission == "granted") {
+			onMessage(messaging, async (payload) => {
+				if (payload.data.isImage == "true") {
+					payload.data.body = "Sent an image";
+				}
+				const notificationOptions = {
+					body: payload.data.body,
+					icon: payload.data.image,
+				};
+
+				if (location.pathname === "/chat" && getSelectedUser()._id !== payload.data.conversationId) {
+					const notif = new Notification(payload.data.title, notificationOptions);
+
+					notif.onclick = function () {
+						navigate(`/chat?conversation=${payload.data.username}`);
+					};
+				}
+			});
+		}
+	}, []);
 
 	const handleConversationSearch = async (e) => {
 		if (e) {

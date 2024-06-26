@@ -9,7 +9,7 @@ import PunishmentPage from "./pages/PunishmentPage";
 import DownloadApp from "./pages/DownloadApp";
 import ActivatePage from "./pages/ActivatePage";
 import useGetUserProfile from "./hooks/useGetUserProfile";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import userAtom from "./atoms/userAtom";
 import { useEffect, useCallback } from 'react'
 import UpdateProfilePage from "./pages/UpdateProfilePage";
@@ -20,11 +20,13 @@ import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
 import { generateToken, messaging } from "./firebase";
 import { onMessage, getToken } from "firebase/messaging";
+import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "./atoms/messagesAtom";
 
 function App() {
 	let versionType = "";
 	const setStoredUser = useSetRecoilState(userAtom);
 	const navigate = useNavigate();
+	const selectedConversation = useRecoilValue(selectedConversationAtom);
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
@@ -77,11 +79,13 @@ function App() {
 					icon: payload.data.image,
 				};
 
-				const notif = new Notification(payload.data.title, notificationOptions);
+				if (location.pathname !== "/chat") {
+					const notif = new Notification(payload.data.title, notificationOptions);
 
-				notif.onclick = function () {
-					navigate(`/chat?conversation=${payload.data.username}`);
-				};
+					notif.onclick = function () {
+						navigate(`/chat?conversation=${payload.data.username}`);
+					};
+				}
 			});
 		}
 	}, []);
