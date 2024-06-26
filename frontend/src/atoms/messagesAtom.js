@@ -8,6 +8,7 @@ export const conversationsAtom = atom({
 export const selectedConversationAtom = atom({
 	key: "selectedConversationAtom",
 	default: {
+		mock: false,
 		_id: "",
 		userId: "",
 		username: "",

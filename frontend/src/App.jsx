@@ -69,17 +69,19 @@ function App() {
 			});
 
 			onMessage(messaging, async (payload) => {
-				if (!location.pathname.includes("/chat")) {
-					if (payload.data.isImage == "true") {
-						payload.data.body = "Sent an image";
-					}
-					const notificationOptions = {
-						body: payload.data.body,
-						icon: payload.data.image,
-					};
-
-					const notif = new Notification(payload.data.title, notificationOptions);
+				if (payload.data.isImage == "true") {
+					payload.data.body = "Sent an image";
 				}
+				const notificationOptions = {
+					body: payload.data.body,
+					icon: payload.data.image,
+				};
+
+				const notif = new Notification(payload.data.title, notificationOptions);
+
+				notif.onclick = function () {
+					navigate(`/chat?conversation=${payload.data.username}`);
+				};
 			});
 		}
 	}, []);

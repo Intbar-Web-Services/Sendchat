@@ -124,6 +124,7 @@ async function sendMessage(req, res) {
 						body: message,
 						image: user.profilePic,
 						title: user.name,
+						username: user.username,
 						isImage,
 						conversationId: conversation._id.toString(),
 					},
@@ -158,7 +159,7 @@ async function getMessages(req, res) {
 		});
 
 		if (!conversation) {
-			return res.status(404).json({ error: "Chat started successfully" });
+			return res.status(404).json({ error: "Conversation not found." });
 		}
 
 		const messages = await Message.find({

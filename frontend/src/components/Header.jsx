@@ -62,17 +62,19 @@ const Header = () => {
 		setNotificationsLoading(true);
 		await generateToken();
 		onMessage(messaging, (payload) => {
-			if (!location.pathname.includes("/chat")) {
-				if (payload.data.isImage == "true") {
-					payload.data.body = "Sent an image";
-				}
-				const notificationOptions = {
-					body: payload.data.body,
-					icon: payload.data.image,
-				};
-
-				new Notification(payload.data.title, notificationOptions).show();
+			if (payload.data.isImage == "true") {
+				payload.data.body = "Sent an image";
 			}
+			const notificationOptions = {
+				body: payload.data.body,
+				icon: payload.data.image,
+			};
+
+			const notif = new Notification(payload.data.title, notificationOptions);
+
+			notif.onclick = function () {
+				navigate(`/chat?conversation=${payload.data.conversationId}`);
+			};
 		});
 		const token = await getToken(messaging, {
 			vapidKey:

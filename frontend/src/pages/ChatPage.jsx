@@ -15,6 +15,7 @@ import mongoose from "mongoose";
 
 const ChatPage = () => {
 	const [searchingUser, setSearchingUser] = useState(false);
+	const urlParams = new URLSearchParams(window.location.search);
 	const [loadingConversations, setLoadingConversations] = useState(true);
 	const [searchText, setSearchText] = useState("");
 	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
@@ -65,30 +66,18 @@ const ChatPage = () => {
 	}, [showToast, setConversations]);
 
 	useEffect(() => {
-		if (Notification.permission == "granted") {
-			onMessage(messaging, async (payload) => {
-				if (location.pathname.includes("/chat")) {
-					if (payload.data.isImage == "true") {
-						payload.data.body = "Sent an image";
-					}
-					const notificationOptions = {
-						body: payload.data.body,
-						icon: payload.data.image,
-					};
-
-					if (new mongoose.Types.ObjectId(payload.data.conversationId) !== selectedConversation) {
-						const notif = new Notification(payload.data.title, notificationOptions);
-						notif.onclick = () => {
-							setSelectedConversation(payload.data.conversationId);
-						};
-					}
-				}
-			});
+		if (urlParams.get('conversation')) {
+			setSearchText(urlParams.get('conversation'));
+			handleConversationSearch(null);
 		}
-	}, []);
+	}, [loadingConversations]);
 
 	const handleConversationSearch = async (e) => {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
+		if (loadingConversations)
+			return;
 		setSearchingUser(true);
 		try {
 			const res = await fetch(`/api/users/profile/${searchText}`);
@@ -136,6 +125,14 @@ const ChatPage = () => {
 			})
 
 			setConversations((prevConvs) => [...prevConvs, newConversation]);
+			setSelectedConversation({
+				_id: newConversation._id,
+				userId: searchedUser._id,
+				username: searchedUser.username,
+				name: searchedUser.name,
+				userProfilePic: searchedUser.profilePic,
+				mock: true,
+			});
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		} finally {

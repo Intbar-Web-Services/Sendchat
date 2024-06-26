@@ -97,72 +97,6 @@ const UserHeader = ({ user: givenUser }) => {
 		fetchFollowingData();
 	}, [user.following]);
 
-	const handleConversationSearch = async (e) => {
-		e.preventDefault();
-		navigate("/chat")
-
-		setSearchingUser(true);
-		try {
-			const res = await fetch(`/api/users/profile/${user.username}`);
-			const searchedUser = await res.json();
-			if (searchedUser.error) {
-				showToast("Error", "There was an issue starting a Sendchat with this user", "error");
-				return;
-			}
-
-			const conversationAlreadyExists = conversations.find(
-				(conversation) => conversation.participants[0]._id === searchedUser._id
-			);
-
-			if (conversationAlreadyExists) {
-				setSelectedConversation({
-					_id: conversationAlreadyExists._id,
-					userId: searchedUser._id,
-					username: searchedUser.username,
-					name: searchedUser.name,
-					userProfilePic: searchedUser.profilePic
-				});
-				return;
-			}
-
-			setNewConversation({
-				mock: true,
-				lastMessage: {
-					text: "",
-					sender: "",
-				},
-				_id: Date.now(),
-				participants: [
-					{
-						_id: searchedUser._id,
-						username: searchedUser.username,
-						name: searchedUser.name,
-						profilePic: searchedUser.profilePic
-					},
-				],
-			})
-
-
-			function timeout(delay) {
-				return new Promise((resolve) => setTimeout(resolve, delay));
-			}
-			await timeout(2000);
-
-			setConversations((prevConvs) => [...prevConvs, newConversation]);
-			setSelectedConversation({
-				_id: searchedUser._id,
-				userId: searchedUser._id,
-				username: searchedUser.username,
-				name: searchedUser.name,
-				userProfilePic: searchedUser.profilePic
-			});
-		} catch (error) {
-			showToast("Error", error.message, "error");
-		} finally {
-			setSearchingUser(false);
-		}
-	};
-
 	const copyURL = () => {
 		const currentURL = window.location.href;
 		navigator.clipboard.writeText(currentURL).then(() => {
@@ -235,7 +169,7 @@ const UserHeader = ({ user: givenUser }) => {
 					<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
 						{following ? "Unfollow" : "Follow"}
 					</Button>
-					<Button size={"sm"} onClick={handleConversationSearch}>Chat</Button>
+					<Button size={"sm"} onClick={() => { navigate(`/chat?conversation=${user.username}`) }}>Chat</Button>
 				</Flex>
 			)}
 			<Flex w={"full"} justifyContent={"space-between"}>
