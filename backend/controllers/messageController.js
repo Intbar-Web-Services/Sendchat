@@ -56,11 +56,11 @@ async function sendMessage(req, res) {
 
 		let user;
 
-		if (mongoose.Types.ObjectId.isValid(recipientId)) {
-			user = await User.findOne({ _id: recipientId }).select("-password").select("-updatedAt").select("-email");
+		if (mongoose.Types.ObjectId.isValid(senderId)) {
+			user = await User.findOne({ _id: senderId }).select("-password").select("-updatedAt").select("-email");
 		} else {
 			// query is username
-			user = await User.findOne({ username: recipientId }).select("-password").select("-updatedAt").select("-email");
+			user = await User.findOne({ username: senderId }).select("-password").select("-updatedAt").select("-email");
 		}
 
 		let conversation = await Conversation.findOne({
