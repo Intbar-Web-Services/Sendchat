@@ -74,10 +74,12 @@ const ChatPage = () => {
 					icon: payload.data.image,
 				};
 
-				const notif = new Notification(payload.data.title, notificationOptions);
-				notif.onclick = () => {
-					setSelectedConversation(payload.data.conversationId);
-				};
+				if (payload.data.conversationId !== selectedConversation) {
+					const notif = new Notification(payload.data.title, notificationOptions);
+					notif.onclick = () => {
+						setSelectedConversation(payload.data.conversationId);
+					};
+				}
 			}
 		});
 	}, []);
