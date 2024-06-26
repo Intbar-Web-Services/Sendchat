@@ -11,6 +11,7 @@ import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
 import { messaging } from "../firebase";
 import { onMessage, getToken } from "firebase/messaging";
+import mongoose from "mongoose";
 
 const ChatPage = () => {
 	const [searchingUser, setSearchingUser] = useState(false);
@@ -64,24 +65,26 @@ const ChatPage = () => {
 	}, [showToast, setConversations]);
 
 	useEffect(() => {
-		onMessage(messaging, async (payload) => {
-			if (location.pathname.includes("/chat")) {
-				if (payload.data.isImage == "true") {
-					payload.data.body = "Sent an image";
-				}
-				const notificationOptions = {
-					body: payload.data.body,
-					icon: payload.data.image,
-				};
-
-				if (payload.data.conversationId !== selectedConversation) {
-					const notif = new Notification(payload.data.title, notificationOptions);
-					notif.onclick = () => {
-						setSelectedConversation(payload.data.conversationId);
+		if (Notification.permission == "granted") {
+			onMessage(messaging, async (payload) => {
+				if (location.pathname.includes("/chat")) {
+					if (payload.data.isImage == "true") {
+						payload.data.body = "Sent an image";
+					}
+					const notificationOptions = {
+						body: payload.data.body,
+						icon: payload.data.image,
 					};
+
+					if (new mongoose.Types.ObjectId(payload.data.conversationId) !== selectedConversation) {
+						const notif = new Notification(payload.data.title, notificationOptions);
+						notif.onclick = () => {
+							setSelectedConversation(payload.data.conversationId);
+						};
+					}
 				}
-			}
-		});
+			});
+		}
 	}, []);
 
 	const handleConversationSearch = async (e) => {
