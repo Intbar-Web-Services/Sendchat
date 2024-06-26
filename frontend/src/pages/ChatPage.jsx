@@ -9,6 +9,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
+import { messaging } from "../firebase";
+import { onMessage, getToken } from "firebase/messaging";
 
 const ChatPage = () => {
 	const [searchingUser, setSearchingUser] = useState(false);
@@ -60,6 +62,25 @@ const ChatPage = () => {
 
 		getConversations();
 	}, [showToast, setConversations]);
+
+	useEffect(() => {
+		onMessage(messaging, async (payload) => {
+			if (location.pathname.includes("/chat")) {
+				if (payload.data.isImage == "true") {
+					payload.data.body = "Sent an image";
+				}
+				const notificationOptions = {
+					body: payload.data.body,
+					icon: payload.data.image,
+				};
+
+				const notif = new Notification(payload.data.title, notificationOptions);
+				notif.onclick = () => {
+					setSelectedConversation(payload.data.conversationId);
+				};
+			}
+		});
+	}, []);
 
 	const handleConversationSearch = async (e) => {
 		e.preventDefault();

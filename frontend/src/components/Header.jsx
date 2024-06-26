@@ -2,22 +2,27 @@ import { Button, Center, Flex, Image, Link, useColorMode, useColorModeValue, Box
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
-
 import { Portal } from "@chakra-ui/portal";
 import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
 import { BsFillChatQuoteFill } from "react-icons/bs";
+import { BsBellFill } from "react-icons/bs";
+import { messaging, generateToken } from "../firebase";
+import { onMessage, getToken } from "firebase/messaging";
+import useShowToast from "../hooks/useShowToast";
 
 const Header = () => {
 	const userAgent = navigator.userAgent;
 	const shouldRenderComponent = !userAgent.includes('Mobile');
 	const shouldRenderShortcuts = !userAgent.includes('Mobile')
 	const { colorMode, toggleColorMode } = useColorMode();
+	const [notificationsLoading, setNotificationsLoading] = useState(false);
 	const user = useRecoilValue(userAtom);
 	const logout = useLogout();
+	const showToast = useShowToast();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 	const navigate = useNavigate()
 	const handleKeyPress = useCallback((event) => {
@@ -35,6 +40,14 @@ const Header = () => {
 		}
 	}, []);
 
+	const [notificationsVisible, setNotificationsVisible] = useState(false);
+
+	useEffect(() => {
+		if (Notification.permission !== "granted") {
+			setNotificationsVisible(true);
+		}
+	}, []);
+
 	useEffect(() => {
 		// attach the event listener
 		document.addEventListener('keydown', handleKeyPress);
@@ -45,11 +58,58 @@ const Header = () => {
 		};
 	}, [handleKeyPress]);
 
+	async function setupNotifications() {
+		setNotificationsLoading(true);
+		await generateToken();
+		onMessage(messaging, (payload) => {
+			if (!location.pathname.includes("/chat")) {
+				if (payload.data.isImage == "true") {
+					payload.data.body = "Sent an image";
+				}
+				const notificationOptions = {
+					body: payload.data.body,
+					icon: payload.data.image,
+				};
+
+				new Notification(payload.data.title, notificationOptions).show();
+			}
+		});
+		const token = await getToken(messaging, {
+			vapidKey:
+				"BCE__zmwje5W2p5m4q2lI9dG7YfLqO8k8FyvVjIlEYuE5yW2lhRg7hDuU2iJ-YGjGPetn2ML1TEvn44U0C4K33E",
+		});
+
+		const res = await fetch("/api/messages/subscribe", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				token: token,
+				oldToken: messaging.token,
+			}),
+		});
+
+		const data = await res.json();
+
+		if (data.error) {
+			setNotificationsLoading(false);
+			showToast("Error", data.error, "error");
+			return;
+		}
+		setNotificationsVisible(false);
+		setNotificationsLoading(false);
+		showToast("Success", "Notifications enabled successfully!", "success");
+	}
+
 	return (
 		<>
 
-			<Flex justifyContent={"center"} mt={0} mb='9' gap={6}
-
+			<Flex
+				justifyContent={"center"}
+				mt={0}
+				mb='9'
+				gap={6}
 				position="fixed" zIndex="1" left={0}
 				right={0}
 				backgroundColor={useColorModeValue("gray.100", "#101010")}
@@ -142,9 +202,18 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1.9rem"
 				>
+					{notificationsVisible && (
+						<Button
+							marginRight={3}
+							onClick={setupNotifications}
+							isLoading={notificationsLoading}
+						>
+							<BsBellFill />
+						</Button>
+					)}
 					<Button onClick={() => { navigate("/download") }}>Download Desktop App</Button>
 				</Flex>
-			</Flex>
+			</Flex >
 		</>
 	);
 };

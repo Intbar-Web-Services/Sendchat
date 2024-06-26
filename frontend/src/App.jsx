@@ -18,6 +18,8 @@ import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
+import { generateToken, messaging } from "./firebase";
+import { onMessage, getToken } from "firebase/messaging";
 
 function App() {
 	let versionType = "";
@@ -58,6 +60,27 @@ function App() {
 				setStoredUser(currentUser.user);
 				localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
 			}
+		}
+
+		if (Notification.permission == "granted") {
+			getToken(messaging, {
+				vapidKey:
+					"BCE__zmwje5W2p5m4q2lI9dG7YfLqO8k8FyvVjIlEYuE5yW2lhRg7hDuU2iJ-YGjGPetn2ML1TEvn44U0C4K33E",
+			});
+
+			onMessage(messaging, async (payload) => {
+				if (!location.pathname.includes("/chat")) {
+					if (payload.data.isImage == "true") {
+						payload.data.body = "Sent an image";
+					}
+					const notificationOptions = {
+						body: payload.data.body,
+						icon: payload.data.image,
+					};
+
+					const notif = new Notification(payload.data.title, notificationOptions);
+				}
+			});
 		}
 	}, []);
 

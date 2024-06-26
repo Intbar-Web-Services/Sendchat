@@ -48,7 +48,11 @@ const userSchema = mongoose.Schema(
 		},
 		likesHidden: {
 			type: Boolean,
-			default: false
+			default: false,
+		},
+		regTokens: {
+			type: Array,
+			default: [],
 		},
 		punishment: {
 			type: {
