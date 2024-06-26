@@ -130,10 +130,17 @@ const loginUser = async (req, res) => {
 	}
 };
 
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
 	try {
+		const { oldToken } = req.body;
+		const user = req.user;
+
 		res.cookie("jwt", "", { maxAge: 1 });
 		res.status(200).json({ message: "User logged out successfully" });
+		if (user.regTokens.length > -1) {
+			user.regTokens.splice(user.regTokens.indexOf(oldToken));
+			await user.save();
+		}
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 		console.log("Error in signupUser: ", err.message);

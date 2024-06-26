@@ -1,6 +1,7 @@
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState } from "recoil";
 import useShowToast from "./useShowToast";
+import { messaging } from "../firebase";
 
 const useLogout = () => {
 	const setUser = useSetRecoilState(userAtom);
@@ -10,6 +11,7 @@ const useLogout = () => {
 		try {
 			const res = await fetch("/api/users/logout", {
 				method: "POST",
+				body: { oldToken: messaging.token },
 				headers: {
 					"Content-Type": "application/json",
 				},
