@@ -32,9 +32,4 @@ messaging.onBackgroundMessage((payload) => {
 
     self.registration.showNotification(notificationTitle,
         notificationOptions);
-
-    self.addEventListener('notificationclick', function (event) {
-        event.notification.close();
-        clients.openWindow(`https://sendchat.xyz/chat?conversation=${event.notification.payload.data.username}`);
-    });
 });
