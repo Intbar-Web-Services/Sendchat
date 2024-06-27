@@ -236,9 +236,9 @@ if (process.env.NODE_ENV === "production") {
   });
 
   // react app
-  app.get("*", (req, res) => {
+  app.get(express.vhost("app.sendchat.xyz", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-  });
+  }));
 }
 
 server.listen(PORT, () =>
