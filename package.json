@@ -5,7 +5,7 @@
 	"main": "server.js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon backend/server.js",
-		"start": "NODE_ENV=production node backend/server.js",
+		"start": "NODE_ENV=production node backend/all.js",
 		"build": "npm install && npm install --prefix frontend && npm install --prefix desktop && npm run build --prefix frontend && npm run build --prefix desktop"
 	},
 	"type": "module",
@@ -27,7 +27,8 @@
 		"jsonwebtoken": "^9.0.1",
 		"mongoose": "^7.4.0",
 		"react-linkify": "^1.0.0-alpha",
-		"socket.io": "^4.7.2"
+		"socket.io": "^4.7.2",
+		"vhost": "^3.0.2"
 	},
 	"devDependencies": {
 		"nodemon": "^3.0.1"

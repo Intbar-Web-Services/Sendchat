@@ -10,12 +10,12 @@ import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import punishmentRoutes from "./routes/punishmentRoutes.js"
 import { v2 as cloudinary } from "cloudinary";
-import { app, server } from "./socket/socket.js";
 import job from "./cron/cron.js";
 import jwt from "jsonwebtoken";
 import cron from "cron";
 
 dotenv.config();
+const app = express();
 
 connectDB();
 job.start();
@@ -236,11 +236,9 @@ if (process.env.NODE_ENV === "production") {
   });
 
   // react app
-  app.get(express.vhost("app.sendchat.xyz", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-  }));
+  });
 }
 
-server.listen(PORT, () =>
-  console.log(`Server started at http://localhost:${PORT}`)
-);
+export { app };

@@ -71,6 +71,24 @@
             ],
             "type": "node"
         },
+        {
+            "name": "Start (Production)",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            "serverReadyAction": {
+                "pattern": "localhost:([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+                "action": "debugWithEdge"
+            },
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
     ],
     "compounds": [
         {
