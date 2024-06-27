@@ -1,8 +1,8 @@
 {
-	"name": "backend",
+	"name": "sendchat-api",
 	"version": "1.0.0",
 	"description": "",
-	"main": "server.js",
+	"main": "all.js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon backend/server.js",
 		"start": "NODE_ENV=production node backend/all.js",
@@ -10,7 +10,7 @@
 	},
 	"type": "module",
 	"keywords": [],
-	"author": "",
+	"author": "IWS",
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
