@@ -3,15 +3,15 @@ import { Divider, Flex, useColorModeValue } from "@chakra-ui/react";
 export default function DownloadApp() {
     return (
         <>
-            <h1>It's a chat app.</h1>
+            <h1>Sendchat</h1>
             <Divider my={4} />
             <h3>
-                <h1>yeah um</h1>
-                not quite sure what to uh
+                <h1>Sendchat is the most used least used social media platform on the internet</h1>
+                With over 1 users, Sendchat is booming in popularity!
                 <br />
-                put here
+                With over 0 chats sent per day, there is no doubt you will love our "active" chat platform
                 <br />
-                click below to use
+                Button which makes the app do applike things
             </h3>
             <Divider my={4} />
             <Flex
