@@ -9,6 +9,18 @@ const __dirname = path.resolve();
 const app = express();
 
 if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/landing/dist")));
+
+  app.get('/user/:username', (req, res) => {
+    const { username } = req.params;
+    res.redirect(301, `http://app.sendchat.xyz/user/${username}`);
+  });
+
+  app.get('/user/:username/post/:id', (req, res) => {
+    const { username, id } = req.params;
+    res.redirect(301, `http://app.sendchat.xyz/user/${username}/post/${id}`);
+  });
+
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "landing", "dist", "index.html"));
   });
