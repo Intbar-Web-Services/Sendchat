@@ -35,7 +35,7 @@ const Actions = ({ post }) => {
 	const showToast = useShowToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const copyURL = () => {
-		const url = new URL("https://sendchat.xyz");
+		const url = new URL("https://app.sendchat.xyz");
 
 		// Extract the base URL (including protocol and hostname)
 		const baseURL = `${url.protocol}//${url.hostname}/`;

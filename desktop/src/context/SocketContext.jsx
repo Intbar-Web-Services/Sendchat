@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 	const user = useRecoilValue(userAtom);
 
 	useEffect(() => {
-		const socket = io("https://sendchat.xyz", {
+		const socket = io("https://app.sendchat.xyz", {
 			query: {
 				userId: user?._id,
 			},
