@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon backend/server.js",
 		"start": "NODE_ENV=production node backend/all.js",
-		"build": "npm install && npm install --prefix frontend && npm install --prefix desktop && npm run build --prefix frontend && npm run build --prefix desktop"
+		"build": "npm install && npm install --prefix frontend && npm install --prefix landing && npm install --prefix desktop && npm run build --prefix frontend && npm run build --prefix desktop && npm run build --prefix landing"
 	},
 	"type": "module",
 	"keywords": [],
