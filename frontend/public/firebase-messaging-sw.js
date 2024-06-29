@@ -35,6 +35,7 @@ messaging.onBackgroundMessage((payload) => {
         notificationOptions);
     const resolveNotification = (e) => {
         e.notification.close();
+        self.removeEventListener('notificationclick', resolveNotification);
 
         e.waitUntil(new Promise((resolve) => {
             if (payload.data.type == "chat") {
@@ -45,5 +46,5 @@ messaging.onBackgroundMessage((payload) => {
             resolve();
         }));
     }
-    self.addEventListener('notificationclick', resolveNotification());
+    self.addEventListener('notificationclick', resolveNotification);
 });
