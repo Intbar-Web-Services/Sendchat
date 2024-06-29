@@ -38,6 +38,7 @@ const Header = () => {
 		if (event.altKey && event.key === "s") {
 			navigate("/settings")
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [logout, navigate, toggleColorMode]);
 
 	const [notificationsVisible, setNotificationsVisible] = useState(false);
