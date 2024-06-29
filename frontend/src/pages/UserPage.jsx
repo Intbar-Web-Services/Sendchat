@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import UserHeader from "../components/UserHeader";
 import { Link, useParams } from "react-router-dom";
 import useShowToast from "../hooks/useShowToast";
-import { Flex, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Flex, Box, SkeletonCircle, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import Post from "../components/Post";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useRecoilState } from "recoil";
@@ -76,13 +76,23 @@ const UserPage = () => {
 
 	if (!user && loading) {
 		return (
-			<Flex justifyContent={"center"}>
-				<Spinner size={"xl"} />
+			<Flex gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
+				<Flex w={"full"} flexDirection={"column"} gap={3}>
+					<Skeleton h={"18px"} w={"120px"} />
+					<Skeleton h={"8px"} w={"86px"} />
+					<Flex flexDirection="row" mt={14} gap={2}>
+						<Skeleton h={"25px"} rounded="5" w={"86px"} />
+						<Skeleton h={"25px"} rounded="5" w={"56px"} />
+					</Flex>
+				</Flex>
+				<Box justifySelf="end" alignSelf="start">
+					<SkeletonCircle size={"79"} />
+				</Box>
 			</Flex>
 		);
 	}
 
-	if (!user && !loading) return <h1>We can't find this user. Press the home button to see recent posts.</h1>;
+	if (!user && !loading) return <h1>We can&apos;t find this user. Press the home button to see recent posts.</h1>;
 
 	return (
 		<>
@@ -99,10 +109,19 @@ const UserPage = () => {
 						<TabPanel>
 							{!fetchingPosts && posts.length === 0 && <h1>There's no posts here yet.</h1>}
 							{fetchingPosts && (
-								<Flex justifyContent={"center"} my={12}>
-									<Spinner size={"xl"} />
-								</Flex>
-							)}
+								[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, i) => (
+									<Flex key={i} gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
+										<Box alignSelf="start">
+											<SkeletonCircle size={"10"} />
+										</Box>
+										<Flex w={"full"} flexDirection={"column"} gap={3}>
+											<Skeleton h={"10px"} w={"80px"} />
+											<Skeleton h={"8px"} w={"86px"} />
+											<Skeleton h={"8px"} w={"90%"} />
+											<Skeleton h={"8px"} w={"85%"} />
+										</Flex>
+									</Flex>
+								)))}
 
 							{posts.map((post) => (
 								<Post key={post._id} post={post} postedBy={post.postedBy} />
@@ -112,10 +131,19 @@ const UserPage = () => {
 						<TabPanel>
 							{!fetchingReplies && replies.length === 0 && <h1>This person has never replied.</h1>}
 							{fetchingReplies && (
-								<Flex justifyContent={"center"} my={12}>
-									<Spinner size={"xl"} />
-								</Flex>
-							)}
+								[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, i) => (
+									<Flex key={i} gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
+										<Box alignSelf="start">
+											<SkeletonCircle size={"10"} />
+										</Box>
+										<Flex w={"full"} flexDirection={"column"} gap={3}>
+											<Skeleton h={"10px"} w={"80px"} />
+											<Skeleton h={"8px"} w={"86px"} />
+											<Skeleton h={"8px"} w={"90%"} />
+											<Skeleton h={"8px"} w={"85%"} />
+										</Flex>
+									</Flex>
+								)))}
 
 							{replies.slice(0).reverse().map((postReply) => (postReply.replies.slice(0).reverse().map((reply) => (
 								(reply.userId == user._id &&
@@ -142,10 +170,19 @@ const UserPage = () => {
 						<TabPanel>
 							{!fetchingReplies && replies.length === 0 && <h1>This person has never liked anything.</h1>}
 							{fetchingReplies && (
-								<Flex justifyContent={"center"} my={12}>
-									<Spinner size={"xl"} />
-								</Flex>
-							)}
+								[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, i) => (
+									<Flex key={i} gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
+										<Box alignSelf="start">
+											<SkeletonCircle size={"10"} />
+										</Box>
+										<Flex w={"full"} flexDirection={"column"} gap={3}>
+											<Skeleton h={"10px"} w={"80px"} />
+											<Skeleton h={"8px"} w={"86px"} />
+											<Skeleton h={"8px"} w={"90%"} />
+											<Skeleton h={"8px"} w={"85%"} />
+										</Flex>
+									</Flex>
+								)))}
 
 							{replies.slice(0).reverse().map((postReply) => (postReply.likes.map((userId) => (
 								(userId == user._id &&
