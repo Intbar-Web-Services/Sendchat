@@ -11,6 +11,8 @@ const __dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
   app.use(vhost('sendchat.xyz', landing));
   app.use(vhost('app.sendchat.xyz', main));
+} else {
+  app.use(main);
 }
 
 server.listen(PORT, () =>

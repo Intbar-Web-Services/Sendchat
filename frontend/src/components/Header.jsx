@@ -71,9 +71,11 @@ const Header = () => {
 				icon: payload.data.image,
 			};
 
-			new Notification(payload.data.title, notificationOptions).onclick = () => {
-				navigate(`/chat?conversation=${payload.data.conversationId}`);
-			};
+			if (location.pathname !== "/chat") {
+				new Notification(payload.data.title, notificationOptions).onclick = () => {
+					navigate(`/chat?conversation=${payload.data.conversationId}`);
+				};
+			}
 		});
 		const token = await getToken(messaging, {
 			vapidKey:

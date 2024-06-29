@@ -38,7 +38,7 @@ messaging.onBackgroundMessage((payload) => {
         e.notification.close();
 
         e.waitUntil(new Promise((resolve) => {
-            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${e.notification.data.username}`);
+            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
             resolve();
         }));
     });
