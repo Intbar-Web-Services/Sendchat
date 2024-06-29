@@ -3,11 +3,9 @@ import {
 	AvatarBadge,
 	Box,
 	Flex,
-	Image,
 	Stack,
 	Text,
 	WrapItem,
-	useColorMode,
 	useColorModeValue,
 } from "@chakra-ui/react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -20,7 +18,7 @@ const Conversation = ({ conversation, isOnline }) => {
 	const currentUser = useRecoilValue(userAtom);
 	const lastMessage = conversation.lastMessage;
 	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
-	const colorMode = useColorMode();
+
 	return (
 		<Flex
 			gap={4}
@@ -42,6 +40,7 @@ const Conversation = ({ conversation, isOnline }) => {
 				})
 			}
 			bg={
+				// eslint-disable-next-line react-hooks/rules-of-hooks
 				selectedConversation?._id === conversation._id ? (useColorModeValue("gray.300", "gray.dark")) : ""
 			}
 			borderRadius={"md"}
