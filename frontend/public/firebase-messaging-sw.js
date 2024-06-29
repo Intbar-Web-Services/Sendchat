@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 
@@ -19,7 +20,7 @@ const firebaseApp = firebase.initializeApp({
 const messaging = firebase.messaging(firebaseApp);
 
 messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    console.log('[IWS Notification Service] Received background message ', payload);
     // Customize notification here
     const notificationTitle = payload.data.title;
     if (payload.data.isImage == "true") {
@@ -33,8 +34,12 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(notificationTitle,
         notificationOptions);
 
-    self.addEventListener('notificationclick', function (event) {
-        event.notification.close();
-        clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${event.notification.payload.data.username}`);
+    self.addEventListener('notificationclick', function (e) {
+        e.notification.close();
+
+        e.waitUntil(new Promise((resolve) => {
+            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${e.notification.data.username}`);
+            resolve();
+        }));
     });
 });
