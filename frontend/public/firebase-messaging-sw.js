@@ -33,24 +33,29 @@ messaging.onBackgroundMessage((payload) => {
 
     self.registration.showNotification(notificationTitle,
         notificationOptions);
+    const resolveNotificationMessage = (e) => {
+        e.notification.close();
 
+        e.waitUntil(new Promise((resolve) => {
+            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
+            resolve();
+        }));
+
+        self.removeEventListener('notificationclick', resolveNotificationMessage());
+    }
+    const resolveNotificationPost = (e) => {
+        e.notification.close();
+
+        e.waitUntil(new Promise((resolve) => {
+            clients.openWindow(`https://app.sendchat.xyz/user/${payload.data.username}/post/${payload.data.conversationId}`);
+            resolve();
+        }));
+
+        self.removeEventListener('notificationclick', resolveNotificationPost());
+    }
     if (payload.data.isPost == "false") {
-        self.addEventListener('notificationclick', function (e) {
-            e.notification.close();
-
-            e.waitUntil(new Promise((resolve) => {
-                clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
-                resolve();
-            }));
-        });
+        self.addEventListener('notificationclick', resolveNotificationMessage());
     } else {
-        self.addEventListener('notificationclick', function (e) {
-            e.notification.close();
-
-            e.waitUntil(new Promise((resolve) => {
-                clients.openWindow(`https://app.sendchat.xyz/user/${payload.data.username}/post/${payload.data.conversationId}`);
-                resolve();
-            }));
-        });
+        self.addEventListener('notificationclick', resolveNotificationPost());
     }
 });
