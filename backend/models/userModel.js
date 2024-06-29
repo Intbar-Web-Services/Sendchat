@@ -54,6 +54,16 @@ const userSchema = mongoose.Schema(
 			type: Array,
 			default: [],
 		},
+		subscriptions: {
+			posts: {
+				type: Boolean,
+				default: true,
+			},
+			follow: {
+				type: Boolean,
+				default: false,
+			},
+		},
 		punishment: {
 			type: {
 				type: String,

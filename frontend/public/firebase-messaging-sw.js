@@ -23,9 +23,9 @@ messaging.onBackgroundMessage((payload) => {
     console.log('[IWS Notification Service] Received background message ', payload);
     // Customize notification here
     const notificationTitle = payload.data.title;
-    if (payload.data.isImage == "true") {
+    if (payload.data.isImage == "true" && payload.data.isPost == "false")
         payload.data.body = "Sent an image";
-    }
+
     const notificationOptions = {
         body: payload.data.body,
         icon: payload.data.image,
@@ -34,12 +34,23 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(notificationTitle,
         notificationOptions);
 
-    self.addEventListener('notificationclick', function (e) {
-        e.notification.close();
+    if (payload.data.isPost == "false") {
+        self.addEventListener('notificationclick', function (e) {
+            e.notification.close();
 
-        e.waitUntil(new Promise((resolve) => {
-            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
-            resolve();
-        }));
-    });
+            e.waitUntil(new Promise((resolve) => {
+                clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
+                resolve();
+            }));
+        });
+    } else {
+        self.addEventListener('notificationclick', function (e) {
+            e.notification.close();
+
+            e.waitUntil(new Promise((resolve) => {
+                clients.openWindow(`https://app.sendchat.xyz/user/${payload.data.username}/post/${payload.data.conversationId}`);
+                resolve();
+            }));
+        });
+    }
 });

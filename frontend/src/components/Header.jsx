@@ -63,7 +63,7 @@ const Header = () => {
 		setNotificationsLoading(true);
 		await generateToken();
 		onMessage(messaging, (payload) => {
-			if (payload.data.isImage == "true") {
+			if (payload.data.isImage == "true" && !payload.data.isPost) {
 				payload.data.body = "Sent an image";
 			}
 			const notificationOptions = {
@@ -71,9 +71,13 @@ const Header = () => {
 				icon: payload.data.image,
 			};
 
-			if (location.pathname !== "/chat") {
+			if (location.pathname !== "/chat" && payload.data.isPost == "false") {
 				new Notification(payload.data.title, notificationOptions).onclick = () => {
-					navigate(`/chat?conversation=${payload.data.conversationId}`);
+					navigate(`/chat?conversation=${payload.data.username}`);
+				};
+			} else if (payload.data.isPost == "true") {
+				new Notification(payload.data.title, notificationOptions).onclick = () => {
+					navigate(`/user/${payload.data.username}/post/${payload.data.conversationId}`);
 				};
 			}
 		});

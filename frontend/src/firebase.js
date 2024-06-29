@@ -16,6 +16,7 @@ export const generateToken = async () => {
     const permission = await Notification.requestPermission();
     console.log(permission);
     if (permission === "granted") {
+        const oldToken = messaging.token;
         const token = await getToken(messaging, {
             vapidKey:
                 "BCE__zmwje5W2p5m4q2lI9dG7YfLqO8k8FyvVjIlEYuE5yW2lhRg7hDuU2iJ-YGjGPetn2ML1TEvn44U0C4K33E",
@@ -28,8 +29,8 @@ export const generateToken = async () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    token: token,
-                    oldToken: messaging.token,
+                    token,
+                    oldToken,
                 }),
             });
 
