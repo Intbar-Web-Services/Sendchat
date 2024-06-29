@@ -69,7 +69,6 @@ const ChatPage = () => {
 	useEffect(() => {
 		if (urlParams.get('conversation')) {
 			setSearchText(urlParams.get('conversation'));
-			window.history.pushState("", "", window.location.pathname);
 			handleConversationSearch(null);
 		}
 	}, [loadingConversations, urlParams]);
@@ -163,6 +162,7 @@ const ChatPage = () => {
 			showToast("Error", error.message, "error");
 		} finally {
 			setSearchingUser(false);
+			window.history.pushState("", "", window.location.pathname);
 		}
 	};
 
