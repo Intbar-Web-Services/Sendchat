@@ -32,10 +32,9 @@ const MessageContainer = () => {
 			if (!document.hasFocus()) {
 				new Audio(messageSound).play();
 
-				new Notification({
-					title: "Sendchat",
-					body: `New version is available`,
-				}).show();
+				new Notification(selectedConversation.name, {
+					body: message.text,
+				});
 			}
 
 			setConversations((prev) => {
