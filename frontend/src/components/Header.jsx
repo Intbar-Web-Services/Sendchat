@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Image, Link, useColorMode, useColorModeValue, Box, Avatar } from "@chakra-ui/react";
+import { Button, Flex, Image, Link, useColorMode, useColorModeValue, Box, Avatar } from "@chakra-ui/react";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -38,7 +38,7 @@ const Header = () => {
 		if (event.altKey && event.key === "s") {
 			navigate("/settings")
 		}
-	}, []);
+	}, [logout, navigate, toggleColorMode, user.username]);
 
 	const [notificationsVisible, setNotificationsVisible] = useState(false);
 
@@ -162,18 +162,18 @@ const Header = () => {
 												</MenuButton>
 												<Portal>
 													<MenuList bg={"gray.dark"} closeOnSelect={"true"}>
-														<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate(`/user/${user.username}`)) }}>
+														<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); navigate(`/user/${user.username}`) }}>
 															Your Profile
 														</MenuItem>
 														{shouldRenderComponent &&
-															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/download")) }}>
+															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); navigate("/download") }}>
 																Get Desktop App
 															</MenuItem>)}
 														{shouldRenderShortcuts &&
-															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/shortcuts")) }}>
+															(<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); navigate("/shortcuts") }}>
 																Keyboard Shortcuts
 															</MenuItem>)}
-														<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); useEffect(navigate("/settings")) }}>
+														<MenuItem bg={"gray.dark"} color={"white"} closeOnSelect={true} onClick={() => { onClose(); navigate("/settings") }}>
 															Settings
 														</MenuItem>
 														<MenuItem bg={"gray.dark"} color={"red"} onClick={() => { logout(); navigate("/") }} closeOnSelect={true}>

@@ -44,7 +44,7 @@ function App() {
 		if (event.ctrlKey && event.key === '/') {
 			navigate("/shortcuts")
 		}
-	}, []);
+	}, [navigate]);
 
 	useEffect(() => {
 		// attach the event listener
@@ -90,7 +90,7 @@ function App() {
 				}
 			});
 		}
-	}, []);
+	}, [currentUser, navigate, setStoredUser, showToast]);
 
 
 	useEffect(() => {
@@ -101,7 +101,7 @@ function App() {
 				location.reload();
 			}
 		}
-	}, [])
+	}, [setStoredUser])
 
 	const { pathname } = useLocation();
 	if (!currentUser.user && currentUser.loading) {

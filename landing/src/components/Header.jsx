@@ -1,9 +1,5 @@
-import { Button, Center, Flex, Image, Link, useColorMode, useColorModeValue, Box, Avatar } from "@chakra-ui/react";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-
+import { Button, Flex, Image, useColorModeValue } from "@chakra-ui/react";
 const Header = () => {
-	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<>
