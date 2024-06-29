@@ -61,7 +61,11 @@ const createPost = async (req, res) => {
 		const users = await User.find({ 'subscriptions.posts': { $exists: true, $eq: true } });
 		let following = [];
 
-		users.map((followingUser) => following.push(followingUser._id));
+		users.map((followingUser) => {
+			if (user.followers.includes(followingUser._id.toString())) {
+				following.push(followingUser._id);
+			}
+		});
 
 		const tokens = await Token.find(
 			{ userId: { $in: following } }
