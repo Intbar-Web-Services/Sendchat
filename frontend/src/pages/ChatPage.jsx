@@ -10,8 +10,7 @@ import { conversationsAtom, selectedConversationAtom, newConversationAtom } from
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
 import { messaging } from "../firebase";
-import { onMessage, getToken } from "firebase/messaging";
-import mongoose from "mongoose";
+import { onMessage } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
@@ -72,7 +71,7 @@ const ChatPage = () => {
 			setSearchText(urlParams.get('conversation'));
 			handleConversationSearch(null);
 		}
-	}, [loadingConversations]);
+	}, [loadingConversations, urlParams]);
 
 	const getSelectedUser = () => {
 		return selectedConversation;
@@ -90,15 +89,13 @@ const ChatPage = () => {
 				};
 
 				if (location.pathname === "/chat" && getSelectedUser()._id !== payload.data.conversationId) {
-					const notif = new Notification(payload.data.title, notificationOptions);
-
-					notif.onclick = function () {
+					new Notification(payload.data.title, notificationOptions).onclick = () => {
 						navigate(`/chat?conversation=${payload.data.username}`);
 					};
 				}
 			});
 		}
-	}, []);
+	}, [getSelectedUser, navigate]);
 
 	const handleConversationSearch = async (e) => {
 		if (e) {
@@ -237,7 +234,9 @@ const ChatPage = () => {
 					>
 						<GiConversation size={100} />
 						<Text fontSize={20}>Select someone to start chatting!</Text>
+						{/* eslint-disable-next-line react-hooks/rules-of-hooks */}
 						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>To start a new Sendchat,</Text>
+						{/* eslint-disable-next-line react-hooks/rules-of-hooks */}
 						<Text fontSize={14} fontWeight={15} color={useColorModeValue("gray", "gray.300")}>Type a username in the search box.</Text>
 					</Flex>
 				)}

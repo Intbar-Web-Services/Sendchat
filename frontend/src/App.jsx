@@ -82,9 +82,7 @@ function App() {
 				};
 
 				if (location.pathname !== "/chat") {
-					const notif = new Notification(payload.data.title, notificationOptions);
-
-					notif.onclick = function () {
+					new Notification(payload.data.title, notificationOptions).onclick = () => {
 						navigate(`/chat?conversation=${payload.data.username}`);
 					};
 				}

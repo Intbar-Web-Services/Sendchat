@@ -71,9 +71,7 @@ const Header = () => {
 				icon: payload.data.image,
 			};
 
-			const notif = new Notification(payload.data.title, notificationOptions);
-
-			notif.onclick = function () {
+			new Notification(payload.data.title, notificationOptions).onclick = () => {
 				navigate(`/chat?conversation=${payload.data.conversationId}`);
 			};
 		});
