@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Center, useColorMode, Image, Container, Flex, Spinner } from "@chakra-ui/react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
@@ -9,7 +9,7 @@ import PunishmentPage from "./pages/PunishmentPage";
 import DownloadApp from "./pages/DownloadApp";
 import ActivatePage from "./pages/ActivatePage";
 import useGetUserProfile from "./hooks/useGetUserProfile";
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "./atoms/userAtom";
 import { useEffect, useCallback } from 'react'
 import UpdateProfilePage from "./pages/UpdateProfilePage";
@@ -18,15 +18,16 @@ import ChatPage from "./pages/ChatPage";
 import Shortcuts from "./pages/Shortcuts"
 import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
-import { generateToken, messaging } from "./firebase";
+import { messaging } from "./firebase";
 import { onMessage, getToken } from "firebase/messaging";
-import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "./atoms/messagesAtom";
+import useShowToast from "./hooks/useShowToast";
+import { BsXCircleFill } from "react-icons/bs";
 
 function App() {
-	let versionType = "";
 	const setStoredUser = useSetRecoilState(userAtom);
+	const { colorMode } = useColorMode();
 	const navigate = useNavigate();
-	const selectedConversation = useRecoilValue(selectedConversationAtom);
+	const showToast = useShowToast();
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
@@ -58,6 +59,7 @@ function App() {
 	const currentUser = useGetUserProfile(user ? { username: user._id } : { username: null });
 	useEffect(() => {
 		if (!currentUser.loading && currentUser.user) {
+			if (!currentUser) return showToast("Can't get user information.");
 			if (currentUser.user.punishment.type != "") {
 				setStoredUser(currentUser.user);
 				localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
@@ -104,54 +106,113 @@ function App() {
 	const { pathname } = useLocation();
 	if (!currentUser.user && currentUser.loading) {
 		return (
-			<Flex justifyContent={"center"}>
-				<Spinner size={"xl"} />
+			<Flex
+				direction="column"
+			>
+				<Flex
+					justify="center"
+					align="center"
+					direction="column"
+				>
+					<Center h="72">
+						<Image
+							alt='logo'
+							alignSelf="center"
+							align="center"
+							w="8em"
+							h="8em"
+							src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+							webkitAppRegion="no-drag"
+						/>
+					</Center>
+					<Center>
+						<Spinner size="xl" mt={105} />
+					</Center>
+				</Flex>
 			</Flex>
 		);
 	}
 
-	return (
-		<>
-			{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
-				<>
-					<Header />
-					<Box position={"relative"} w='full'
-						mt="0rem"
-						p="6rem"
-					>
-						<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
+	if (!currentUser.user) {
+		return (
+			<Flex
+				direction="column"
+			>
+				<Flex
+					justify="center"
+					align="center"
+					direction="column"
+				>
+					<Center h="72">
+						<Image
+							alt='logo'
+							alignSelf="center"
+							align="center"
+							w="8em"
+							h="8em"
+							src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+							webkitAppRegion="no-drag"
+						/>
+					</Center>
+					<Center>
+						<BsXCircleFill color="red" size={52} />
+					</Center>
+					<Center mt={25}>
+						<Text>Error: Cannot connect to server</Text>
+					</Center>
+					<Button
+						onClick={() => location.reload()}
+						mt={6}
+					>Retry</Button>
+				</Flex>
+			</Flex>
+		);
+	}
 
-							<Routes>
-								<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
-								<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
-								<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
+	if (currentUser.user) {
+		return (
+			<>
+				{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
+					<>
+						<Header />
+						<Box position={"relative"} w='full'
+							mt="0rem"
+							p="6rem"
+						>
+							<Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
 
-								<Route
-									path='/user/:username'
-									element={
-										user ? (
-											<>
+								<Routes>
+									<Route path='/' element={user ? (<><HomePage /><CreatePost /></>) : (<Navigate to='/auth' />)} />
+									<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
+									<Route path='/update' element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />} />
+
+									<Route
+										path='/user/:username'
+										element={
+											user ? (
+												<>
+													<UserPage />
+													<CreatePost />
+												</>
+											) : (
 												<UserPage />
-												<CreatePost />
-											</>
-										) : (
-											<UserPage />
-										)
-									}
-								/>
-								<Route path='/user/:username/post/:pid' element={<PostPage />} />
-								<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
-								<Route path='/shortcuts' element={<Shortcuts />} />
-								<Route path='/settings' element={user ? <SettingsPage /> : <	Navigate to={"/auth"} />} />
-								<Route path='/download' element={<DownloadApp />} />
-								<Route path="/probe" element={<ProbePage />} />
-								<Route path="/activate" element={(user && !currentUser.user.isAdmin) ? <ActivatePage /> : <Navigate to='/' />} />
-							</Routes>
-						</Container>
-					</Box></>) : (
-				<PunishmentPage user={currentUser.user} type={currentUser.user.punishment.type} reason={currentUser.user.punishment.reason} hours={currentUser.user.punishment.hours} />
-			)}
-		</>
-	);
+											)
+										}
+									/>
+									<Route path='/user/:username/post/:pid' element={<PostPage />} />
+									<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
+									<Route path='/shortcuts' element={<Shortcuts />} />
+									<Route path='/settings' element={user ? <SettingsPage /> : <	Navigate to={"/auth"} />} />
+									<Route path='/download' element={<DownloadApp />} />
+									<Route path="/probe" element={<ProbePage />} />
+									<Route path="/activate" element={(user && !currentUser.user.isAdmin) ? <ActivatePage /> : <Navigate to='/' />} />
+								</Routes>
+							</Container>
+						</Box></>) : (
+					<PunishmentPage user={currentUser.user} type={currentUser.user.punishment.type} reason={currentUser.user.punishment.reason} hours={currentUser.user.punishment.hours} />
+				)}
+			</>
+		);
+	}
 }
 export default App;

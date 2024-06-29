@@ -9,7 +9,7 @@ export default function DownloadApp() {
                 <h1>Sendchat is the most used least used social media platform on the internet</h1>
                 With over 1 users, Sendchat is booming in popularity!
                 <br />
-                With over 0 chats sent per day, there is no doubt you will love our "active" chat platform
+                With over 0 chats sent per day, there is no doubt you will love our &quot;active&quot; chat platform
                 <br />
                 Button which makes the app do applike things
             </h3>
@@ -25,4 +25,4 @@ export default function DownloadApp() {
             </Flex>
         </>
     );
-};
+}
