@@ -23,7 +23,7 @@ messaging.onBackgroundMessage((payload) => {
     console.log('[IWS Notification Service] Received background message ', payload);
     // Customize notification here
     const notificationTitle = payload.data.title;
-    if (payload.data.isImage == "true" && payload.data,type == "chat")
+    if (payload.data.isImage == "true" && payload.data.type == "chat")
         payload.data.body = "Sent an image";
 
     const notificationOptions = {
