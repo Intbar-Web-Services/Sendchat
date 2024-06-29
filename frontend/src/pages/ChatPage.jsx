@@ -71,7 +71,7 @@ const ChatPage = () => {
 			setSearchText(urlParams.get('conversation'));
 			handleConversationSearch(null);
 		}
-	}, [loadingConversations, urlParams]);
+	}, [loadingConversations]);
 
 	const getSelectedUser = () => {
 		return selectedConversation;
