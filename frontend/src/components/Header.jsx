@@ -38,7 +38,7 @@ const Header = () => {
 		if (event.altKey && event.key === "s") {
 			navigate("/settings")
 		}
-	}, [logout, navigate, toggleColorMode, user.username]);
+	}, [logout, navigate, toggleColorMode]);
 
 	const [notificationsVisible, setNotificationsVisible] = useState(false);
 
