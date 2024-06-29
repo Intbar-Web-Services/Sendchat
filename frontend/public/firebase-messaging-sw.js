@@ -23,7 +23,7 @@ messaging.onBackgroundMessage((payload) => {
     console.log('[IWS Notification Service] Received background message ', payload);
     // Customize notification here
     const notificationTitle = payload.data.title;
-    if (payload.data.isImage == "true" && payload.data.isPost == "false")
+    if (payload.data.isImage == "true" && payload.data,type == "chat")
         payload.data.body = "Sent an image";
 
     const notificationOptions = {
@@ -33,29 +33,17 @@ messaging.onBackgroundMessage((payload) => {
 
     self.registration.showNotification(notificationTitle,
         notificationOptions);
-    const resolveNotificationMessage = (e) => {
+    const resolveNotification = (e) => {
         e.notification.close();
 
         e.waitUntil(new Promise((resolve) => {
-            clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
+            if (payload.data.type == "chat") {
+                clients.openWindow(`https://app.sendchat.xyz/chat?conversation=${payload.data.username}`);
+            } else if (payload.data.type == "post") {
+                clients.openWindow(`https://app.sendchat.xyz/user/${payload.data.username}/post/${payload.data.conversationId}`);
+            }
             resolve();
         }));
-
-        self.removeEventListener('notificationclick', resolveNotificationMessage());
     }
-    const resolveNotificationPost = (e) => {
-        e.notification.close();
-
-        e.waitUntil(new Promise((resolve) => {
-            clients.openWindow(`https://app.sendchat.xyz/user/${payload.data.username}/post/${payload.data.conversationId}`);
-            resolve();
-        }));
-
-        self.removeEventListener('notificationclick', resolveNotificationPost());
-    }
-    if (payload.data.isPost == "false") {
-        self.addEventListener('notificationclick', resolveNotificationMessage());
-    } else {
-        self.addEventListener('notificationclick', resolveNotificationPost());
-    }
+    self.addEventListener('notificationclick', resolveNotification());
 });

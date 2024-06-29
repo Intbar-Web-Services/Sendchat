@@ -121,7 +121,7 @@ async function sendMessage(req, res) {
 						title: req.user.name,
 						username: req.user.username,
 						isImage,
-						isPost: "false",
+						type: "chat",
 						conversationId: conversation._id.toString(),
 					},
 					token: registrationToken.token

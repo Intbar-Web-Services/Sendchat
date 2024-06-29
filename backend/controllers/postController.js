@@ -80,7 +80,7 @@ const createPost = async (req, res) => {
 						title: `New post by ${user.name}`,
 						username: user.username,
 						isImage: img ? "true" : "false",
-						isPost: "true",
+						type: "post",
 						conversationId: newPost._id.toString(),
 					},
 					token: registrationToken.token
