@@ -16,11 +16,29 @@ const HomePage = () => {
 	const { socket } = useSocket();
 	useEffect(() => {
 		if (socket) {
-			socket.on("newMessage", () => {
+			socket.on("newMessage", async (message) => {
 
 				// make a sound if the window is not focused
 				const sound = new Audio(messageSound);
 				sound.play();
+
+				const res = await fetch(`/api/users/profile/${message.sender}}`);
+				const data = res.json();
+
+				if (data.error)
+					console.log(`Error sending message for message: ${message} from user: ${data}`);
+
+				// make a sound if the window is not focused
+				if (!document.hasFocus()) {
+					new Audio(messageSound).play();
+
+					const body = message.image ? "Sent an image" : message.text
+
+					new Notification(data.name, {
+						body,
+						image: message.img,
+					});
+				}
 			});
 
 			return () => socket.off("newMessage");

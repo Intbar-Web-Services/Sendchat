@@ -21,19 +21,26 @@ const MessageContainer = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		socket.on("newMessage", (message) => {
+		socket.on("newMessage", async (message) => {
 			if (selectedConversation._id === message.conversationId) {
 				setMessages((prev) => [...prev, message]);
 			}
 
-			console.log(message);
+			const res = await fetch(`/api/users/profile/${message.sender}}`);
+			const data = res.json();
+
+			if (data.error)
+				console.log(`Error sending message for message: ${message} from user: ${data}`);
 
 			// make a sound if the window is not focused
 			if (!document.hasFocus()) {
 				new Audio(messageSound).play();
 
-				new Notification(selectedConversation.name, {
-					body: message.text,
+				const body = message.image ? "Sent an image" : message.text
+
+				new Notification(data.name, {
+					body,
+					image: message.img,
 				});
 			}
 
