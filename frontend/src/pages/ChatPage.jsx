@@ -95,7 +95,7 @@ const ChatPage = () => {
 				}
 			});
 		}
-	}, []);
+	}, [getSelectedUser, navigate]);
 
 	const handleConversationSearch = async (e) => {
 		if (e) {
