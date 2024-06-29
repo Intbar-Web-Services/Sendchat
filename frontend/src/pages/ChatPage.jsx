@@ -68,8 +68,8 @@ const ChatPage = () => {
 
 	useEffect(() => {
 		if (urlParams.get('conversation')) {
-			window.history.pushState("", "", window.location.pathname);
 			setSearchText(urlParams.get('conversation'));
+			window.history.pushState("", "", window.location.pathname);
 			handleConversationSearch(null);
 		}
 	}, [loadingConversations, urlParams]);
