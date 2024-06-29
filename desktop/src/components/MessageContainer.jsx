@@ -37,7 +37,7 @@ const MessageContainer = () => {
 					if (!document.hasFocus()) {
 						new Audio(messageSound).play();
 
-						const body = message.image ? "Sent an image" : message.text
+						const body = message.img ? "Sent an image" : message.text
 
 						new Notification(data.name, {
 							body,
