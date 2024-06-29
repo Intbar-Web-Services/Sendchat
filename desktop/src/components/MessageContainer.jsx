@@ -26,7 +26,7 @@ const MessageContainer = () => {
 				setMessages((prev) => [...prev, message]);
 			}
 
-			const res = await fetch(`/api/users/profile/${message.sender}}`);
+			const res = await fetch(`/api/users/profile/${message.sender}`);
 			const data = res.json();
 
 			if (data.error)

@@ -31,7 +31,7 @@ const PostPage = () => {
 				const sound = new Audio(messageSound);
 				sound.play();
 
-				const res = await fetch(`/api/users/profile/${message.sender}}`);
+				const res = await fetch(`/api/users/profile/${message.sender}`);
 				const data = res.json();
 
 				if (data.error)
