@@ -169,7 +169,7 @@ function App() {
 		);
 	}
 
-	if (currentUser.user) {
+	if (!user || currentUser.user) {
 		return (
 			<>
 				{!user || (currentUser.user.punishment.type == "none" || user.punishment.type == "") ? (
