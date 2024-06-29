@@ -20,7 +20,7 @@ router.get("/profile/:query", getUserProfile);
 router.get("/suggested", protectRoute, punishmentCheck, getSuggestedUsers);
 router.post("/signup", checkSignUpContent, signupUser);
 router.post("/login", loginUser);
-router.post("/logout", logoutUser);
+router.post("/logout", protectRoute, logoutUser);
 router.post("/follow/:id", protectRoute, punishmentCheck, followUnFollowUser); // Toggle state(follow/unfollow)
 router.put("/update/:id", protectRoute, punishmentCheck, checkContent, updateUser);
 router.put("/freeze", protectRoute, punishmentCheck, freezeAccount);
