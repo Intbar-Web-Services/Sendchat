@@ -48,6 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 						{/* <App /> */}
 						<>
 							<h1>Sendchat is currently switching to Firebase Authentication and users are being migrated. Sorry for the outage! Not like anyone is using this anyways lmao</h1>
+							<img src="/getaroom.gif" />
 							<a href="https://sendchat.xyz" style={{ color: "blue" }}>Go back to the landing page</a>
 						</>
 					</SocketContextProvider>
