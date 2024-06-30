@@ -45,10 +45,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 				<ChakraProvider theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<SocketContextProvider>
-						<App />
+						{/* <App /> */}
+						<>
+							<h1>Sendchat is currently switching to Firebase Authentication and users are being migrated. Sorry for the outage! Not like anyone is using this anyways lmao</h1>
+							<a href="https://sendchat.xyz" style={{ color: "blue" }}>Go back to the landing page</a>
+						</>
 					</SocketContextProvider>
 				</ChakraProvider>
 			</BrowserRouter>
 		</RecoilRoot>
-	</React.StrictMode>
+	</React.StrictMode >
 );
