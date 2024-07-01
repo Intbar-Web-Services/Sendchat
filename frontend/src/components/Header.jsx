@@ -87,8 +87,6 @@ const Header = () => {
 				"BCE__zmwje5W2p5m4q2lI9dG7YfLqO8k8FyvVjIlEYuE5yW2lhRg7hDuU2iJ-YGjGPetn2ML1TEvn44U0C4K33E",
 		});
 
-		const thing = `Bearer ${await getCurrentUserId()}`;
-
 		const res = await fetch("/api/messages/subscribe", {
 			method: "POST",
 			headers: {
