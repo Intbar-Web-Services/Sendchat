@@ -42,7 +42,7 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1.9rem"
 				>
-					<Button isDisabled={true} onClick={() => { location.href = "https://app.sendchat.xyz"; }}>Open Sendchat</Button>
+					<Button onClick={() => { location.href = "https://app.sendchat.xyz"; }}>Open Sendchat</Button>
 				</Flex>
 			</Flex >
 		</>
