@@ -54,7 +54,7 @@ async function sendMessage(req, res) {
 			participants: { $all: [senderId, recipientId] },
 		});
 
-		if (recipientId === "6672b78eab0404a06146d47c") {
+		if (recipientId === "6682364096e6b50e23f0b9d6") {
 			return res.status(400).json({ error: "Don't message the deleted user mask account" });
 		}
 

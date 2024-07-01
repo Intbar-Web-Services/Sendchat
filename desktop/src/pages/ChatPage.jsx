@@ -67,7 +67,7 @@ const ChatPage = () => {
 		try {
 			const res = await fetch(`/api/users/profile/${searchText}`);
 			const searchedUser = await res.json();
-			if (searchedUser.error || searchedUser._id === "6672b78eab0404a06146d47c") {
+			if (searchedUser.error || searchedUser._id === "6682364096e6b50e23f0b9d6") {
 				showToast("Error", "Nobody matches this username, check for any typos", "error");
 				return;
 			}

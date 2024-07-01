@@ -97,7 +97,7 @@ const UserPage = () => {
 	return (
 		<>
 			<UserHeader user={user} />
-			{user._id !== "6672b78eab0404a06146d47c" && (
+			{user._id !== "6682364096e6b50e23f0b9d6" && (
 				<Tabs isFitted>
 					<TabList>
 						<Tab>Posts</Tab>

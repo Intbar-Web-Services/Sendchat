@@ -49,10 +49,6 @@ const userSchema = mongoose.Schema(
 			type: String,
 			default: "",
 		},
-		regTokens: {
-			type: Array,
-			default: [],
-		},
 		subscriptions: {
 			posts: {
 				type: Boolean,

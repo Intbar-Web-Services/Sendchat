@@ -230,7 +230,7 @@ const UserHeader = ({ user: givenUser }) => {
 					<Button size={"sm"}>Update Profile</Button>
 				</Link>
 			)}
-			{(currentUser?._id !== user._id && user._id !== "6672b78eab0404a06146d47c") && (
+			{(currentUser?._id !== user._id && user._id !== "6682364096e6b50e23f0b9d6") && (
 				<Flex gap={3}>
 					<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
 						{following ? "Unfollow" : "Follow"}
@@ -240,10 +240,10 @@ const UserHeader = ({ user: givenUser }) => {
 			)}
 			<Flex w={"full"} justifyContent={"space-between"}>
 				<Flex gap={0.2} alignItems={"center"}>
-					{user._id !== "6672b78eab0404a06146d47c" && (
+					{user._id !== "6682364096e6b50e23f0b9d6" && (
 						<Text color={"gray.light"}>{user.followers.length} followers</Text>
 					)}
-					{(!user.followers.length == 0 && user._id !== "6672b78eab0404a06146d47c") && (
+					{(!user.followers.length == 0 && user._id !== "6682364096e6b50e23f0b9d6") && (
 						<Box className='icon-container' paddingTop="0.5rem">
 							<Menu>
 								<MenuButton>
@@ -259,10 +259,10 @@ const UserHeader = ({ user: givenUser }) => {
 							</Menu>
 						</Box>
 					)}
-					{user._id !== "6672b78eab0404a06146d47c" && (
+					{user._id !== "6682364096e6b50e23f0b9d6" && (
 						<Text color={"gray.light"} marginLeft={2.5}>{user.following.length} following</Text>
 					)}
-					{(!user.following.length == 0 && user._id !== "6672b78eab0404a06146d47c") && (
+					{(!user.following.length == 0 && user._id !== "6682364096e6b50e23f0b9d6") && (
 						<Box className='icon-container' paddingTop="0.5rem">
 							<Menu>
 								<MenuButton>
@@ -280,7 +280,7 @@ const UserHeader = ({ user: givenUser }) => {
 					)}
 				</Flex>
 				<Flex>
-					{user._id !== "6672b78eab0404a06146d47c" && (
+					{user._id !== "6682364096e6b50e23f0b9d6" && (
 						<Box className='icon-container'>
 							<Menu>
 								<MenuButton>
@@ -291,7 +291,7 @@ const UserHeader = ({ user: givenUser }) => {
 										<MenuItem bg={"gray.dark"} color={"white"} onClick={copyURL}>
 											Copy link
 										</MenuItem>
-										{(isModerator && user._id != currentUser._id && !user.isAdmin && user.punishment.type == "none" && user._id !== "6672b78eab0404a06146d47c") && (
+										{(isModerator && user._id != currentUser._id && !user.isAdmin && user.punishment.type == "none" && user._id !== "6682364096e6b50e23f0b9d6") && (
 											<MenuItem bg={"gray.dark"} color={"white"} onClick={handleModeration}>
 												Moderate
 											</MenuItem>
