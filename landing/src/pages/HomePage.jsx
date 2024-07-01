@@ -11,7 +11,13 @@ export default function DownloadApp() {
                 <br />
                 With over 0 chats sent per day, there is no doubt you will love our &quot;active&quot; chat platform
                 <br />
-                Sorry, we're down
+                Sorry, we're down, or are we? (vsauce music)
+                <br />
+                See, since the website sendchat.xyz is always up, that means that it can never be &quot;down&quot;
+                <br />
+                Which means that Sendchat is the first platform with true 24/8 uptime.
+                <br />
+                - mercy
             </h3>
             <Divider my={4} />
             <Flex
@@ -20,7 +26,7 @@ export default function DownloadApp() {
                 p={2}
                 flexDirection={"column"}
             >
-                <Button isDisabled={true} onClick={() => { location.href = "https://app.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button>
+                <Button onClick={() => { location.href = "https://app.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button>
             </Flex>
         </>
     );
