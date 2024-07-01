@@ -83,7 +83,7 @@ const ChatPage = () => {
 	};
 
 	useEffect(() => {
-		if (Notification.permission == "granted") {
+		if ('Notification' in window && Notification.permission == "granted") {
 			onMessage(messaging, async (payload) => {
 				if (payload.data.isImage == "true") {
 					payload.data.body = "Sent an image";

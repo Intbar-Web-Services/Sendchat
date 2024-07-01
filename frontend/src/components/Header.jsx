@@ -45,7 +45,7 @@ const Header = () => {
 	const [notificationsVisible, setNotificationsVisible] = useState(false);
 
 	useEffect(() => {
-		if (Notification.permission !== "granted") {
+		if ('Notification' in window && Notification.permission !== "granted") {
 			setNotificationsVisible(true);
 		}
 	}, []);

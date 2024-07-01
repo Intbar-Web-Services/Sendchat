@@ -71,7 +71,7 @@ function App() {
 			});
 		}
 
-		if (Notification.permission == "granted") {
+		if ('Notification' in window && Notification.permission == "granted") {
 			getToken(messaging, {
 				vapidKey:
 					"BCE__zmwje5W2p5m4q2lI9dG7YfLqO8k8FyvVjIlEYuE5yW2lhRg7hDuU2iJ-YGjGPetn2ML1TEvn44U0C4K33E",
