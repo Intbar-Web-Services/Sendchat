@@ -18,6 +18,7 @@ import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useLogout from "../hooks/useLogout";
 import { useState } from "react";
+import getCurrentUserId from "../user";
 
 const Warn = ({ user, reason }) => {
     const showToast = useShowToast();
@@ -28,7 +29,11 @@ const Warn = ({ user, reason }) => {
     const unWarn = async () => {
         try {
             setLoading(true);
-            const res = await fetch("/api/punishments/unwarn");
+            const res = await fetch("/api/punishments/unwarn", {
+                headers: {
+                    "authorization": `Bearer ${await getCurrentUserId()}`
+                }
+            });
             const data = await res.json();
             if (data.error) {
                 showToast("Error", data.error, "error");
@@ -49,7 +54,7 @@ const Warn = ({ user, reason }) => {
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                 <Stack align={"center"}>
                     <Heading fontSize={"4xl"} textAlign={"center"}>
-                        You've been warned
+                        You&apos;ve been warned
                     </Heading>
                 </Stack>
                 <Box
