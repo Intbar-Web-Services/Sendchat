@@ -4,6 +4,7 @@ import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import getCurrentUserId from "../user";
 
 const ActivatePage = () => {
     const [code, setCode] = useState("");
@@ -30,7 +31,11 @@ const ActivatePage = () => {
         if (updating) return;
         setUpdating(true);
         try {
-            const res = await fetch(`/api/punishments/activate/${key}`);
+            const res = await fetch(`/api/punishments/activate/${key}`, {
+                headers: {
+                    "authorization": `Bearer ${await getCurrentUserId()}`,
+                }
+            });
             const data = await res.json();
             if (data.error) {
                 showToast("Error", data.error, "error");
@@ -52,7 +57,11 @@ const ActivatePage = () => {
         setUpdating(true);
         setCode(paramsCode);
         try {
-            const res = await fetch(`/api/punishments/activate/${paramsCode}`);
+            const res = await fetch(`/api/punishments/activate/${paramsCode}`, {
+                headers: {
+                    "authorization": `Bearer ${await getCurrentUserId()}`,
+                }
+            });
             const data = await res.json();
             if (data.error) {
                 showToast("Error", data.error, "error");
