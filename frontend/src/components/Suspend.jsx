@@ -19,6 +19,7 @@ import userAtom from "../atoms/userAtom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useLogout from "../hooks/useLogout";
+import getCurrentUserId from "../user.js";
 
 const Suspend = ({ user, reason, hours }) => {
     const showToast = useShowToast();
@@ -26,7 +27,11 @@ const Suspend = ({ user, reason, hours }) => {
     const unsuspend = async () => {
         try {
             setLoading(true);
-            const res = await fetch(`/api/punishments/unsuspend`);
+            const res = await fetch(`/api/punishments/unsuspend`, {
+                headers: {
+                    "authorization": `Bearer ${await getCurrentUserId()}`,
+                }
+            });
             if (res.error) return showToast("Error", res.error, "error");
             location.reload();
         } finally {
@@ -69,7 +74,7 @@ const Suspend = ({ user, reason, hours }) => {
                     }}
                 >
                     <Stack spacing={4}>
-                        <Text fontWeight='semibold'>We're showing you this message because your account, {user.name} (@{user.username}), has been suspended. Until the time runs out, you cannot interact with Sendchat.</Text>
+                        <Text fontWeight='semibold'>We&apos;re showing you this message because your account, {user.name} (@{user.username}), has been suspended. Until the time runs out, you cannot interact with Sendchat.</Text>
                         <Text fontWeight='bold'>You have {days} day{(days > 1 || days === 0) ? "s" : ""} left, {hoursParsed} hour{(hoursParsed > 1 || hoursParsed === 0) ? "s" : ""} left, and {minutes} minute{(minutes > 1 || minutes === 0) ? "s" : ""} left</Text>
 
                         <Text fontWeight='bold'>Reason:</Text>

@@ -19,6 +19,8 @@ import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
 
 export default function LoginCard() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -27,29 +29,41 @@ export default function LoginCard() {
 	const [loading, setLoading] = useState(false);
 
 	const [inputs, setInputs] = useState({
-		username: "",
+		email: "",
 		password: "",
+		token: "",
 	});
 	const showToast = useShowToast();
 	const handleLogin = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("/api/users/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(inputs),
-			});
-			const data = await res.json();
-			if (data.error) {
-				showToast("Error", data.error, "error");
-				return;
+			const user = await signInWithEmailAndPassword(
+				auth,
+				inputs.email,
+				inputs.password,
+			);
+
+			const token = await user.user.getIdToken();
+			if (token) {
+				inputs.token = `Bearer ${token}`
+				const res = await fetch("/api/users/login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(inputs),
+				});
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					return;
+				}
+				localStorage.setItem("user-threads", JSON.stringify(data));
+				setUser(data);
 			}
-			localStorage.setItem("user-threads", JSON.stringify(data));
-			setUser(data);
 		} catch (error) {
-			showToast("Error", error, "error");
+			if (error.code == "auth/invalid-credential")
+				return showToast("Error", "Invalid username or password", "error");
 		} finally {
 			setLoading(false);
 		}
@@ -74,16 +88,13 @@ export default function LoginCard() {
 				>
 					<Stack spacing={4}>
 						<FormControl isRequired>
-							<FormLabel>Username</FormLabel>
-							<Flex justify="center" gap={2}>
-								<Text paddingTop={1} fontWeight='500' fontSize={'19'}>@</Text>
-								<Input
-									type='text'
-									value={inputs.username}
-									onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "") }))}
-									maxLength={25}
-								/>
-							</Flex>
+							<FormLabel>Email</FormLabel>
+							<Input
+								type='email'
+								value={inputs.email}
+								onChange={(e) => setInputs((inputs) => ({ ...inputs, email: e.target.value.toLowerCase() }))}
+								maxLength={25}
+							/>
 						</FormControl>
 						<FormControl isRequired>
 							<FormLabel>Password</FormLabel>

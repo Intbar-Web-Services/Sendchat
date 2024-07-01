@@ -5,6 +5,7 @@ import cron from "cron";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import { app, auth } from "../services/firebase.js";
 
 const getUserProfile = async (req, res) => {
 	// We will fetch user profile either with username or userId
@@ -35,14 +36,12 @@ const getUserProfile = async (req, res) => {
 
 const signupUser = async (req, res) => {
 	try {
-		const { name, email, username, password } = req.body;
+		const { name, email, username, password, token } = req.body;
 		const user = await User.findOne({ $or: [{ email }, { username }] });
 
 		if (user) {
 			return res.status(400).json({ error: "User already exists" });
 		}
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
 
 		if (username) {
 			if (new RegExp(/[^a-z0-9_]/g, "").test(username))
@@ -67,17 +66,24 @@ const signupUser = async (req, res) => {
 				return res.status(400).json({ error: "Your email is invalid" });
 		}
 
+		const tokenParsed = token?.split(" ")[1];
+
+		let firebaseUser;
+		if (tokenParsed) {
+			firebaseUser = await auth.verifyIdToken(tokenParsed);
+		}
+
+		if (!firebaseUser) return res.status(401).json({ message: "Unauthorized" });
+
 		const newUser = new User({
 			name,
 			email,
 			username,
-			password: hashedPassword,
+			firebaseId: firebaseUser.user_id,
 		});
 		await newUser.save();
 
 		if (newUser) {
-			generateTokenAndSetCookie(newUser._id, res);
-
 			res.status(201).json({
 				_id: newUser._id,
 				name: newUser.name,
@@ -100,18 +106,20 @@ const signupUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
 	try {
-		const { username, password } = req.body;
-		const user = await User.findOne({ username });
-		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+		const { email, password, token } = req.body;
+		const firebaseToken = token?.split(" ")[1];
+		let firebaseUser;
+		if (firebaseToken) {
+			firebaseUser = await auth.verifyIdToken(firebaseToken);
+		}
+		const user = await User.findOne({ firebaseId: firebaseUser.user_id });
 
-		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
+		if (!user) return res.status(400).json({ error: "Invalid username or password" });
 
 		if (user.isFrozen) {
 			user.isFrozen = false;
 			await user.save();
 		}
-
-		generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
 			_id: user._id,
@@ -132,14 +140,9 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
 	try {
-		const { oldToken } = req.body;
-		const user = req.user;
+		// remove regtokens eventually...
 
-		res.cookie("jwt", "", { maxAge: 1 });
-		if (user.regTokens.length > -1) {
-			user.regTokens.splice(user.regTokens.indexOf(oldToken));
-			await user.save();
-		}
+
 		res.status(200).json({ message: "User logged out successfully" });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -193,11 +196,21 @@ const updateUser = async (req, res) => {
 		if (req.params.id !== userId.toString())
 			return res.status(400).json({ error: "You cannot update other user's profile" });
 
-		if (password) {
-			const salt = await bcrypt.genSalt(10);
-			const hashedPassword = await bcrypt.hash(password, salt);
-			user.password = hashedPassword;
+		if (email && password) {
+			await auth.updateUser(req.user.firebaseId, {
+				email,
+				password,
+			})
+		} else if (password) {
+			await auth.updateUser(req.user.firebaseId, {
+				password,
+			})
+		} else if (email) {
+			await auth.updateUser(req.user.firebaseId, {
+				email,
+			})
 		}
+
 		const badWords = /(\b\W*f\W*a\W*g\W*(g\W*o\W*t\W*t\W*a\W*r\W*d)?|m\W*a\W*r\W*i\W*c\W*o\W*s?|c\W*o\W*c\W*k\W*s?\W*u\W*c\W*k\W*e\W*r\W*(s\W*i\W*n\W*g)?|\bn\W*i\W*g\W*(\b|g\W*(a\W*|e\W*r)?s?)\b|d\W*i\W*n\W*d\W*u\W*(s?)|m\W*u\W*d\W*s\W*l\W*i\W*m\W*e\W*s?|k\W*i\W*k\W*e\W*s?|m\W*o\W*n\W*g\W*o\W*l\W*o\W*i\W*d\W*s?|t\W*o\W*w\W*e\W*l\W*\s\W*h\W*e\W*a\W*d\W*s?|\bs\W*p\W*i\W*(c\W*|\W*)s?\b|\bch\W*i\W*n\W*k\W*s?|n\W*i\W*g\W*l\W*e\W*t\W*s?|b\W*e\W*a\W*n\W*e\W*r\W*s?|\bn\W*i\W*p\W*s?\b|\bco\W*o\W*n\W*s?\b|j\W*u\W*n\W*g\W*l\W*e\W*\s\W*b\W*u\W*n\W*n\W*(y\W*|i\W*e\W*s?)|j\W*i\W*g\W*g?\W*a\W*b\W*o\W*o\W*s?|\bp\W*a\W*k\W*i\W*s?\b|r\W*a\W*g\W*\s\W*h\W*e\W*a\W*d\W*s?|g\W*o\W*o\W*k\W*s?|c\W*u\W*n\W*t\W*s?\W*(e\W*s\W*|i\W*n\W*g\W*|y)?|t\W*w\W*a\W*t\W*s?|f\W*e\W*m\W*i\W*n\W*a\W*z\W*i\W*s?|w\W*h\W*o\W*r\W*(e\W*s?\W*|i\W*n\W*g)|\bs\W*l\W*u\W*t\W*(s\W*|t\W*?\W*y)?|\btr\W*a\W*n\W*n?\W*(y\W*|i\W*e\W*s?)|l\W*a\W*d\W*y\W*b\W*o\W*y\W*(s?))/gmi;
 
 		if (username) {
@@ -223,6 +236,7 @@ const updateUser = async (req, res) => {
 
 						const job = new cron.CronJob("0/45 * * * *", async () => {
 							const cronUser = user;
+							const uid = cronUser.firebaseId;
 							if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
 								if (cronUser.punishment.type === "ban") {
 									cronUser.username = `deletedUser_${cronUser._id}`
@@ -231,8 +245,9 @@ const updateUser = async (req, res) => {
 									cronUser.punishment.type = "none";
 									cronUser.profilePic = "";
 									cronUser.isDeleted = true;
-									cronUser.password = `${Date.now()}`;
-
+									auth.updateUser(uid, {
+										disabled: true,
+									});
 									await cronUser.save();
 									job.stop();
 								} else {
@@ -299,9 +314,6 @@ const updateUser = async (req, res) => {
 			},
 			{ arrayFilters: [{ "reply.userId": userId }] }
 		);
-
-		// password should be null in response
-		user.password = null;
 
 		res.status(200).json(user);
 	} catch (err) {

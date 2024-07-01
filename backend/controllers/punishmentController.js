@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import cron from "cron";
+import { auth } from "../services/firebase.js";
 
 const activateCode = async (req, res) => {
     const { code } = req.params;
@@ -93,6 +94,7 @@ const banUser = async (req, res) => {
 
         const job = new cron.CronJob("*/10 * * * *", async () => {
             const cronUser = user;
+            const uid = cronUser.firebaseId;
             if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
                 if (cronUser.punishment.type === "ban") {
                     cronUser.username = `deletedUser_${cronUser._id}`
@@ -101,8 +103,9 @@ const banUser = async (req, res) => {
                     cronUser.punishment.type = "none";
                     cronUser.profilePic = "";
                     cronUser.isDeleted = true;
-                    cronUser.password = `${Date.now()}`;
-
+                    auth.updateUser(uid, {
+                        disabled: true,
+                    });
                     await cronUser.save();
                     job.stop();
                 } else {

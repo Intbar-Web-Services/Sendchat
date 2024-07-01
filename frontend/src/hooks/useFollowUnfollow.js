@@ -2,6 +2,7 @@ import { useState } from "react";
 import useShowToast from "./useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
+import getCurrentUserId from "../user.js";
 
 const useFollowUnfollow = (user) => {
 	const currentUser = useRecoilValue(userAtom);
@@ -22,6 +23,7 @@ const useFollowUnfollow = (user) => {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 			});
 			const data = await res.json();

@@ -10,6 +10,7 @@ import { conversationsAtom, selectedConversationAtom, newConversationAtom } from
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
 import { messaging } from "../firebase";
+import getCurrentUserId from "../user.js";
 import { onMessage } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
 
@@ -49,7 +50,11 @@ const ChatPage = () => {
 	useEffect(() => {
 		const getConversations = async () => {
 			try {
-				const res = await fetch("/api/messages/conversations");
+				const res = await fetch("/api/messages/conversations", {
+					headers: {
+						"authorization": `Bearer ${await getCurrentUserId()}`,
+					}
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -105,7 +110,11 @@ const ChatPage = () => {
 			return;
 		setSearchingUser(true);
 		try {
-			const res = await fetch(`/api/users/profile/${searchText}`);
+			const res = await fetch(`/api/users/profile/${searchText}`, {
+				headers: {
+					"authorization": `Bearer ${await getCurrentUserId()}`,
+				}
+			});
 			const searchedUser = await res.json();
 			if (searchedUser.error || searchedUser._id === "6672b78eab0404a06146d47c") {
 				showToast("Error", "Nobody matches this username, check for any typos", "error");

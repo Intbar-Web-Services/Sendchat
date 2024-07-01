@@ -16,11 +16,6 @@ const userSchema = mongoose.Schema(
 			required: true,
 			unique: true,
 		},
-		password: {
-			type: String,
-			minLength: 6,
-			required: true,
-		},
 		isAdmin: {
 			type: Boolean,
 			default: false
@@ -49,6 +44,10 @@ const userSchema = mongoose.Schema(
 		likesHidden: {
 			type: Boolean,
 			default: false,
+		},
+		firebaseId: {
+			type: String,
+			default: "",
 		},
 		regTokens: {
 			type: Array,

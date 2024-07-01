@@ -22,6 +22,7 @@ import userAtom from "../atoms/userAtom";
 import { BsFillImageFill } from "react-icons/bs";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useGetUserProfile from "../hooks/useGetUserProfile";
+import getCurrentUserId from "../user.js";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
@@ -46,6 +47,7 @@ const MessageInput = ({ setMessages }) => {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 				body: JSON.stringify({
 					message: messageText,

@@ -18,6 +18,7 @@ import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
+import getCurrentUserId from "../user.js";
 
 export default function UpdateProfilePage() {
 	const [user, setUser] = useRecoilState(userAtom);
@@ -57,6 +58,7 @@ export default function UpdateProfilePage() {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 				body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
 			});

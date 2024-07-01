@@ -26,6 +26,7 @@ import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
 import { useNavigate, useParams } from "react-router-dom";
+import getCurrentUserId from "../user.js";
 
 const MAX_CHAR = 500;
 
@@ -60,31 +61,32 @@ const CreatePost = () => {
 		try {
 			if (postText.trim() == "") showToast("Error", "Your post must contain text", "error");
 			else {
-			const res = await fetch("/api/posts/create", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
-			});
+				const res = await fetch("/api/posts/create", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"authorization": `Bearer ${await getCurrentUserId()}`,
+					},
+					body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
+				});
 
-			const data = await res.json();
-			if (data.error) {
-				showToast("Error", data.error, "error");
-				if (data.error == "You are currently punished") {
-					location.pathname = "/";
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					if (data.error == "You are currently punished") {
+						location.pathname = "/";
+					}
+					return;
 				}
-				return;
-			}
-			showToast("Success", "Post created successfully", "success");
-			if (username === user.username) {
+				showToast("Success", "Post created successfully", "success");
+				if (username === user.username) {
+					setPosts([data, ...posts]);
+				}
+				onClose();
+				setPostText("");
+				setImgUrl("");
+				navigate("/");
 				setPosts([data, ...posts]);
-			}
-			onClose();
-			setPostText("");
-			setImgUrl("");
-			navigate("/");
-			setPosts([data, ...posts]);
 			}
 		} catch (error) {
 			showToast("Error", error, "error");

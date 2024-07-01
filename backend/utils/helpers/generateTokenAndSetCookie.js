@@ -1,16 +1,21 @@
-import jwt from "jsonwebtoken";
+import { auth } from "../../services/firebase.js";
 
-const generateTokenAndSetCookie = (userId, res) => {
-	const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-		expiresIn: "15d",
-	});
+const generateTokenAndSetCookie = async (token, res) => {
+	const idToken = token.toString();
 
-	res.cookie("jwt", token, {
-		httpOnly: false, // more secure
-		maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-	});
 
-	return token;
+	const expiresIn = 60 * 60 * 24 * 5 * 1000;
+	// Create the session cookie. This will also verify the ID token in the process.
+	// The session cookie will have the same claims as the ID token.
+	// To only allow session cookie setting on recent sign-in, auth_time in ID token
+	// can be checked to ensure user was recently signed in before creating a session cookie.
+	const sessionCookie = await auth.createSessionCookie(idToken, { expiresIn })
+
+	const options = { maxAge: expiresIn, httpOnly: false, secure: true };
+	res.cookie('session', sessionCookie, options);
+	res.end(JSON.stringify({ status: 'success' }));
+
+	return idToken;
 };
 
 export default generateTokenAndSetCookie;

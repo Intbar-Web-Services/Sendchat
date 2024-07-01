@@ -13,6 +13,7 @@ import { BsBellFill } from "react-icons/bs";
 import { messaging, generateToken } from "../firebase";
 import { onMessage, getToken } from "firebase/messaging";
 import useShowToast from "../hooks/useShowToast";
+import getCurrentUserId from "../user.js";
 
 const Header = () => {
 	const userAgent = navigator.userAgent;
@@ -90,6 +91,7 @@ const Header = () => {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"authorization": `Bearer ${await getCurrentUserId()}`,
 			},
 			body: JSON.stringify({
 				token: token,

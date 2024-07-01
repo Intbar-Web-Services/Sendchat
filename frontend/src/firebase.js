@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getAuth } from "firebase/auth";
 const firebaseConfig = {
     apiKey: "AIzaSyCeRhOUrvTT0YwFJW4ioBGDdl_yecJZFXU",
     authDomain: "iws-sendchat.firebaseapp.com",
@@ -11,6 +12,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
+export const auth = getAuth();
 
 export const generateToken = async () => {
     const permission = await Notification.requestPermission();
@@ -27,6 +29,7 @@ export const generateToken = async () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "authorization": `Bearer ${auth.currentUser.getIdToken()}`,
                 },
                 body: JSON.stringify({
                     token,

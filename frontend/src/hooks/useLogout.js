@@ -1,7 +1,8 @@
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState } from "recoil";
 import useShowToast from "./useShowToast";
-import { messaging } from "../firebase";
+import { messaging, auth } from "../firebase";
+import getCurrentUserId from "../user";
 
 const useLogout = () => {
 	const setUser = useSetRecoilState(userAtom);
@@ -14,6 +15,7 @@ const useLogout = () => {
 				body: JSON.stringify({ oldToken: messaging.token }),
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 			});
 			const data = await res.json();
@@ -23,10 +25,11 @@ const useLogout = () => {
 				return;
 			}
 
+			await auth.signOut();
 			localStorage.removeItem("user-threads");
 			setUser(null);
 		} catch (error) {
-			showToast("Error", error, "error");
+			showToast("Error", error.message, "error");
 		}
 	};
 

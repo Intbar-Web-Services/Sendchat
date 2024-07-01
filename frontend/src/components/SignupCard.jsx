@@ -20,6 +20,8 @@ import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function SignupCard() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +31,7 @@ export default function SignupCard() {
 		username: "",
 		email: "",
 		password: "",
+		token: "",
 	});
 
 	const showToast = useShowToast();
@@ -36,6 +39,12 @@ export default function SignupCard() {
 
 	const handleSignup = async () => {
 		try {
+			const user = await createUserWithEmailAndPassword(auth, inputs.email, inputs.password)
+			let token;
+
+			if (user) token = await user.user.getIdToken();
+			if (token) inputs.token = `Bearer ${token}`;
+
 			const res = await fetch("/api/users/signup", {
 				method: "POST",
 				headers: {
@@ -53,7 +62,11 @@ export default function SignupCard() {
 			localStorage.setItem("user-threads", JSON.stringify(data));
 			setUser(data);
 		} catch (error) {
-			showToast("Error", error, "error");
+			if (error.code == "auth/email-already-in-use") {
+				showToast("Error", "This email address is already in use.", "error");
+			} else {
+				showToast("Error", error.message, "error");
+			}
 		}
 	};
 

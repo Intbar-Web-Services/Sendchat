@@ -5,9 +5,7 @@ import User from "../models/userModel.js";
 import Token from "../models/tokenModel.js";
 import { getRecipientSocketId, io } from "../socket/socket.js";
 import { v2 as cloudinary } from "cloudinary";
-import { getMessaging } from "firebase-admin/messaging";
-
-const messaging = getMessaging();
+import { messaging } from "../services/firebase.js";
 
 async function subscribe(req, res) {
 	try {

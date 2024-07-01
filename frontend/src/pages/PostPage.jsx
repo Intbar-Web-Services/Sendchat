@@ -14,6 +14,7 @@ import postsAtom from "../atoms/postsAtom";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
 import Linkify from "react-linkify";
+import getCurrentUserId from "../user.js";
 
 const PostPage = () => {
 	const { user, loading } = useGetUserProfile();
@@ -79,6 +80,9 @@ const PostPage = () => {
 
 			const res = await fetch(`/api/posts/${currentPost._id}`, {
 				method: "DELETE",
+				headers: {
+					"authorization": `Bearer ${await getCurrentUserId()}`,
+				}
 			});
 			const data = await res.json();
 			if (data.error) {

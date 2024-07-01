@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
+import getCurrentUserId from "../user.js";
 
 export const SettingsPage = () => {
 	const userAgent = navigator.userAgent;
@@ -31,7 +32,10 @@ export const SettingsPage = () => {
 		try {
 			const res = await fetch("/api/users/freeze", {
 				method: "PUT",
-				headers: { "Content-Type": "application/json" },
+				headers: {
+					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
+				},
 			});
 			const data = await res.json();
 
@@ -51,7 +55,11 @@ export const SettingsPage = () => {
 		if (!window.confirm("Are you sure you want to remove admin priveleges for your account?")) return;
 
 		try {
-			const res = await fetch("/api/punishments/demoteself");
+			const res = await fetch("/api/punishments/demoteself", {
+				headers: {
+					"authorization": `Bearer ${await getCurrentUserId()}`,
+				}
+			});
 			const data = await res.json();
 
 			if (data.error) {

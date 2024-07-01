@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
+import getCurrentUserId from "../user.js";
 
 const Actions = ({ post }) => {
 	const user = useRecoilValue(userAtom);
@@ -63,6 +64,7 @@ const Actions = ({ post }) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 			});
 			const data = await res.json();
@@ -105,6 +107,7 @@ const Actions = ({ post }) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"authorization": `Bearer ${await getCurrentUserId()}`,
 				},
 				body: JSON.stringify({ text: reply }),
 			});

@@ -1,6 +1,7 @@
 import { Button, Modal, Flex, VStack, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Input, Select } from "@chakra-ui/react"; // this is a bunch of imports from chakra ui
 import { useState } from "react"; // this is a hook that allows you to use state in a functional component
 import useShowToast from "../hooks/useShowToast";
+import getCurrentUserId from "../user.js";
 
 const ModerationMenu = ({ id, isOpen, onClose }) => { // this is a functional component that takes isOpen and onClose as props
     const [punishment, setPunishment] = useState(""); // this is a state variable that stores the type of punishment
@@ -19,6 +20,7 @@ const ModerationMenu = ({ id, isOpen, onClose }) => { // this is a functional co
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        "authorization": `Bearer ${await getCurrentUserId()}`,
                     },
                     body: JSON.stringify({ hoursParsed, reason }),
                 })
@@ -35,6 +37,7 @@ const ModerationMenu = ({ id, isOpen, onClose }) => { // this is a functional co
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    "authorization": `Bearer ${await getCurrentUserId()}`,
                 },
                 body: JSON.stringify({ reason }),
             })
@@ -48,6 +51,7 @@ const ModerationMenu = ({ id, isOpen, onClose }) => { // this is a functional co
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    "authorization": `Bearer ${await getCurrentUserId()}`,
                 },
                 body: JSON.stringify({ reason, hoursParsedDate }),
             })

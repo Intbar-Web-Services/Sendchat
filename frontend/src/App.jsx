@@ -20,8 +20,11 @@ import { SettingsPage } from "./pages/SettingsPage";
 import ProbePage from "./pages/ProbePage";
 import { messaging } from "./firebase";
 import { onMessage, getToken } from "firebase/messaging";
+import { onAuthStateChanged } from "firebase/auth";
 import useShowToast from "./hooks/useShowToast";
 import { BsXCircleFill } from "react-icons/bs";
+import getCurrentUserId from "./user";
+import { auth } from "./firebase";
 
 function App() {
 	const setStoredUser = useSetRecoilState(userAtom);
@@ -60,10 +63,12 @@ function App() {
 	useEffect(() => {
 		if (!currentUser.loading && currentUser.user) {
 			if (!currentUser) return showToast("Can't get user information.");
-			if (currentUser.user.punishment.type != "") {
-				setStoredUser(currentUser.user);
-				localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
-			}
+			getCurrentUserId().then((value) => {
+				if (currentUser.user.punishment.type != "" && !value) {
+					setStoredUser(currentUser.user);
+					localStorage.setItem("user-threads", JSON.stringify(currentUser.user));
+				}
+			});
 		}
 
 		if (Notification.permission == "granted") {
@@ -96,13 +101,28 @@ function App() {
 
 
 	useEffect(() => {
-		if (document.cookie == '') {
-			if (localStorage.getItem("user-threads") != null) {
-				localStorage.removeItem("user-threads");
-				setStoredUser(null);
-				location.reload();
+		function getCurrentUser() {
+			return new Promise((resolve) => {
+				onAuthStateChanged(auth, async (user) => {
+					if (user) {
+						resolve(user);
+					} else {
+						resolve(null);
+					}
+				});
+			});
+		}
+
+		async function Run() {
+			if (!await getCurrentUser()) {
+				if (localStorage.getItem("user-threads") != null) {
+					localStorage.removeItem("user-threads");
+					setStoredUser(null);
+					location.reload();
+				}
 			}
 		}
+		Run();
 	}, [setStoredUser])
 
 	const { pathname } = useLocation();
@@ -165,7 +185,9 @@ function App() {
 					<Button
 						onClick={() => location.reload()}
 						mt={6}
-					>Retry</Button>
+					>
+						Retry
+					</Button>
 				</Flex>
 			</Flex>
 		);

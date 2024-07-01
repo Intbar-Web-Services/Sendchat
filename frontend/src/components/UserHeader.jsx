@@ -14,6 +14,7 @@ import useFollowUnfollow from "../hooks/useFollowUnfollow";
 import ModerationMenu from "../components/ModerationMenu";
 import { conversationsAtom, selectedConversationAtom, newConversationAtom } from "../atoms/messagesAtom";
 import Linkify from "react-linkify";
+import getCurrentUserId from "../user.js";
 
 const UserHeader = ({ user: givenUser }) => {
 	let [user, setUser] = useState(givenUser);
@@ -42,7 +43,11 @@ const UserHeader = ({ user: givenUser }) => {
 	}, [givenUser]);
 
 	const handleUnWarn = async () => {
-		const res = await fetch(`/api/punishments/unwarn/${user._id}`);
+		const res = await fetch(`/api/punishments/unwarn/${user._id}`, {
+			headers: {
+				"authorization": `Bearer ${await getCurrentUserId()}`,
+			}
+		});
 		if (res.error) return showToast("Error", res.error, "error");
 		let editedUser = structuredClone(givenUser);
 		editedUser.punishment.type = "none";
@@ -57,7 +62,11 @@ const UserHeader = ({ user: givenUser }) => {
 
 			for (let i = 0; i < ((user.followers.length > 5) ? 5 : user.followers.length); i++) {
 				try {
-					const response = await fetch(`/api/users/profile/${user.followers[i]}`);
+					const response = await fetch(`/api/users/profile/${user.followers[i]}`, {
+						headers: {
+							"authorization": `Bearer ${await getCurrentUserId()}`,
+						}
+					});
 					const userData = await response.json();
 					const userName = userData.username;
 					if (userName) {
@@ -80,7 +89,11 @@ const UserHeader = ({ user: givenUser }) => {
 
 			for (let i = 0; i < ((user.following.length > 5) ? 5 : user.following.length); i++) {
 				try {
-					const response = await fetch(`/api/users/profile/${user.following[i]}`);
+					const response = await fetch(`/api/users/profile/${user.following[i]}`, {
+						headers: {
+							"authorization": `Bearer ${await getCurrentUserId()}`,
+						}
+					});
 					const userData = await response.json();
 					const userName = userData.username;
 					if (userName) {
@@ -244,7 +257,11 @@ const UserHeader = ({ user: givenUser }) => {
 			</Flex>
 			<ModerationMenu id={user._id} isOpen={showModerationMenu} onClose={async () => {
 				setShowModerationMenu(false);
-				const res = await fetch(`/api/users/profile/${user._id}`);
+				const res = await fetch(`/api/users/profile/${user._id}`, {
+					headers: {
+						"authorization": `Bearer ${await getCurrentUserId()}`,
+					}
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");

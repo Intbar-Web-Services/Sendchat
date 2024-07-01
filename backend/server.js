@@ -13,6 +13,7 @@ import { v2 as cloudinary } from "cloudinary";
 import job from "./cron/cron.js";
 import jwt from "jsonwebtoken";
 import cron from "cron";
+import { auth } from "./services/firebase.js";
 
 dotenv.config();
 const app = express();
@@ -31,9 +32,10 @@ if (bannedUsers) {
   bannedUsers.map((user) => {
     const job = new cron.CronJob("*/10 * * * *", async () => {
       const cronUser = user;
+      const uid = cronUser.firebaseId;
       if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
         if (cronUser.punishment.type === "ban") {
-          const posts = Post.find();
+          const posts = await Post.find();
           posts.map((post) => {
             if (post.replies) {
               post.replies.map((reply) => {
@@ -55,8 +57,9 @@ if (bannedUsers) {
           cronUser.punishment.type = "none";
           cronUser.profilePic = "";
           cronUser.isDeleted = true;
-          cronUser.password = `${Date.now()}`;
-
+          auth.updateUser(uid, {
+            disabled: true,
+          });
           await cronUser.save();
           job.stop();
         } else {
@@ -90,11 +93,18 @@ if (suspendedUsers) {
 }
 
 export async function punishmentCheck(req, res, next) {
-  const token = req.cookies.jwt;
+  const token = req.headers.authorization?.split(" ")[1];
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let firebaseUser;
+  if (token) {
+    firebaseUser = await auth.verifyIdToken(token);
+  }
 
-  const user = await User.findById(decoded.userId).select("-password");
+  if (!firebaseUser) return res.status(401).json({ message: "Unauthorized" });
+
+  const user = await User.findOne({ firebaseId: firebaseUser.user_id });
+
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   if (user.punishment.type != "none") {
     return res.status(401).json({ error: "You are currently punished" });
