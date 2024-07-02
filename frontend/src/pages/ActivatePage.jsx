@@ -41,7 +41,6 @@ const ActivatePage = () => {
                 showToast("Error", data.error, "error");
                 return;
             }
-            data.isAdmin = true;
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(JSON.parse(localStorage.getItem("user-threads")));
             showToast("Success", "Activation was successful, you are now an admin!", "success");
@@ -68,7 +67,6 @@ const ActivatePage = () => {
                 showToast("Error", data.error, "error");
                 return;
             }
-            data.isAdmin = true;
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(JSON.parse(localStorage.getItem("user-threads")));
             showToast("Success", "Activation was successful, you are now an admin!", "success");
