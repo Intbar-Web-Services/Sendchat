@@ -59,6 +59,8 @@ if (bannedUsers) {
           cronUser.isDeleted = true;
           auth.updateUser(uid, {
             disabled: true,
+            photoURL: null,
+            displayName: `Deleted User ${cronUser._id}`,
           });
           await cronUser.save();
           job.stop();
@@ -153,14 +155,18 @@ export async function checkContent(req, res, next) {
   }
 
   if (checkContentRecursive(req.body)) {
-    const token = req.cookies.jwt;
+    const token = req.headers.authorization?.split(" ")[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await User.findById(decoded.userId).select("-password");
+		let firebaseUser;
+		if (token) {
+			firebaseUser = await auth.verifyIdToken(token);
+		}
+		
+		const user = await User.findOne({ firebaseId: firebaseUser.user_id });
+    const firebaseUserAccount = await auth.getUser(firebaseUser.user_id);
 
     user.punishment.offenses++;
-    if (!user.isAdmin) {
+    if (!firebaseUserAccount.customClaims['admin']) {
       if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
         user.punishment.type = "warn";
         user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
@@ -199,6 +205,11 @@ export async function checkContent(req, res, next) {
               cronUser.profilePic = "";
               cronUser.isDeleted = true;
               cronUser.password = `${Date.now()}`;
+              auth.updateUser(uid, {
+                disabled: true,
+                photoURL: null,
+                displayName: `Deleted User ${cronUser._id}`,
+              });
 
               await cronUser.save();
               job.stop();

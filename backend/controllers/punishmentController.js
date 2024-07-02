@@ -14,11 +14,12 @@ const activateCode = async (req, res) => {
 
     try {
         if (keys.includes(code) || keys.includes(code.split("/activate?code=").pop())) {
-            user.isAdmin = true;
+            await auth.setCustomUserClaims(user.firebaseId, { admin: true });
             user.punishment.offenses = 0;
             user.punishment.type = "none";
 
             await user.save();
+            user._doc.isAdmin = true;
             return res.status(200).json(user);
         } else if (code == fakeKey || decodeURI(code).split("/activate?code=").pop() == fakeKey) {
             return res.status(400).json({ error: "Lmao get trolled" });
@@ -48,10 +49,12 @@ const warnUser = async (req, res) => {
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
+        const firebaseUser = await auth.getUser(user.firebaseId);
+        const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
 
-        if (!req.user.isAdmin) return res.status(401).json({ error: "You are not an admin." });
+        if (!await firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
 
-        if (user.isAdmin) return res.status(400).json({ error: "You cannot warn an admin." });
+        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot warn an admin." });
 
         user.punishment.type = "warn";
         user.punishment.reason = reason;
@@ -81,10 +84,13 @@ const banUser = async (req, res) => {
         }
 
         if (!user) return res.status(404).json({ error: "User not found" });
+        
+        const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
+        const firebaseUser = await auth.getUser(user.firebaseId);
 
-        if (!req.user.isAdmin) return res.status(401).json({ error: "You are not an admin." });
+        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
 
-        if (user.isAdmin) return res.status(400).json({ error: "You cannot ban an admin." });
+        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot ban an admin." });
 
         user.punishment.type = "ban";
         user.punishment.reason = reason;
@@ -105,6 +111,8 @@ const banUser = async (req, res) => {
                     cronUser.isDeleted = true;
                     auth.updateUser(uid, {
                         disabled: true,
+                        photoURL: null,
+                        displayName: `Deleted User ${cronUser._id}`,
                     });
                     await cronUser.save();
                     job.stop();
@@ -158,9 +166,12 @@ const suspendUser = async (req, res) => {
 
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        if (!req.user.isAdmin) return res.status(401).json({ error: "You are not an admin." });
+        const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
+        const firebaseUser = await auth.getUser(user.firebaseId);
 
-        if (user.isAdmin) return res.status(400).json({ error: "You cannot warn an admin." });
+        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
+
+        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot warn an admin." });
 
         user.punishment.type = "suspend";
         user.punishment.reason = reason;
@@ -191,10 +202,12 @@ const demoteSelf = async (req, res) => {
     try {
         let user = req.user;
 
-        if (!user.isAdmin) return res.status(401).json({ error: "You are not an admin" });
+        const firebaseUser = await auth.getUser(user.firebaseId);
 
-        user.isAdmin = false;
-        await user.save();
+        if (!firebaseUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin" });
+
+        await auth.setCustomUserClaims(user.firebaseId, { admin: false });
+        user._doc.isAdmin = false;
 
         res.status(200).json(user);
     } catch (err) {
@@ -220,7 +233,9 @@ const unWarnUser = async (req, res) => {
 
         if (user.punishment != "warn") return res.status(400).json({ error: "User not warned." });
 
-        if (!req.user.isAdmin) return res.status(401).json({ error: "You are not an admin" });
+        const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
+
+        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin" });
 
         user.punishment.type = "none";
         user.punishment.reason = "";

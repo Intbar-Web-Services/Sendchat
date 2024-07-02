@@ -16,11 +16,6 @@ const userSchema = mongoose.Schema(
 			required: true,
 			unique: true,
 		},
-		isAdmin: {
-			type: Boolean,
-			default: false
-
-		},
 		isDeleted: {
 			type: Boolean,
 			default: false

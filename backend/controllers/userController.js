@@ -26,6 +26,8 @@ const getUserProfile = async (req, res) => {
 		if (!user) return res.status(404).json({ error: "User not found" });
 
 		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6682364096e6b50e23f0b9d6" }).select("-password").select("-updatedAt").select("-email"));
+		const firebaseUser = await auth.getUser(user.firebaseId)
+		user._doc.isAdmin = firebaseUser.customClaims['admin'];
 
 		res.status(200).json(user);
 	} catch (err) {
@@ -82,13 +84,17 @@ const signupUser = async (req, res) => {
 			firebaseId: firebaseUser.user_id,
 		});
 		await newUser.save();
+		await auth.setCustomUserClaims(firebaseUser.user_id, { admin: false });
+		await auth.updateUser(firebaseUser.user_id, {
+			displayName: name,
+		});
 
 		if (newUser) {
 			res.status(201).json({
 				_id: newUser._id,
 				name: newUser.name,
 				email: newUser.email,
-				isAdmin: newUser.isAdmin,
+				isAdmin: false,
 				username: newUser.username,
 				bio: newUser.bio,
 				likesHidden: newUser.likesHidden,
@@ -114,8 +120,10 @@ const loginUser = async (req, res) => {
 		}
 		const user = await User.findOne({ firebaseId: firebaseUser.user_id });
 
+		const firebaseUserAccount = await auth.getUser(user.firebaseId)
+		
 		if (!user) return res.status(400).json({ error: "Invalid username or password" });
-
+		
 		if (user.isFrozen) {
 			user.isFrozen = false;
 			await user.save();
@@ -125,7 +133,7 @@ const loginUser = async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
-			isAdmin: user.isAdmin,
+			isAdmin: firebaseUserAccount.customClaims['admin'],
 			username: user.username,
 			bio: user.bio,
 			likesHidden: user.likesHidden,
@@ -211,6 +219,8 @@ const updateUser = async (req, res) => {
 			})
 		}
 
+		const firebaseUser = await auth.getUser(user.firebaseId);
+
 		const badWords = /(\b\W*f\W*a\W*g\W*(g\W*o\W*t\W*t\W*a\W*r\W*d)?|m\W*a\W*r\W*i\W*c\W*o\W*s?|c\W*o\W*c\W*k\W*s?\W*u\W*c\W*k\W*e\W*r\W*(s\W*i\W*n\W*g)?|\bn\W*i\W*g\W*(\b|g\W*(a\W*|e\W*r)?s?)\b|d\W*i\W*n\W*d\W*u\W*(s?)|m\W*u\W*d\W*s\W*l\W*i\W*m\W*e\W*s?|k\W*i\W*k\W*e\W*s?|m\W*o\W*n\W*g\W*o\W*l\W*o\W*i\W*d\W*s?|t\W*o\W*w\W*e\W*l\W*\s\W*h\W*e\W*a\W*d\W*s?|\bs\W*p\W*i\W*(c\W*|\W*)s?\b|\bch\W*i\W*n\W*k\W*s?|n\W*i\W*g\W*l\W*e\W*t\W*s?|b\W*e\W*a\W*n\W*e\W*r\W*s?|\bn\W*i\W*p\W*s?\b|\bco\W*o\W*n\W*s?\b|j\W*u\W*n\W*g\W*l\W*e\W*\s\W*b\W*u\W*n\W*n\W*(y\W*|i\W*e\W*s?)|j\W*i\W*g\W*g?\W*a\W*b\W*o\W*o\W*s?|\bp\W*a\W*k\W*i\W*s?\b|r\W*a\W*g\W*\s\W*h\W*e\W*a\W*d\W*s?|g\W*o\W*o\W*k\W*s?|c\W*u\W*n\W*t\W*s?\W*(e\W*s\W*|i\W*n\W*g\W*|y)?|t\W*w\W*a\W*t\W*s?|f\W*e\W*m\W*i\W*n\W*a\W*z\W*i\W*s?|w\W*h\W*o\W*r\W*(e\W*s?\W*|i\W*n\W*g)|\bs\W*l\W*u\W*t\W*(s\W*|t\W*?\W*y)?|\btr\W*a\W*n\W*n?\W*(y\W*|i\W*e\W*s?)|l\W*a\W*d\W*y\W*b\W*o\W*y\W*(s?))/gmi;
 
 		if (username) {
@@ -220,7 +230,7 @@ const updateUser = async (req, res) => {
 				return res.status(400).json({ error: "Your username is too long or too short" });
 			if (badWords.test(username)) {
 				user.punishment.offenses++;
-				if (!user.isAdmin) {
+				if (!firebaseUser.customClaims['admin']) {
 					if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
 						user.punishment.type = "warn";
 						user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
@@ -247,6 +257,8 @@ const updateUser = async (req, res) => {
 									cronUser.isDeleted = true;
 									auth.updateUser(uid, {
 										disabled: true,
+										photoURL: null,
+										displayName: `Deleted User ${cronUser._id}`,
 									});
 									await cronUser.save();
 									job.stop();
@@ -301,6 +313,11 @@ const updateUser = async (req, res) => {
 		user.bio = bio || user.bio;
 
 		user = await user.save();
+
+		await auth.updateUser(user.firebaseId, {
+			displayName: name || user.name,
+			photoURL: profilePic || user.profilePic,
+		});
 
 		// Find all posts that this user replied and update username and userProfilePic fields
 		await Post.updateMany(
