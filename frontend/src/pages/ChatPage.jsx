@@ -212,7 +212,7 @@ const ChatPage = () => {
 
 					{loadingConversations &&
 						[0, 1, 2, 3, 4].map((_, i) => (
-							<Flex key={i} gap={4} alignItems={"center"} p={"1"} borderRadius={"md"}>
+							<Flex cursor="progress" key={i} gap={4} alignItems={"center"} p={"1"} borderRadius={"md"}>
 								<Box>
 									<SkeletonCircle size={"10"} />
 								</Box>

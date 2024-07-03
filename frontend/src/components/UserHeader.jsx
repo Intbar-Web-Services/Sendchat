@@ -43,6 +43,7 @@ const UserHeader = ({ user: givenUser }) => {
 	}, [givenUser]);
 
 	const handleUnWarn = async () => {
+		document.body.style.cursor = "progress";
 		const res = await fetch(`/api/punishments/unwarn/${user._id}`, {
 			headers: {
 				"authorization": `Bearer ${await getCurrentUserId()}`,
@@ -53,12 +54,14 @@ const UserHeader = ({ user: givenUser }) => {
 		editedUser.punishment.type = "none";
 		setUser(editedUser);
 
+		document.body.style.cursor = "";
 		showToast("Success", "User successfuly unwarned", "success");
 	};
 
 	useEffect(() => {
 		async function fetchFollowerData() {
 			const names = [];
+			document.body.style.cursor = "progress";
 
 			for (let i = 0; i < ((user.followers.length > 5) ? 5 : user.followers.length); i++) {
 				try {
@@ -77,6 +80,7 @@ const UserHeader = ({ user: givenUser }) => {
 				}
 			}
 
+			document.body.style.cursor = "";
 			setFollowerNames(names);
 		}
 
@@ -86,6 +90,7 @@ const UserHeader = ({ user: givenUser }) => {
 	useEffect(() => {
 		async function fetchFollowingData() {
 			const names = [];
+			document.body.style.cursor = "progress";
 
 			for (let i = 0; i < ((user.following.length > 5) ? 5 : user.following.length); i++) {
 				try {
@@ -104,6 +109,7 @@ const UserHeader = ({ user: givenUser }) => {
 				}
 			}
 
+			document.body.style.cursor = "";
 			setFollowingNames(names);
 		}
 

@@ -64,7 +64,7 @@ const HomePage = () => {
 
 				{loading && (
 					[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, i) => (
-						<>
+						<Box w="100%" cursor="progress">
 							{i < Math.floor(Math.random() * 10) ? (<Flex key={i} gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
 								<Box alignSelf="start">
 									<SkeletonCircle size={"10"} />
@@ -86,7 +86,7 @@ const HomePage = () => {
 										<Skeleton h={"150px"} w={"55%"} />
 									</Flex>
 								</Flex>
-							)}</>
+							)}</Box>
 					)))}
 
 				{!loading && postsMap}

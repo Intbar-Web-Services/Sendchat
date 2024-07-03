@@ -152,6 +152,7 @@ const MessageContainer = () => {
 					[...Array(5)].map((_, i) => (
 						<Flex
 							key={i}
+							cursor="progress"
 							gap={2}
 							alignItems={"center"}
 							p={1}

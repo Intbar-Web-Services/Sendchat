@@ -38,6 +38,7 @@ const UserPage = () => {
 
 	useEffect(() => {
 		const getPosts = async () => {
+			document.body.style.cursor = "progress";
 			if (!user) return;
 			setFetchingPosts(true);
 			try {
@@ -49,6 +50,7 @@ const UserPage = () => {
 				setPosts([]);
 			} finally {
 				setFetchingPosts(false);
+				document.body.style.cursor = "";
 			}
 		};
 
@@ -59,6 +61,7 @@ const UserPage = () => {
 		const getReplies = async () => {
 			if (!user) return;
 			setFetchingReplies(true);
+			document.body.style.cursor = "progress";
 			try {
 				const res = await fetch(`/api/posts`);
 				const data = await res.json();
@@ -68,6 +71,7 @@ const UserPage = () => {
 				setReplies([]);
 			} finally {
 				setFetchingReplies(false);
+				document.body.style.cursor = "";
 			}
 		};
 
@@ -76,7 +80,7 @@ const UserPage = () => {
 
 	if (!user && loading) {
 		return (
-			<Flex gap={4} alignItems={"center"} p={"3"} borderRadius={"md"}>
+			<Flex gap={4} alignItems={"center"} p={"3"} borderRadius={"md"} cursor="wait">
 				<Flex w={"full"} flexDirection={"column"} gap={3}>
 					<Skeleton h={"18px"} w={"120px"} />
 					<Skeleton h={"8px"} w={"86px"} />

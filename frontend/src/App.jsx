@@ -31,6 +31,12 @@ function App() {
 	const { colorMode } = useColorMode();
 	const navigate = useNavigate();
 	const showToast = useShowToast();
+	const location = useLocation();
+
+	useEffect(() => {
+		document.body.style.cursor = "";
+	}, [location]);
+
 	const handleKeyPress = useCallback((event) => {
 		if (event.altKey && event.key === 'c') {
 			navigate("/chat")
@@ -130,6 +136,7 @@ function App() {
 		return (
 			<Flex
 				direction="column"
+				cursor="wait"
 			>
 				<Flex
 					justify="center"
