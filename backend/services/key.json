@@ -1,8 +1,4 @@
-import { initializeApp, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getMessaging } from "firebase-admin/messaging";
-
-const key = {
+{
     "type": "service_account",
     "project_id": "iws-sendchat",
     "private_key_id": "aaa6ae2ce7370ac22a7bb13ec4f8953eb67f68ed",
@@ -14,12 +10,4 @@ const key = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-71mod%40iws-sendchat.iam.gserviceaccount.com",
     "universe_domain": "googleapis.com"
-};
-
-export const app = initializeApp({
-    project_id: "iws-sendchat",
-    credential: cert(key),
-});
-
-export const messaging = getMessaging(app);
-export const auth = getAuth(app);
+}

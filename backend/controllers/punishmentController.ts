@@ -52,9 +52,9 @@ const warnUser = async (req, res) => {
         const firebaseUser = await auth.getUser(user.firebaseId);
         const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
 
-        if (!await firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
+        if (!await firebaseCurrentUser.customClaims?['admin']: Promise<string>) return res.status(401).json({ error: "You are not an admin." });
 
-        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot warn an admin." });
+        if (firebaseUser.customClaims?['admin']: Promise<string>) return res.status(400).json({ error: "You cannot warn an admin." });
 
         user.punishment.type = "warn";
         user.punishment.reason = reason;
@@ -88,9 +88,9 @@ const banUser = async (req, res) => {
         const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
         const firebaseUser = await auth.getUser(user.firebaseId);
 
-        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
+        if (!firebaseCurrentUser.customClaims?['admin']: Promise<string>) return res.status(401).json({ error: "You are not an admin." });
 
-        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot ban an admin." });
+        if (firebaseUser.customClaims?['admin']: Promise<string>) return res.status(400).json({ error: "You cannot ban an admin." });
 
         user.punishment.type = "ban";
         user.punishment.reason = reason;
@@ -169,9 +169,9 @@ const suspendUser = async (req, res) => {
         const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
         const firebaseUser = await auth.getUser(user.firebaseId);
 
-        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin." });
+        if (!firebaseCurrentUser.customClaims?['admin']: Promise<string>) return res.status(401).json({ error: "You are not an admin." });
 
-        if (firebaseUser.customClaims['admin']) return res.status(400).json({ error: "You cannot warn an admin." });
+        if (firebaseUser.customClaims?['admin']: Promise<string>) return res.status(400).json({ error: "You cannot warn an admin." });
 
         user.punishment.type = "suspend";
         user.punishment.reason = reason;
@@ -204,7 +204,7 @@ const demoteSelf = async (req, res) => {
 
         const firebaseUser = await auth.getUser(user.firebaseId);
 
-        if (!firebaseUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin" });
+        if (!firebaseUser.customClaims?['admin']: Promise<string>) return res.status(401).json({ error: "You are not an admin" });
 
         await auth.setCustomUserClaims(user.firebaseId, { admin: false });
         user._doc.isAdmin = false;
@@ -235,7 +235,7 @@ const unWarnUser = async (req, res) => {
 
         const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
 
-        if (!firebaseCurrentUser.customClaims['admin']) return res.status(401).json({ error: "You are not an admin" });
+        if (!firebaseCurrentUser.customClaims?['admin']: Promise<string>) return res.status(401).json({ error: "You are not an admin" });
 
         user.punishment.type = "none";
         user.punishment.reason = "";

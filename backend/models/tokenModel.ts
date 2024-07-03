@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const tokenSchema = new mongoose.Schema(
+const tokenSchema = new new mongoose.Schema(
 	{
-		userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+		userId: { type: new mongoose.Schema.Types.ObjectId, ref: "User" },
 		token: String,
 	},
 	{ timestamps: true }

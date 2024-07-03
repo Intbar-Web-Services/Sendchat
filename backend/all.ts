@@ -1,8 +1,8 @@
 import path from "path";
 import express from "express";
-import { server, app } from "./socket/socket.js";
-import { app as main } from "./server.js";
-import { app as landing } from "./landing.js";
+import { server, app } from "./socket/socket.ts";
+import { app as main } from "./server.ts";
+import { app as landing } from "./landing.ts";
 import vhost from "vhost";
 
 const PORT = process.env.PORT || 5000;
@@ -16,5 +16,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 server.listen(PORT, () =>
-  console.log(`Server started at http://localhost:${PORT}`)
+  console.log(`Server started at http://localhost:${PORT} \nmeow`)
 );

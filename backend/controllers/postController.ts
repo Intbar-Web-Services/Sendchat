@@ -3,7 +3,7 @@ import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 import Token from "../models/tokenModel.js";
 import { v2 as cloudinary } from "cloudinary";
-import { app, messaging } from "../services/firebase.js";
+import { app, messaging, auth } from "../services/firebase.js";
 
 const createPost = async (req, res) => {
 	try {
@@ -37,7 +37,7 @@ const createPost = async (req, res) => {
 		await newPost.save();
 
 		const users = await User.find({ 'subscriptions.posts': { $exists: true, $eq: true } });
-		let following = [];
+		let following: string[] = [];
 
 		users.map((followingUser) => {
 			if (user.followers.includes(followingUser._id.toString())) {
@@ -61,7 +61,7 @@ const createPost = async (req, res) => {
 						type: "post",
 						conversationId: newPost._id.toString(),
 					},
-					token: registrationToken.token
+					token: registrationToken.token as string,
 				};
 
 				// Send a message to the device corresponding to the provided
@@ -121,7 +121,7 @@ const deletePost = async (req, res) => {
 
 		const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
 
-		if (post.postedBy.toString() !== req.user._id.toString() && !firebaseCurrentUser.customClaims['admin']) {
+		if (post.postedBy.toString() !== req.user._id.toString() && !firebaseCurrentUser.customClaims?['admin']: Promise<string>) {
 			return res.status(401).json({ error: "You are not authorized to delete this post" });
 		}
 

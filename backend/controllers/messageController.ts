@@ -104,6 +104,20 @@ async function sendMessage(req, res) {
 			isImage = "false";
 		}
 
+		/* interface Message {
+			data: MessageData,
+			token: TokenMessage,
+		}
+		interface MessageData {
+			body: string,
+			image: string,
+			title: string,
+			username: string,
+			isImage: string,
+			type: string,
+			conversationId: string,
+		} */
+
 		const tokens = await Token.find(
 			{
 				userId: new mongoose.Types.ObjectId(user._id),
@@ -122,7 +136,7 @@ async function sendMessage(req, res) {
 						type: "chat",
 						conversationId: conversation._id.toString(),
 					},
-					token: registrationToken.token
+					token: registrationToken.token as string,
 				};
 
 				// Send a message to the device corresponding to the provided

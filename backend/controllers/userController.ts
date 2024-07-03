@@ -27,7 +27,7 @@ const getUserProfile = async (req, res) => {
 
 		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6682364096e6b50e23f0b9d6" }).select("-password").select("-updatedAt").select("-email"));
 		const firebaseUser = await auth.getUser(user.firebaseId)
-		user._doc.isAdmin = firebaseUser.customClaims['admin'];
+		user._doc.isAdmin = firebaseUser.customClaims?['admin']: Promise<string>;
 
 		res.status(200).json(user);
 	} catch (err) {
@@ -133,7 +133,7 @@ const loginUser = async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
-			isAdmin: firebaseUserAccount.customClaims['admin'],
+			isAdmin: firebaseUserAccount.customClaims?['admin']: Promise<string>,
 			username: user.username,
 			bio: user.bio,
 			likesHidden: user.likesHidden,
@@ -230,7 +230,7 @@ const updateUser = async (req, res) => {
 				return res.status(400).json({ error: "Your username is too long or too short" });
 			if (badWords.test(username)) {
 				user.punishment.offenses++;
-				if (!firebaseUser.customClaims['admin']) {
+				if (!firebaseUser.customClaims?['admin']: Promise<string>) {
 					if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
 						user.punishment.type = "warn";
 						user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
@@ -240,8 +240,8 @@ const updateUser = async (req, res) => {
 						user.punishment.reason = "You have said too many blacklisted words. You are now supended"
 					} else if (user.punishment.offenses > 20) {
 						user.punishment.type = "ban";
-						user.punishment.reason = reason;
-						user.punishment.hours = hoursParsedDate;
+						user.punishment.reason = "ban";
+						user.punishment.hours = "1";
 						user.punishment.offenses++;
 
 						const job = new cron.CronJob("0/45 * * * *", async () => {
