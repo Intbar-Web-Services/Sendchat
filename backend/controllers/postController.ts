@@ -4,8 +4,10 @@ import User from "../models/userModel.js";
 import Token from "../models/tokenModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import { app, messaging, auth } from "../services/firebase.js";
+import LoggedInUserRequest from "../contracts/loggedInUser.js";
+import { Request, Response } from "express";
 
-const createPost = async (req, res) => {
+const createPost = async (req: LoggedInUserRequest, res) => {
 	try {
 		const { postedBy, text } = req.body;
 		let { img } = req.body;
@@ -37,7 +39,7 @@ const createPost = async (req, res) => {
 		await newPost.save();
 
 		const users = await User.find({ 'subscriptions.posts': { $exists: true, $eq: true } });
-		let following: string[] = [];
+		let following: mongoose.Types.ObjectId[] = [];
 
 		users.map((followingUser) => {
 			if (user.followers.includes(followingUser._id.toString())) {
@@ -85,7 +87,7 @@ const createPost = async (req, res) => {
 	}
 };
 
-const getPost = async (req, res) => {
+const getPost = async (req: Request, res) => {
 	try {
 		const post = await Post.findById(req.params.id);
 
@@ -99,7 +101,7 @@ const getPost = async (req, res) => {
 	}
 };
 
-const getPosts = async (req, res) => {
+const getPosts = async (req: Request, res) => {
 	try {
 		const posts = await Post.find();
 
@@ -112,7 +114,7 @@ const getPosts = async (req, res) => {
 	}
 };
 
-const deletePost = async (req, res) => {
+const deletePost = async (req: LoggedInUserRequest, res) => {
 	try {
 		const post = await Post.findById(req.params.id);
 		if (!post) {
@@ -121,13 +123,13 @@ const deletePost = async (req, res) => {
 
 		const firebaseCurrentUser = await auth.getUser(req.user.firebaseId);
 
-		if (post.postedBy.toString() !== req.user._id.toString() && !firebaseCurrentUser.customClaims?['admin']: Promise<string>) {
+		if (post.postedBy.toString() !== req.user._id.toString() && !firebaseCurrentUser.customClaims!['admin']) {
 			return res.status(401).json({ error: "You are not authorized to delete this post" });
 		}
 
 		if (post.img) {
-			const imgId = post.img.split("/").pop().split(".")[0];
-			await cloudinary.uploader.destroy(imgId);
+			const imgId = post.img.split("/").pop()?.split(".")[0];
+			await cloudinary.uploader.destroy(imgId as string);
 		}
 
 		await Post.findByIdAndDelete(req.params.id);
@@ -138,10 +140,10 @@ const deletePost = async (req, res) => {
 	}
 };
 
-const likeUnlikePost = async (req, res) => {
+const likeUnlikePost = async (req: LoggedInUserRequest, res) => {
 	try {
 		const { id: postId } = req.params;
-		const userId = req.user._id;
+		const userId = new mongoose.Types.ObjectId(req.user._id);
 
 		const post = await Post.findById(postId);
 
@@ -166,11 +168,11 @@ const likeUnlikePost = async (req, res) => {
 	}
 };
 
-const replyToPost = async (req, res) => {
+const replyToPost = async (req: LoggedInUserRequest, res) => {
 	try {
 		const { text } = req.body;
 		const postId = req.params.id;
-		const userId = req.user._id;
+		const userId = new mongoose.Types.ObjectId(req.user._id);
 		const userProfilePic = req.user.profilePic;
 		const username = req.user.username;
 		const name = req.user.name;
@@ -195,7 +197,7 @@ const replyToPost = async (req, res) => {
 	}
 };
 
-const getFeedPosts = async (req, res) => {
+const getFeedPosts = async (req: LoggedInUserRequest, res) => {
 	try {
 		const userId = req.user._id;
 		const user = await User.findById(userId);
@@ -218,7 +220,7 @@ const getFeedPosts = async (req, res) => {
 	}
 };
 
-const getUserPosts = async (req, res) => {
+const getUserPosts = async (req: Request, res) => {
 	const { username } = req.params;
 	try {
 		const user = await User.findOne({ username });

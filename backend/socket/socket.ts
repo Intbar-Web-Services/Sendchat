@@ -13,15 +13,15 @@ const io = new Server(server, {
   },
 });
 
-export const getRecipientSocketId = (recipientId) => {
+export const getRecipientSocketId = (recipientId: string) => {
   return userSocketMap[recipientId];
 };
 
-const userSocketMap = {}; // userId: socketId
+const userSocketMap: { userId?: string } = {}; // userId: socketId
 
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
-  const userId = socket.handshake.query.userId;
+  const userId = socket.handshake.query.userId as string;
 
   if (userId != "undefined") userSocketMap[userId] = socket.id;
   io.emit("getOnlineUsers", Object.keys(userSocketMap));

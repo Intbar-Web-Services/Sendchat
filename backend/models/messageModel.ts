@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const messageSchema = new new mongoose.Schema(
+const messageSchema = new mongoose.Schema(
 	{
-		conversationId: { type: new mongoose.Schema.Types.ObjectId, ref: "Conversation" },
-		sender: { type: new mongoose.Schema.Types.ObjectId, ref: "User" },
+		conversationId: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
+		sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		text: String,
 		seen: {
 			type: Boolean,

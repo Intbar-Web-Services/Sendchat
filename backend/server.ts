@@ -1,5 +1,5 @@
 import path from "path";
-import express from "express";
+import express, { NextFunction } from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
@@ -14,6 +14,7 @@ import job from "./cron/cron.js";
 import jwt from "jsonwebtoken";
 import cron from "cron";
 import { auth } from "./services/firebase.js";
+import { default as UserType } from "./contracts/user.js";
 
 dotenv.config();
 const app = express();
@@ -26,15 +27,15 @@ const __dirname = path.resolve();
 
 const pattern = /(\b\W*f\W*a\W*g\W*(g\W*o\W*t\W*t\W*a\W*r\W*d)?|m\W*a\W*r\W*i\W*c\W*o\W*s?|c\W*o\W*c\W*k\W*s?\W*u\W*c\W*k\W*e\W*r\W*(s\W*i\W*n\W*g)?|\bn\W*i\W*g\W*(\b|g\W*(a\W*|e\W*r)?s?)\b|d\W*i\W*n\W*d\W*u\W*(s?)|m\W*u\W*d\W*s\W*l\W*i\W*m\W*e\W*s?|k\W*i\W*k\W*e\W*s?|m\W*o\W*n\W*g\W*o\W*l\W*o\W*i\W*d\W*s?|t\W*o\W*w\W*e\W*l\W*\s\W*h\W*e\W*a\W*d\W*s?|\bs\W*p\W*i\W*(c\W*|\W*)s?\b|\bch\W*i\W*n\W*k\W*s?|n\W*i\W*g\W*l\W*e\W*t\W*s?|b\W*e\W*a\W*n\W*e\W*r\W*s?|\bn\W*i\W*p\W*s?\b|\bco\W*o\W*n\W*s?\b|j\W*u\W*n\W*g\W*l\W*e\W*\s\W*b\W*u\W*n\W*n\W*(y\W*|i\W*e\W*s?)|j\W*i\W*g\W*g?\W*a\W*b\W*o\W*o\W*s?|\bp\W*a\W*k\W*i\W*s?\b|r\W*a\W*g\W*\s\W*h\W*e\W*a\W*d\W*s?|g\W*o\W*o\W*k\W*s?|c\W*u\W*n\W*t\W*s?\W*(e\W*s\W*|i\W*n\W*g\W*|y)?|t\W*w\W*a\W*t\W*s?|f\W*e\W*m\W*i\W*n\W*a\W*z\W*i\W*s?|w\W*h\W*o\W*r\W*(e\W*s?\W*|i\W*n\W*g)|\bs\W*l\W*u\W*t\W*(s\W*|t\W*?\W*y)?|\btr\W*a\W*n\W*n?\W*(y\W*|i\W*e\W*s?)|l\W*a\W*d\W*y\W*b\W*o\W*y\W*(s?))/gmi;
 
-const bannedUsers = await User.find({ 'punishment.type': { $exists: true, $eq: 'ban' } });
+const bannedUsers: UserType[] = await User.find({ 'punishment.type': { $exists: true, $eq: 'ban' } });
 
 if (bannedUsers) {
   bannedUsers.map((user) => {
     const job = new cron.CronJob("*/10 * * * *", async () => {
       const cronUser = user;
       const uid = cronUser.firebaseId;
-      if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
-        if (cronUser.punishment.type === "ban") {
+      if (cronUser.punishment.hours as number + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
+        if (cronUser.punishment?.type === "ban") {
           const posts = await Post.find();
           posts.map((post) => {
             if (post.replies) {
@@ -74,13 +75,13 @@ if (bannedUsers) {
   });
 }
 
-const suspendedUsers = await User.find({ 'punishment.type': { $exists: true, $eq: 'suspend' } });
+const suspendedUsers: UserType[] = await User.find({ 'punishment.type': { $exists: true, $eq: 'suspend' } });
 
 if (suspendedUsers) {
   suspendedUsers.map((user) => {
     const job = new cron.CronJob("*/14 * * * *", async function () {
       const cronUser = user;
-      if (cronUser.punishment.hours <= Math.floor(new Date().getTime() / 1000.0)) {
+      if (cronUser.punishment.hours as number <= Math.floor(new Date().getTime() / 1000.0)) {
         cronUser.punishment.type = "warn";
         cronUser.punishment.reason = "You've been suspended recently, watch your behavior.";
         cronUser.hours = 0;
@@ -94,7 +95,7 @@ if (suspendedUsers) {
   });
 }
 
-export async function punishmentCheck(req, res, next) {
+export async function punishmentCheck(req, res, next: NextFunction) {
   const token = req.headers.authorization?.split(" ")[1];
 
   let firebaseUser;
@@ -108,14 +109,14 @@ export async function punishmentCheck(req, res, next) {
 
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  if (user.punishment.type != "none") {
+  if (user.punishment?.type != "none") {
     return res.status(401).json({ error: "You are currently punished" });
   }
 
   next();
 };
 
-export async function checkSignUpContent(req, res, next) {
+export async function checkSignUpContent(req, res, next: NextFunction) {
   const checkContentRecursive = (value) => {
     const patternInstance = new RegExp(pattern);
     if (typeof value === 'string' && patternInstance.exec(value)) {
@@ -137,8 +138,8 @@ export async function checkSignUpContent(req, res, next) {
   next();
 };
 
-export async function checkContent(req, res, next) {
-  const checkContentRecursive = (value) => {
+export async function checkContent(req, res, next: NextFunction) {
+  const checkContentRecursive = (value: string | object) => {
     const patternInstance = new RegExp(pattern);
     if (typeof value === 'string' && patternInstance.exec(value)) {
       return true;
@@ -157,46 +158,47 @@ export async function checkContent(req, res, next) {
   if (checkContentRecursive(req.body)) {
     const token = req.headers.authorization?.split(" ")[1];
 
-		let firebaseUser;
-		if (token) {
-			firebaseUser = await auth.verifyIdToken(token);
-		}
-		
-		const user = await User.findOne({ firebaseId: firebaseUser.user_id });
+    let firebaseUser;
+    if (token) {
+      firebaseUser = await auth.verifyIdToken(token);
+    }
+
+    const user: UserType | null = await User.findOne({ firebaseId: firebaseUser!.user_id });
     const firebaseUserAccount = await auth.getUser(firebaseUser.user_id);
 
-    user.punishment.offenses++;
-    if (!firebaseUserAccount.customClaims['admin']) {
-      if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
-        user.punishment.type = "warn";
-        user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
-      } else if (user.punishment.offenses >= 3 && user.punishment.offenses <= 20) {
-        user.punishment.type = "suspend";
-        user.punishment.hours = Math.floor(new Date().getTime() / 1000.0) + 259200;
-        user.punishment.reason = "You have said too many blacklisted words. You are now supended"
+    user!.punishment.offenses++;
+    if (!firebaseUserAccount.customClaims!['admin']) {
+      if (user!.punishment.offenses >= 2 && user!.punishment.offenses <= 3) {
+        user!.punishment.type = "warn";
+        user!.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
+      } else if (user!.punishment.offenses >= 3 && user!.punishment.offenses <= 20) {
+        user!.punishment.type = "suspend";
+        user!.punishment.hours = Math.floor(new Date().getTime() / 1000.0) + 259200;
+        user!.punishment.reason = "You have said too many blacklisted words. You are now supended"
 
         const job = new cron.CronJob("*/14 * * * *", async function () {
           const cronUser = user;
-          if (cronUser.punishment.hours <= Math.floor(new Date().getTime() / 1000.0)) {
-            cronUser.punishment.type = "warn";
-            cronUser.punishment.reason = "You've been suspended recently, watch your behavior.";
-            cronUser.hours = 0;
+          if (cronUser!.punishment.hours as number <= Math.floor(new Date().getTime() / 1000.0)) {
+            cronUser!.punishment.type = "warn";
+            cronUser!.punishment.reason = "You've been suspended recently, watch your behavior.";
+            cronUser!.punishment.hours = 0;
 
-            await cronUser.save();
+            await cronUser!.save();
             job.stop();
           }
         });
 
         job.start();
-      } else if (user.punishment.offenses > 20) {
-        user.punishment.type = "ban";
-        user.punishment.reason = reason;
-        user.punishment.hours = hoursParsedDate;
-        user.punishment.offenses++;
+      } else if (user!.punishment.offenses > 20) {
+        user!.punishment.type = "ban";
+        user!.punishment.reason = "ban";
+        user!.punishment.hours = 1;
+        user!.punishment.offenses++;
 
         const job = new cron.CronJob("0/45 * * * *", async () => {
-          const cronUser = user;
-          if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
+          const cronUser = user!;
+          const uid = cronUser.firebaseId;
+          if (cronUser.punishment.hours as number + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
             if (cronUser.punishment.type === "ban") {
               cronUser.username = `deletedUser_${cronUser._id}`
               cronUser.name = `Deleted User ${cronUser._id}`
@@ -221,7 +223,7 @@ export async function checkContent(req, res, next) {
 
         job.start();
       }
-      await user.save();
+      await user!.save();
       return res.status(400).json({ error: "Contains blacklisted word." });
     }
   }
@@ -238,7 +240,7 @@ cloudinary.config({
 // Middlewares 
 app.use(express.json({ limit: "50mb" })); // To parse JSON data in the req.body
 app.use(express.urlencoded({ extended: true })); // To parse form data in the req.body
-app.use(cookieParser());
+app.use(cookieParser() as any);
 
 // Routes
 app.use("/api/posts", postRoutes);

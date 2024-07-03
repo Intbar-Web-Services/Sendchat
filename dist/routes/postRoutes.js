@@ -1,0 +1,16 @@
+import express from "express";
+import { checkContent } from "../server.js";
+import { createPost, deletePost, getPost, getPosts, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts, } from "../controllers/postController.js";
+import protectRoute from "../middlewares/protectRoute.js";
+import { punishmentCheck } from "../server.js";
+const router = express.Router();
+router.get("/feed", protectRoute, punishmentCheck, getFeedPosts);
+router.get("/:id", getPost);
+router.get("/", getPosts);
+router.get("/user/:username", getUserPosts);
+router.post("/create", protectRoute, punishmentCheck, checkContent, createPost);
+router.delete("/:id", protectRoute, punishmentCheck, deletePost);
+router.put("/like/:id", protectRoute, punishmentCheck, likeUnlikePost);
+router.put("/reply/:id", protectRoute, punishmentCheck, checkContent, replyToPost);
+export default router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicG9zdFJvdXRlcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL2JhY2tlbmQvcm91dGVzL3Bvc3RSb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxPQUFPLE1BQU0sU0FBUyxDQUFDO0FBQzlCLE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxjQUFjLENBQUM7QUFDNUMsT0FBTyxFQUNOLFVBQVUsRUFDVixVQUFVLEVBQ1YsT0FBTyxFQUNQLFFBQVEsRUFDUixjQUFjLEVBQ2QsV0FBVyxFQUNYLFlBQVksRUFDWixZQUFZLEdBQ1osTUFBTSxrQ0FBa0MsQ0FBQztBQUMxQyxPQUFPLFlBQVksTUFBTSxnQ0FBZ0MsQ0FBQztBQUMxRCxPQUFPLEVBQUUsZUFBZSxFQUFFLE1BQU0sY0FBYyxDQUFDO0FBRS9DLE1BQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxNQUFNLEVBQUUsQ0FBQztBQUVoQyxNQUFNLENBQUMsR0FBRyxDQUFDLE9BQU8sRUFBRSxZQUFZLEVBQUUsZUFBZSxFQUFFLFlBQVksQ0FBQyxDQUFDO0FBQ2pFLE1BQU0sQ0FBQyxHQUFHLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxDQUFDO0FBQzVCLE1BQU0sQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFFLFFBQVEsQ0FBQyxDQUFDO0FBQzFCLE1BQU0sQ0FBQyxHQUFHLENBQUMsaUJBQWlCLEVBQUUsWUFBWSxDQUFDLENBQUM7QUFDNUMsTUFBTSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUUsWUFBWSxFQUFFLGVBQWUsRUFBRSxZQUFZLEVBQUUsVUFBVSxDQUFDLENBQUM7QUFDaEYsTUFBTSxDQUFDLE1BQU0sQ0FBQyxNQUFNLEVBQUUsWUFBWSxFQUFFLGVBQWUsRUFBRSxVQUFVLENBQUMsQ0FBQztBQUNqRSxNQUFNLENBQUMsR0FBRyxDQUFDLFdBQVcsRUFBRSxZQUFZLEVBQUUsZUFBZSxFQUFFLGNBQWMsQ0FBQyxDQUFDO0FBQ3ZFLE1BQU0sQ0FBQyxHQUFHLENBQUMsWUFBWSxFQUFFLFlBQVksRUFBRSxlQUFlLEVBQUUsWUFBWSxFQUFFLFdBQVcsQ0FBQyxDQUFDO0FBRW5GLGVBQWUsTUFBTSxDQUFDIn0=

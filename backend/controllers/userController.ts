@@ -6,14 +6,18 @@ import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCooki
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import { app, auth } from "../services/firebase.js";
+import { Request, Response } from "express";
+import { default as UserType } from "../contracts/user.js";
+import { DecodedIdToken } from "firebase-admin/auth";
+import LoggedInUserRequest from "../contracts/loggedInUser.js";
 
-const getUserProfile = async (req, res) => {
+const getUserProfile = async (req: Request, res) => {
 	// We will fetch user profile either with username or userId
 	// query is either username or userId
 	const { query } = req.params;
 
 	try {
-		let user;
+		let user: UserType;
 
 		// query is userId
 		if (mongoose.Types.ObjectId.isValid(query)) {
@@ -27,7 +31,7 @@ const getUserProfile = async (req, res) => {
 
 		if (user.isDeleted) return res.status(200).json(await User.findOne({ _id: "6682364096e6b50e23f0b9d6" }).select("-password").select("-updatedAt").select("-email"));
 		const firebaseUser = await auth.getUser(user.firebaseId)
-		user._doc.isAdmin = firebaseUser.customClaims?['admin']: Promise<string>;
+		user._doc.isAdmin = firebaseUser.customClaims!['admin'];
 
 		res.status(200).json(user);
 	} catch (err) {
@@ -36,7 +40,7 @@ const getUserProfile = async (req, res) => {
 	}
 };
 
-const signupUser = async (req, res) => {
+const signupUser = async (req: Request, res) => {
 	try {
 		const { name, email, username, password, token } = req.body;
 		const user = await User.findOne({ $or: [{ email }, { username }] });
@@ -110,20 +114,20 @@ const signupUser = async (req, res) => {
 	}
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req: LoggedInUserRequest, res) => {
 	try {
-		const { email, password, token } = req.body;
+		const { email, password, token, } = req.body;
 		const firebaseToken = token?.split(" ")[1];
-		let firebaseUser;
-		if (firebaseToken) {
-			firebaseUser = await auth.verifyIdToken(firebaseToken);
-		}
+
+		if (!firebaseToken) return res.status(401).json({ error: "Unauthorized" });
+
+		const firebaseUser: DecodedIdToken = await auth.verifyIdToken(firebaseToken);
 		const user = await User.findOne({ firebaseId: firebaseUser.user_id });
 
-		const firebaseUserAccount = await auth.getUser(user.firebaseId)
-		
 		if (!user) return res.status(400).json({ error: "Invalid username or password" });
-		
+
+		const firebaseUserAccount = await auth.getUser(user.firebaseId)
+
 		if (user.isFrozen) {
 			user.isFrozen = false;
 			await user.save();
@@ -133,7 +137,7 @@ const loginUser = async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
-			isAdmin: firebaseUserAccount.customClaims?['admin']: Promise<string>,
+			isAdmin: firebaseUserAccount.customClaims ? ['admin'] : Promise<string>,
 			username: user.username,
 			bio: user.bio,
 			likesHidden: user.likesHidden,
@@ -146,7 +150,7 @@ const loginUser = async (req, res) => {
 	}
 };
 
-const logoutUser = async (req, res) => {
+const logoutUser = async (req: LoggedInUserRequest, res) => {
 	try {
 		// remove regtokens eventually...
 
@@ -158,7 +162,7 @@ const logoutUser = async (req, res) => {
 	}
 };
 
-const followUnFollowUser = async (req, res) => {
+const followUnFollowUser = async (req: LoggedInUserRequest, res) => {
 	try {
 		const { id } = req.params;
 		const userToModify = await User.findById(id);
@@ -192,13 +196,13 @@ const followUnFollowUser = async (req, res) => {
 	}
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req: LoggedInUserRequest, res) => {
 	const { name, email, username, password, bio } = req.body;
 	let { profilePic } = req.body;
 
 	const userId = req.user._id;
 	try {
-		let user = await User.findById(userId);
+		let user: UserType | null = await User.findById(userId);
 		if (!user) return res.status(400).json({ error: "User not found" });
 
 		if (req.params.id !== userId.toString())
@@ -230,7 +234,7 @@ const updateUser = async (req, res) => {
 				return res.status(400).json({ error: "Your username is too long or too short" });
 			if (badWords.test(username)) {
 				user.punishment.offenses++;
-				if (!firebaseUser.customClaims?['admin']: Promise<string>) {
+				if (!firebaseUser.customClaims!['admin']) {
 					if (user.punishment.offenses >= 2 && user.punishment.offenses <= 3) {
 						user.punishment.type = "warn";
 						user.punishment.reason = "You have said too many blacklisted words. If you do this more you will get banned"
@@ -241,21 +245,21 @@ const updateUser = async (req, res) => {
 					} else if (user.punishment.offenses > 20) {
 						user.punishment.type = "ban";
 						user.punishment.reason = "ban";
-						user.punishment.hours = "1";
+						user.punishment.hours = 1;
 						user.punishment.offenses++;
 
 						const job = new cron.CronJob("0/45 * * * *", async () => {
 							const cronUser = user;
-							const uid = cronUser.firebaseId;
-							if (cronUser.punishment.hours + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
-								if (cronUser.punishment.type === "ban") {
-									cronUser.username = `deletedUser_${cronUser._id}`
+							const uid = cronUser?.firebaseId;
+							if (cronUser?.punishment.hours as number + 864000 <= Math.floor(new Date().getTime() / 1000.0)) {
+								if (cronUser?.punishment.type === "ban") {
+									cronUser.username = `deletedUser_${cronUser?._id}`
 									cronUser.name = `Deleted User ${cronUser._id}`
 									cronUser.bio = "";
 									cronUser.punishment.type = "none";
 									cronUser.profilePic = "";
 									cronUser.isDeleted = true;
-									auth.updateUser(uid, {
+									auth.updateUser(uid as string, {
 										disabled: true,
 										photoURL: null,
 										displayName: `Deleted User ${cronUser._id}`,
@@ -299,7 +303,7 @@ const updateUser = async (req, res) => {
 
 		if (profilePic) {
 			if (user.profilePic) {
-				await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+				await cloudinary.uploader.destroy((user.profilePic.split("/").pop() as string).split(".")[0]);
 			}
 
 			const uploadedResponse = await cloudinary.uploader.upload(profilePic);
@@ -339,14 +343,14 @@ const updateUser = async (req, res) => {
 	}
 };
 
-const getSuggestedUsers = async (req, res) => {
+const getSuggestedUsers = async (req: LoggedInUserRequest, res) => {
 	try {
 		// exclude the current user from suggested users array and exclude users that current user is already following
 		const userId = req.user._id;
 
-		const usersFollowedByYou = await User.findById(userId).select("following");
+		const usersFollowedByYou: UserType = await User.findById(userId).select("following");
 
-		const users = await User.aggregate([
+		const users: UserType[] = await User.aggregate([
 			{
 				$match: {
 					_id: { $nin: [userId, new mongoose.Types.ObjectId("6682364096e6b50e23f0b9d6")] },
@@ -357,7 +361,7 @@ const getSuggestedUsers = async (req, res) => {
 				$sample: { size: 10 },
 			},
 		]);
-		const filteredUsers = users.filter((user) => !usersFollowedByYou.following.includes(user._id));
+		const filteredUsers = users.filter(user => !usersFollowedByYou.following.includes(user._id));
 		const suggestedUsers = filteredUsers.slice(0, 4);
 
 		suggestedUsers.forEach((user) => (user.password = null));
@@ -368,12 +372,10 @@ const getSuggestedUsers = async (req, res) => {
 	}
 };
 
-const freezeAccount = async (req, res) => {
+const freezeAccount = async (req: LoggedInUserRequest, res) => {
 	try {
-		const user = await User.findById(req.user._id);
-		if (!user) {
-			return res.status(400).json({ error: "User not found" });
-		}
+		const user: UserType | null = await User.findById(req.user._id);
+		if (!user) return res.status(400).json({ error: "User not found" });
 
 		user.isFrozen = true;
 		await user.save();
