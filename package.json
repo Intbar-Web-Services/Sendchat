@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development NODE_OPTIONS='--no-warnings --loader ts-node/esm' nodemon ./backend/all.ts",
 		"start": "NODE_ENV=production node dist/all.js",
-		"build": "npm install && npm install --prefix frontend && npm install --prefix landing && npm install --prefix desktop && npm run build --prefix frontend && npm run build --prefix desktop && npm run build --prefix landing && tsc --prefix backend"
+		"build": "npm install && npm install --prefix frontend && npm install --prefix landing && npm install --prefix desktop && npm run build --prefix frontend && npm run build --prefix desktop && npm run build --prefix landing && tsc"
 	},
 	"type": "module",
 	"keywords": [],
@@ -35,7 +35,6 @@
 		"@types/socket.io": "^3.0.2",
 		"nodemon": "^3.0.1",
 		"ts-node": "^10.9.2",
-		"tsc": "^2.0.4",
 		"typescript": "^5.5.3"
 	}
 }

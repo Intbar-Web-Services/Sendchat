@@ -20,5 +20,6 @@
     },
     "lib": [
         "esnext"
-    ]
+    ],
+    "include": ["backend"]
 }
