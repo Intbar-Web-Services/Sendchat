@@ -1,0 +1,17 @@
+import mongoose from "mongoose";
+const messageSchema = new mongoose.Schema({
+    conversationId: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    text: String,
+    seen: {
+        type: Boolean,
+        default: false,
+    },
+    img: {
+        type: String,
+        default: "",
+    },
+}, { timestamps: true });
+const Message = mongoose.model("Message", messageSchema);
+export default Message;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWVzc2FnZU1vZGVsLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vYmFja2VuZC9tb2RlbHMvbWVzc2FnZU1vZGVsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sUUFBUSxNQUFNLFVBQVUsQ0FBQztBQUVoQyxNQUFNLGFBQWEsR0FBRyxJQUFJLFFBQVEsQ0FBQyxNQUFNLENBQ3hDO0lBQ0MsY0FBYyxFQUFFLEVBQUUsSUFBSSxFQUFFLFFBQVEsQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLFFBQVEsRUFBRSxHQUFHLEVBQUUsY0FBYyxFQUFFO0lBQzdFLE1BQU0sRUFBRSxFQUFFLElBQUksRUFBRSxRQUFRLENBQUMsTUFBTSxDQUFDLEtBQUssQ0FBQyxRQUFRLEVBQUUsR0FBRyxFQUFFLE1BQU0sRUFBRTtJQUM3RCxJQUFJLEVBQUUsTUFBTTtJQUNaLElBQUksRUFBRTtRQUNMLElBQUksRUFBRSxPQUFPO1FBQ2IsT0FBTyxFQUFFLEtBQUs7S0FDZDtJQUNELEdBQUcsRUFBRTtRQUNKLElBQUksRUFBRSxNQUFNO1FBQ1osT0FBTyxFQUFFLEVBQUU7S0FDWDtDQUNELEVBQ0QsRUFBRSxVQUFVLEVBQUUsSUFBSSxFQUFFLENBQ3BCLENBQUM7QUFFRixNQUFNLE9BQU8sR0FBRyxRQUFRLENBQUMsS0FBSyxDQUFDLFNBQVMsRUFBRSxhQUFhLENBQUMsQ0FBQztBQUV6RCxlQUFlLE9BQU8sQ0FBQyJ9

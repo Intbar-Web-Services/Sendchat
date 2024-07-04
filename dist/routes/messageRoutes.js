@@ -1,0 +1,12 @@
+import express from "express";
+import protectRoute from "../middlewares/protectRoute.js";
+import { checkContent } from "../server.js";
+import { getMessages, sendMessage, getConversations, subscribe } from "../controllers/messageController.js";
+import { punishmentCheck } from "../server.js";
+const router = express.Router();
+router.get("/conversations", protectRoute, punishmentCheck, getConversations);
+router.get("/:otherUserId", protectRoute, punishmentCheck, getMessages);
+router.post("/", protectRoute, punishmentCheck, checkContent, sendMessage);
+router.post("/subscribe", protectRoute, subscribe);
+export default router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWVzc2FnZVJvdXRlcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL2JhY2tlbmQvcm91dGVzL21lc3NhZ2VSb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxPQUFPLE1BQU0sU0FBUyxDQUFDO0FBQzlCLE9BQU8sWUFBWSxNQUFNLGdDQUFnQyxDQUFDO0FBQzFELE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxjQUFjLENBQUM7QUFDNUMsT0FBTyxFQUFFLFdBQVcsRUFBRSxXQUFXLEVBQUUsZ0JBQWdCLEVBQUUsU0FBUyxFQUFFLE1BQU0scUNBQXFDLENBQUM7QUFDNUcsT0FBTyxFQUFFLGVBQWUsRUFBRSxNQUFNLGNBQWMsQ0FBQztBQUUvQyxNQUFNLE1BQU0sR0FBRyxPQUFPLENBQUMsTUFBTSxFQUFFLENBQUM7QUFFaEMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxnQkFBZ0IsRUFBRSxZQUFZLEVBQUUsZUFBZSxFQUFFLGdCQUFnQixDQUFDLENBQUM7QUFDOUUsTUFBTSxDQUFDLEdBQUcsQ0FBQyxlQUFlLEVBQUUsWUFBWSxFQUFFLGVBQWUsRUFBRSxXQUFXLENBQUMsQ0FBQztBQUN4RSxNQUFNLENBQUMsSUFBSSxDQUFDLEdBQUcsRUFBRSxZQUFZLEVBQUUsZUFBZSxFQUFFLFlBQVksRUFBRSxXQUFXLENBQUMsQ0FBQztBQUMzRSxNQUFNLENBQUMsSUFBSSxDQUFDLFlBQVksRUFBRSxZQUFZLEVBQUUsU0FBUyxDQUFDLENBQUM7QUFFbkQsZUFBZSxNQUFNLENBQUMifQ==
