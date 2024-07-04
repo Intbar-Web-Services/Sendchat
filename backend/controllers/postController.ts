@@ -7,7 +7,7 @@ import { app, messaging, auth } from "../services/firebase.js";
 import LoggedInUserRequest from "../contracts/loggedInUser.js";
 import { Request, Response } from "express";
 
-const createPost = async (req: LoggedInUserRequest, res) => {
+const createPost = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const { postedBy, text } = req.body;
 		let { img } = req.body;
@@ -87,7 +87,7 @@ const createPost = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const getPost = async (req: Request, res) => {
+const getPost = async (req: Request, res: any) => {
 	try {
 		const post = await Post.findById(req.params.id);
 
@@ -101,7 +101,7 @@ const getPost = async (req: Request, res) => {
 	}
 };
 
-const getPosts = async (req: Request, res) => {
+const getPosts = async (req: Request, res: any) => {
 	try {
 		const posts = await Post.find();
 
@@ -114,7 +114,7 @@ const getPosts = async (req: Request, res) => {
 	}
 };
 
-const deletePost = async (req: LoggedInUserRequest, res) => {
+const deletePost = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const post = await Post.findById(req.params.id);
 		if (!post) {
@@ -140,7 +140,7 @@ const deletePost = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const likeUnlikePost = async (req: LoggedInUserRequest, res) => {
+const likeUnlikePost = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const { id: postId } = req.params;
 		const userId = new mongoose.Types.ObjectId(req.user._id);
@@ -168,7 +168,7 @@ const likeUnlikePost = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const replyToPost = async (req: LoggedInUserRequest, res) => {
+const replyToPost = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const { text } = req.body;
 		const postId = req.params.id;
@@ -197,7 +197,7 @@ const replyToPost = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const getFeedPosts = async (req: LoggedInUserRequest, res) => {
+const getFeedPosts = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const userId = req.user._id;
 		const user = await User.findById(userId);
@@ -220,7 +220,7 @@ const getFeedPosts = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const getUserPosts = async (req: Request, res) => {
+const getUserPosts = async (req: Request, res: any) => {
 	const { username } = req.params;
 	try {
 		const user = await User.findOne({ username });

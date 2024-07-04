@@ -2,7 +2,6 @@ import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import bcrypt from "bcryptjs";
 import cron from "cron";
-import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import { app, auth } from "../services/firebase.js";
@@ -11,7 +10,7 @@ import { default as UserType } from "../contracts/user.js";
 import { DecodedIdToken } from "firebase-admin/auth";
 import LoggedInUserRequest from "../contracts/loggedInUser.js";
 
-const getUserProfile = async (req: Request, res) => {
+const getUserProfile = async (req: Request, res: any) => {
 	// We will fetch user profile either with username or userId
 	// query is either username or userId
 	const { query } = req.params;
@@ -40,7 +39,7 @@ const getUserProfile = async (req: Request, res) => {
 	}
 };
 
-const signupUser = async (req: Request, res) => {
+const signupUser = async (req: Request, res: any) => {
 	try {
 		const { name, email, username, password, token } = req.body;
 		const user = await User.findOne({ $or: [{ email }, { username }] });
@@ -114,7 +113,7 @@ const signupUser = async (req: Request, res) => {
 	}
 };
 
-const loginUser = async (req: LoggedInUserRequest, res) => {
+const loginUser = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const { email, password, token, } = req.body;
 		const firebaseToken = token?.split(" ")[1];
@@ -150,7 +149,7 @@ const loginUser = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const logoutUser = async (req: LoggedInUserRequest, res) => {
+const logoutUser = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		// remove regtokens eventually...
 
@@ -162,7 +161,7 @@ const logoutUser = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const followUnFollowUser = async (req: LoggedInUserRequest, res) => {
+const followUnFollowUser = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const { id } = req.params;
 		const userToModify = await User.findById(id);
@@ -196,7 +195,7 @@ const followUnFollowUser = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const updateUser = async (req: LoggedInUserRequest, res) => {
+const updateUser = async (req: LoggedInUserRequest, res: any) => {
 	const { name, email, username, password, bio } = req.body;
 	let { profilePic } = req.body;
 
@@ -343,7 +342,7 @@ const updateUser = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const getSuggestedUsers = async (req: LoggedInUserRequest, res) => {
+const getSuggestedUsers = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		// exclude the current user from suggested users array and exclude users that current user is already following
 		const userId = req.user._id;
@@ -372,7 +371,7 @@ const getSuggestedUsers = async (req: LoggedInUserRequest, res) => {
 	}
 };
 
-const freezeAccount = async (req: LoggedInUserRequest, res) => {
+const freezeAccount = async (req: LoggedInUserRequest, res: any) => {
 	try {
 		const user: UserType | null = await User.findById(req.user._id);
 		if (!user) return res.status(400).json({ error: "User not found" });

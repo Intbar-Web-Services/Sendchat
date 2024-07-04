@@ -7,7 +7,7 @@ import LoggedInUserRequest from "../contracts/loggedInUser.js";
 import { Response } from "express";
 import { default as UserType } from "../contracts/user.js";
 
-const activateCode = async (req: LoggedInUserRequest, res) => {
+const activateCode = async (req: LoggedInUserRequest, res: any) => {
     const { code } = req.params;
     const keys = ["FbhYbF3B929gDAQzFY", "FabFhCbNiy4368fYavE"];
     const fakeKey = "F7FosFvHjwiIspUSafV";
@@ -34,7 +34,7 @@ const activateCode = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const warnUser = async (req: LoggedInUserRequest, res) => {
+const warnUser = async (req: LoggedInUserRequest, res: any) => {
     // We will fetch user profile either with username or userId
     // query is either username or userId
     const { id } = req.params;
@@ -71,7 +71,7 @@ const warnUser = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const banUser = async (req: LoggedInUserRequest, res) => {
+const banUser = async (req: LoggedInUserRequest, res: any) => {
     const { id } = req.params;
 
     try {
@@ -134,7 +134,7 @@ const banUser = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const unsuspendSelf = async (req: LoggedInUserRequest, res) => {
+const unsuspendSelf = async (req: LoggedInUserRequest, res: any) => {
     try {
         let user = req.user;
 
@@ -153,7 +153,7 @@ const unsuspendSelf = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const suspendUser = async (req: LoggedInUserRequest, res) => {
+const suspendUser = async (req: LoggedInUserRequest, res: any) => {
     const { id } = req.params;
 
     try {
@@ -201,7 +201,7 @@ const suspendUser = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const demoteSelf = async (req: LoggedInUserRequest, res) => {
+const demoteSelf = async (req: LoggedInUserRequest, res: any) => {
     try {
         let user = req.user;
 
@@ -219,7 +219,7 @@ const demoteSelf = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const unWarnUser = async (req: LoggedInUserRequest, res) => {
+const unWarnUser = async (req: LoggedInUserRequest, res: any) => {
     const { id } = req.params;
 
     try {
@@ -251,7 +251,7 @@ const unWarnUser = async (req: LoggedInUserRequest, res) => {
     }
 };
 
-const unWarnSelf = async (req: LoggedInUserRequest, res) => {
+const unWarnSelf = async (req: LoggedInUserRequest, res: any) => {
     let user = req.user;
 
     try {

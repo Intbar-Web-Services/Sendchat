@@ -5,7 +5,7 @@ const URL = "https://sendchat.xyz";
 
 const job = new cron.CronJob("*/14 * * * *", () => {
 	https
-		.get(URL, (res) => {
+		.get(URL, (res: any) => {
 			if (res.statusCode === 200) {
 				console.log("GET request sent successfully");
 			} else {

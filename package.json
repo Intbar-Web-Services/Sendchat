@@ -32,7 +32,10 @@
 		"vhost": "^3.0.2"
 	},
 	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/cookie-parser": "^1.4.7",
 		"@types/socket.io": "^3.0.2",
+		"@types/vhost": "^3.0.9",
 		"nodemon": "^3.0.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.5.3"

@@ -1,5 +1,5 @@
 import path from "path";
-import express, { NextFunction } from "express";
+import express, { NextFunction, Request } from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
@@ -15,6 +15,7 @@ import jwt from "jsonwebtoken";
 import cron from "cron";
 import { auth } from "./services/firebase.js";
 import { default as UserType } from "./contracts/user.js";
+import { DecodedIdToken } from "firebase-admin/auth";
 
 dotenv.config();
 const app = express();
@@ -95,14 +96,13 @@ if (suspendedUsers) {
   });
 }
 
-export async function punishmentCheck(req, res, next: NextFunction) {
+export async function punishmentCheck(req: any, res: any, next: NextFunction) {
   const token = req.headers.authorization?.split(" ")[1];
 
-  let firebaseUser;
-  if (token) {
-    firebaseUser = await auth.verifyIdToken(token);
-  }
+  let firebaseUser: DecodedIdToken;
 
+
+  firebaseUser = await auth.verifyIdToken(token);
   if (!firebaseUser) return res.status(401).json({ message: "Unauthorized" });
 
   const user = await User.findOne({ firebaseId: firebaseUser.user_id });
@@ -116,13 +116,14 @@ export async function punishmentCheck(req, res, next: NextFunction) {
   next();
 };
 
-export async function checkSignUpContent(req, res, next: NextFunction) {
-  const checkContentRecursive = (value) => {
+export async function checkSignUpContent(req: any, res: any, next: NextFunction) {
+  const checkContentRecursive = (value: string | object | null) => {
     const patternInstance = new RegExp(pattern);
     if (typeof value === 'string' && patternInstance.exec(value)) {
       return true;
     } else if (typeof value === 'object' && value !== null) {
       for (let key in value) {
+        // @ts-ignore
         if (checkContentRecursive(value[key])) {
           return true;
         }
@@ -138,7 +139,7 @@ export async function checkSignUpContent(req, res, next: NextFunction) {
   next();
 };
 
-export async function checkContent(req, res, next: NextFunction) {
+export async function checkContent(req: any, res: any, next: NextFunction) {
   const checkContentRecursive = (value: string | object) => {
     const patternInstance = new RegExp(pattern);
     if (typeof value === 'string' && patternInstance.exec(value)) {
@@ -146,6 +147,7 @@ export async function checkContent(req, res, next: NextFunction) {
     } else if (typeof value === 'object' && value !== null) {
       for (let key in value) {
         if (key != "imgUrl") {
+          // @ts-ignore
           if (checkContentRecursive(value[key])) {
             return true;
           }
@@ -158,13 +160,13 @@ export async function checkContent(req, res, next: NextFunction) {
   if (checkContentRecursive(req.body)) {
     const token = req.headers.authorization?.split(" ")[1];
 
-    let firebaseUser;
+    let firebaseUser: DecodedIdToken;
     if (token) {
       firebaseUser = await auth.verifyIdToken(token);
     }
 
     const user: UserType | null = await User.findOne({ firebaseId: firebaseUser!.user_id });
-    const firebaseUserAccount = await auth.getUser(firebaseUser.user_id);
+    const firebaseUserAccount = await auth.getUser(firebaseUser!.user_id);
 
     user!.punishment.offenses++;
     if (!firebaseUserAccount.customClaims!['admin']) {
@@ -254,12 +256,12 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
   app.use(express.static(path.join(__dirname, "/desktop/dist")));
 
-  app.use("/app", (req, res) => {
+  app.use("/app", (req: Request, res: any) => {
     res.sendFile(path.resolve(__dirname, "desktop", "dist", "index.html"));
   });
 
   // react app
-  app.get("*", (req, res) => {
+  app.get("*", (req: Request, res: any) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }

@@ -14,7 +14,7 @@ import { DecodedIdToken } from "firebase-admin/auth";
 	If you're reading this, you are a wonderful person and I hope
 	you have a great day. */
 
-const protectRoute = async (req, res, next: NextFunction) => {
+const protectRoute = async (req: any, res: any, next: NextFunction) => {
 	try {
 		const token = req.headers.authorization?.split(" ")[1];
 

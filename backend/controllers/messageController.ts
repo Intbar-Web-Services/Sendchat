@@ -9,13 +9,13 @@ import { messaging } from "../services/firebase.js";
 import LoggedInUserRequest from "../contracts/loggedInUser.js";
 import { Request, Response } from "express";
 
-async function subscribe(req: LoggedInUserRequest, res) {
+async function subscribe(req: LoggedInUserRequest, res: any) {
 	try {
 		const user = req.user;
 		const { token, oldToken } = req.body;
 
 		const newToken = new Token({
-			userId: new mongoose.Types.ObjectId(user._id),
+			userId: new mongoose.Types.ObjectId(user?._id),
 			token,
 		});
 
@@ -37,7 +37,7 @@ async function subscribe(req: LoggedInUserRequest, res) {
 	}
 }
 
-async function sendMessage(req: LoggedInUserRequest, res) {
+async function sendMessage(req: LoggedInUserRequest, res: any) {
 	try {
 		const { recipientId, message } = req.body;
 		let { img } = req.body;
@@ -108,7 +108,7 @@ async function sendMessage(req: LoggedInUserRequest, res) {
 
 		const tokens = await Token.find(
 			{
-				userId: new mongoose.Types.ObjectId(user._id),
+				userId: new mongoose.Types.ObjectId(user?._id),
 			}
 		);
 
@@ -147,7 +147,7 @@ async function sendMessage(req: LoggedInUserRequest, res) {
 	}
 }
 
-async function getMessages(req: LoggedInUserRequest, res) {
+async function getMessages(req: LoggedInUserRequest, res: any) {
 	const { otherUserId } = req.params;
 	const userId = req.user._id;
 	try {
@@ -169,7 +169,7 @@ async function getMessages(req: LoggedInUserRequest, res) {
 	}
 }
 
-async function getConversations(req: LoggedInUserRequest, res) {
+async function getConversations(req: LoggedInUserRequest, res: any) {
 	const userId = req.user._id;
 	try {
 		const conversations = await Conversation.find({ participants: userId }).populate({
