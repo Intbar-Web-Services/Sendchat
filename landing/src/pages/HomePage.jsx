@@ -5,6 +5,7 @@ export default function DownloadApp() {
         <>
             <h1 style={{ "font-size": 72, "textAlign": "center" }}>Sendchat</h1>
             <h1 style={{ "font-size": 26, "textAlign": "center" }}>The most used least used social media platform on the internet</h1>
+            <img src="getaroom.gif" />
             <Divider my={4} />
             <h3>
                 With over 1 users, Sendchat is booming in popularity!
