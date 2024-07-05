@@ -42,7 +42,7 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1.9rem"
 				>
-					<Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz"; }}>Open Sendchat</Button>
+					<Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz"; }}>Open Legacy Sendchat</Button>
 				</Flex>
 			</Flex >
 		</>

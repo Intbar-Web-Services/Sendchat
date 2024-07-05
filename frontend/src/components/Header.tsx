@@ -127,6 +127,7 @@ const Header = () => {
 				// @ts-expect-error
 				webkitAppRegion="drag"
 			>
+				legacy
 				{!user && (
 					<Flex alignItems={"center"} gap={9} paddingBottom="1.85rem">
 						{/* @ts-expect-error */}
