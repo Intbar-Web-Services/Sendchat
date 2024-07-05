@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  app.use(vhost('sendchat.xyz', landing) as any);
-  app.use(vhost('app.sendchat.xyz', main) as any);
+  app.use(vhost('legacy.sendchat.xyz', landing) as any);
+  app.use(vhost('app.legacy.sendchat.xyz', main) as any);
 } else {
   app.use(main);
 }
