@@ -3,7 +3,7 @@ import { Divider, Flex, Box, Button, Image, Center } from "@chakra-ui/react";
 export default function DownloadApp() {
     return (
         <>
-            <h1 style={{ "font-size": 72, "textAlign": "center" }}>Sendchat</h1>
+            <h1 style={{ "font-size": 72, "textAlign": "center" }}>Legacy Sendchat</h1>
             <h1 style={{ "font-size": 26, "textAlign": "center" }}>The most used least used social media platform on the internet</h1>
             <Center><Image src="getaroom.gif" maxW={"30%"} maxH={"30%"}/></Center>
             <Divider my={4} />
@@ -16,7 +16,7 @@ export default function DownloadApp() {
                 <br />
                 See, since the website sendchat.xyz is always up, that means that it can never be &quot;down&quot;
                 <br />
-                Which means that Sendchat is the first platform with true 24/8 uptime.
+                Which means that Sendchatis the first platform with true 24/8 uptime.
                 <br />
                 - mercy
             </h3>
@@ -27,8 +27,23 @@ export default function DownloadApp() {
                 p={2}
                 flexDirection={"column"}
             >
-                <Center><Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button></Center>
+                <Center><Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz" }}>Try out Legacy Sendchat!</Button></Center>
             </Flex>
+            <Divider my={4} />
+            <h3>
+                IWS Sendchat is owned by Intbar
+                <br />
+                Legacy Sendchat is owned by mercy
+                <br />
+            </h3>
+            <h2 style={{ "font-size": 24 }}>Contributors:</h2>
+            <a href="https://github.com/Intbar">Intbar</a>
+            <br />
+            <a href="https://github.com/trixie909">Trixie</a>
+            <br />
+            <a href="https://github.com/tiramisyuz">Tiramisu</a>
+            <br />
+            <a href="https://github.com/mercy401">mercy</a>
         </>
     );
 }

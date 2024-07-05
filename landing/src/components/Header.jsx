@@ -9,7 +9,7 @@ const Header = () => {
 				mb={9}
 				position="fixed"
 				zIndex="1"
-				backgroundColor={useColorModeValue("gray.100", "#101010")}
+				//backgroundColor={useColorModeValue("gray.100", "#101010")}
 				pt="0.1rem"
 				webkitAppRegion="drag"
 			>
