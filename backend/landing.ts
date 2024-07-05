@@ -13,12 +13,12 @@ if (process.env.NODE_ENV === "production") {
 
   app.get('/user/:username', (req, res: any) => {
     const { username } = req.params;
-    res.redirect(301, `http://app.sendchat.xyz/user/${username}`);
+    res.redirect(301, `http://app.legacy.sendchat.xyz/user/${username}`);
   });
 
   app.get('/user/:username/post/:id', (req, res: any) => {
     const { username, id } = req.params;
-    res.redirect(301, `http://app.sendchat.xyz/user/${username}/post/${id}`);
+    res.redirect(301, `http://app.legacy.sendchat.xyz/user/${username}/post/${id}`);
   });
 
   app.get("*", (req, res: any) => {
