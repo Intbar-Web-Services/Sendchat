@@ -25,7 +25,7 @@ const Header = () => {
 				>
 					<Image
 						cursor={"pointer"}
-						onClick={() => { location.href = "https://sendchat.xyz"; }}
+						onClick={() => { location.href = "https://legacy.sendchat.xyz"; }}
 						alt='logo'
 						position="relative"
 						mt={0.5}
@@ -42,7 +42,7 @@ const Header = () => {
 					paddingRight="1.5rem"
 					paddingTop="1.9rem"
 				>
-					<Button onClick={() => { location.href = "https://app.sendchat.xyz"; }}>Open Sendchat</Button>
+					<Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz"; }}>Open Sendchat</Button>
 				</Flex>
 			</Flex >
 		</>
