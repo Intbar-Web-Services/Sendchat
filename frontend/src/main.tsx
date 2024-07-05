@@ -11,44 +11,49 @@ import { RecoilRoot } from "recoil";
 import { SocketContextProvider } from "./context/SocketContext.tsx";
 
 const styles = {
-	global: (props: StyleProps) => ({
-		body: {
-			color: mode("gray.800", "whiteAlpha.900")(props),
-			bg: mode("gray.100", "#101010")(props),
-		},
-	}),
+  global: (props: StyleProps) => ({
+    body: {
+      color: mode("gray.800", "whiteAlpha.900")(props),
+      bg: mode("gray.100", "#101010")(props),
+    },
+  }),
 };
 
 const config = {
-	initialColorMode: "dark",
-	useSystemColorMode: true,
+  initialColorMode: "dark",
+  useSystemColorMode: true,
 };
 
 const colors = {
-	gray: {
-		light: "#616161",
-		dark: "#1e1e1e",
-	},
+  gray: {
+    light: "#616161",
+    dark: "#1e1e1e",
+  },
 };
 
 const theme = extendTheme({ config, styles, colors });
 
 if (navigator.userAgent.includes("sendchat-desktop")) {
-	location.pathname = "/app";
+  location.pathname = "/app";
 }
 
-ReactDOM.createRoot(document.getElementById("root") as Element | DocumentFragment).render(
-	// React.StrictMode renders every component twice (in the initial render), only in development.
-	<React.StrictMode>
-		<RecoilRoot>
-			<BrowserRouter>
-				<ChakraProvider theme={theme}>
-					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-					<SocketContextProvider>
-						<App />
-					</SocketContextProvider>
-				</ChakraProvider>
-			</BrowserRouter>
-		</RecoilRoot>
-	</React.StrictMode>
+ReactDOM.createRoot(
+  document.getElementById("root") as Element | DocumentFragment
+).render(
+  // React.StrictMode renders every component twice (in the initial render), only in development.
+  <React.StrictMode>
+    <RecoilRoot>
+      <BrowserRouter>
+        <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <SocketContextProvider>
+            <>
+              legacy
+              <App />
+            </>
+          </SocketContextProvider>
+        </ChakraProvider>
+      </BrowserRouter>
+    </RecoilRoot>
+  </React.StrictMode>
 );

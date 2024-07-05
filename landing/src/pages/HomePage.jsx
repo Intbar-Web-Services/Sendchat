@@ -1,16 +1,16 @@
-import { Divider, Flex, Box, Button, Image } from "@chakra-ui/react";
+import { Divider, Flex, Box, Button, Image, Center } from "@chakra-ui/react";
 
 export default function DownloadApp() {
     return (
         <>
             <h1 style={{ "font-size": 72, "textAlign": "center" }}>Sendchat</h1>
             <h1 style={{ "font-size": 26, "textAlign": "center" }}>The most used least used social media platform on the internet</h1>
-            <img src="getaroom.gif" />
+            <Center><Image src="getaroom.gif" maxW={"30%"} maxH={"30%"}/></Center>
             <Divider my={4} />
             <h3>
-                With over 1 users, Sendchat is booming in popularity!
+                With over -32,767 users, Sendchat is booming in popularity!
                 <br />
-                With over 0 chats sent per day, there is no doubt you will love our &quot;active&quot; chat platform
+                With over −170,141,183,460,469,231,731,687,303,715,884,105,728 chats sent per day, there is no doubt you will love our &quot;active&quot; chat platform
                 <br />
                 Sorry, we're down, or are we? (vsauce music)
                 <br />
@@ -27,7 +27,7 @@ export default function DownloadApp() {
                 p={2}
                 flexDirection={"column"}
             >
-                <Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button>
+                <Center><Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button></Center>
             </Flex>
         </>
     );
