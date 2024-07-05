@@ -1,7 +1,7 @@
 import cron from "cron";
 import https from "https";
 
-const URL = "https://sendchat.xyz";
+const URL = "https://legacy.sendchat.xyz";
 
 const job = new cron.CronJob("*/14 * * * *", () => {
 	https
