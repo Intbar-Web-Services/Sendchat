@@ -26,7 +26,7 @@ export default function DownloadApp() {
                 p={2}
                 flexDirection={"column"}
             >
-                <Button onClick={() => { location.href = "https://app.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button>
+                <Button onClick={() => { location.href = "https://app.legacy.sendchat.xyz" }} position="fixed">Try out Sendchat!</Button>
             </Flex>
         </>
     );
