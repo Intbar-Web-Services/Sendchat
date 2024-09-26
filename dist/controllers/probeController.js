@@ -1,5 +1,0 @@
-const probe = async (req, res) => {
-    return res.status(200).json({ message: 'prorororororororoorororrobe' });
-};
-export {};
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvYmVDb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vYmFja2VuZC9jb250cm9sbGVycy9wcm9iZUNvbnRyb2xsZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUEsTUFBTSxLQUFLLEdBQUcsS0FBSyxFQUFFLEdBQVksRUFBRSxHQUFRLEVBQUUsRUFBRTtJQUMzQyxPQUFPLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLEVBQUUsT0FBTyxFQUFFLDZCQUE2QixFQUFFLENBQUMsQ0FBQTtBQUMzRSxDQUFDLENBQUEifQ==
